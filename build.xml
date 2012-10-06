@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="krissytosi-base" default="all" basedir="krissytosi">
+
+    <import file="krissytosi/build.xml"/>
+
+</project>

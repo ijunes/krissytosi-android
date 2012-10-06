@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="krissytosi" default="help">
+
+    <property file="local.properties" />
+    <property file="ant.properties" />
+    <property environment="env" />
+    <condition property="sdk.dir" value="${env.ANDROID_HOME}">
+        <isset property="env.ANDROID_HOME" />
+    </condition>
+    <loadproperties srcFile="project.properties" />
+    <fail
+            message="sdk.dir is missing. Make sure to generate local.properties using 'android update project' or to inject it through the ANDROID_HOME environment variable."
+            unless="sdk.dir"
+    />
+    <import file="custom_rules.xml" optional="true" />
+    <import file="${sdk.dir}/tools/ant/build.xml" />
+
+	<!-- Get the ant-contrib libraries -->
+    <taskdef resource="net/sf/antcontrib/antcontrib.properties"/>
+
+    <!-- =========================================== -->
+    <!-- PATHS                                       -->
+    <!-- =========================================== -->
+    <path id="compile.classpath">
+        <pathelement path="${android.jar}" />
+    </path>
+    <path id="test.classpath">
+        <fileset dir="${libs.test.dir}">
+            <include name="**/*.jar"/>
+        </fileset>
+        <pathelement path="${out.dir}"/>
+        <pathelement path="${test.classes.dir}"/>
+    </path>
+    <path id="pmd.classpath">
+        <fileset dir="${build.lib.dir}/pmd/lib/">
+            <include name="*.jar"/>
+        </fileset>
+    </path>
+
+    <!-- =========================================== -->
+    <!-- CUSTOM TASKDEFS                             -->
+    <!-- =========================================== -->
+    <taskdef name="pmd" classname="net.sourceforge.pmd.ant.PMDTask" classpathref="pmd.classpath" />
+    <taskdef name="cpd" classname="net.sourceforge.pmd.cpd.CPDTask" classpathref="pmd.classpath" />
+    <taskdef name="findbugs" classname="edu.umd.cs.findbugs.anttask.FindBugsTask" classpath="${build.lib.dir}/findbugs/lib/findbugs-ant.jar" />
+    <taskdef resource="checkstyletask.properties" classpath="${build.lib.dir}/checkstyle/checkstyle-5.6-all.jar" />
+    <taskdef name="javancss" classname="javancss.JavancssAntTask" classpath="${build.lib.dir}/javancss/lib/javancss.jar" />
+
+    <!-- ===========================================    -->
+    <!-- HELP                                           -->
+    <!-- ===========================================    -->
+    <target name="help" description="Runs help">
+        <echo message="" />
+        <echo message="krissytosi-android build file" />
+        <echo message="" />
+        <echo message="-----------------------------------" />
+        <echo message="" />
+        <echo message="Available targets are:" />
+        <echo message="" />
+        <echo message="-----------------------------------" />
+        <echo message="" />
+        <echo message="kt-checkstyle    --> Run checkstyle on the codebase" />
+        <echo message="kt-findbugs      --> Run findbugs on the codebase" />
+        <echo message="kt-javancss      --> Run javancss on the codebase" />
+        <echo message="kt-pmd           --> Run pmd on the codebase" />
+        <echo message="docs             --> Run doc tool on the project" />
+        <echo message="all              --> Run all targets in the build file" />
+		<echo message="release          --> Build a release candidate" />
+		<echo message="kt-clean         --> Clean out all temporary directories" />
+        <echo message="" />
+    </target>
+
+    <!-- ===========================================    -->
+    <!-- ALTER-MANIFEST									-->
+    <!-- ===========================================    -->
+    <target name="alter-manifest" description="Alters the AndroidManifest file to change the version code and version name">
+        <echo>*** Altering AndroidManifest.xml ***</echo>
+        <xslt in="${basedir}/AndroidManifest.xml"
+            out="${basedir}/_AndroidManifest.xml"
+            style="configureManifest.xsl" force="true">
+            <param name="VERSIONNAME" expression="${version.name}.${app.version}" />
+            <param name="VERSIONCODE" expression="${app.version}" />
+        </xslt>
+        <move file="${basedir}/_AndroidManifest.xml" tofile="${basedir}/AndroidManifest.xml"/>
+    </target>
+
+	<!-- ===========================================    -->
+    <!-- MONKEY                                         -->
+    <!-- ===========================================    -->
+    <target name="monkey" description="Runs the exerciser monkey">
+        <echo>*** Running the exerciser monkey on the application ***</echo>
+        <mkdir dir="${dist.dir}" />
+        <mkdir dir="${monkey.dir}" />
+        <exec executable="${sdk.dir}/platform-tools/adb" failonerror="true" output="${monkey.dir}/monkey.txt">
+            <arg line="shell monkey -p com.krissytosi -v ${num.monkey.events}" />
+        </exec>
+    </target>
+
+    <!-- ===========================================    -->
+    <!-- KT-DOCS                                        -->
+    <!-- ===========================================    -->
+    <target name="kt-docs" description="Creates javadocs for the project">
+        <echo>*** Creating documentation for the project ***</echo>
+        <mkdir dir="${dist.dir}" />
+        <javadoc destdir="${dist.dir}/docs" author="true" version="true" use="true"
+            windowtitle="${docs.window.title}" classpathref="compile.classpath">
+            <fileset dir="${src.dir}" defaultexcludes="yes">
+                <include name="com/krissytosi/**"/>
+            </fileset>
+            <doctitle><![CDATA[<h1>${docs.window.title}</h1>]]></doctitle>
+            <bottom><![CDATA[<i>Copyright &#169; 2012 Krissy Tosi. All Rights Reserved.</i>]]></bottom>
+        </javadoc>
+        <!-- Archive the docs too -->
+        <zip destfile="${dist.dir}/docs/docs.zip" basedir="${dist.dir}/docs" excludes="**/*.zip" />
+    </target>
+
+    <!-- ===========================================    -->
+    <!-- KT-CHECKSTYLE                                  -->
+    <!-- ===========================================    -->
+    <target name="kt-checkstyle" description="Static code analyzer for the project">
+        <echo>*** Running checkstyle ***</echo>
+        <mkdir dir="${dist.dir}" />
+        <mkdir dir="${checkstyle.dir}" />
+        <checkstyle config="checkstyle.xml" failOnViolation="false">
+            <fileset dir="${src.dir}" includes="**/*.java"/>
+            <formatter type="xml" toFile="${checkstyle.dir}/checkstyle_report.xml"/>
+        </checkstyle>
+        <xslt in="${checkstyle.dir}/checkstyle_report.xml" out="${checkstyle.dir}/checkstyle_report.html" style="${build.lib.dir}/checkstyle/contrib/checkstyle-simple.xsl"/>
+    </target>
+
+    <!-- ===========================================    -->
+    <!-- KT-FINDBUGS                                    -->
+    <!-- ===========================================    -->
+    <target name="kt-findbugs" description="Static code analyzer for the project">
+        <echo>*** Running findbugs ***</echo>
+        <mkdir dir="${findbugs.dir}" />
+        <findbugs home="${findbugs.home}" output="xml:withMessages"
+            outputFile="${findbugs.dir}/fb.xml" excludefilter="${common-targets.imported.basedir}/findbugs-exclude.xml">
+            <auxClasspath refid="compile.classpath" />
+            <sourcePath path="${src.dir}" />
+            <class location="${out.dir}" />
+        </findbugs>
+        <xslt in="${findbugs.dir}/fb.xml" out="${findbugs.dir}/fb.html" style="${findbugs.home}/src/xsl/default.xsl"/>
+    </target>
+
+    <!-- ===========================================    -->
+    <!-- KT-JAVANCSS                                    -->
+    <!-- ===========================================    -->
+    <target name="kt-javancss" description="Running javancss on the codebase">
+        <echo>*** Running javancss ***</echo>
+        <!-- NCSS = Non Commenting Source Statements -->
+        <!-- CCN = Cyclomatic Complexity Number -->
+        <mkdir dir="${dist.dir}" />
+        <mkdir dir="${javancss.dir}" />
+        <javancss srcdir="${src.dir}" generateReport="true" includes="**/*.java" format="xml" outputfile="${javancss.dir}/javancss.xml" />
+        <xslt in="${javancss.dir}/javancss.xml" out="${javancss.dir}/javancss.html" style="${build.lib.dir}/javancss/xslt/javancss2html.xsl" />
+    </target>
+
+	<!-- ===========================================    -->
+    <!-- KT-PMD                                         -->
+    <!-- ===========================================    -->
+    <target name="kt-pmd" description="Runs pmd on the codebase">
+        <echo>*** Running pmd ***</echo>
+        <mkdir dir="${dist.dir}" />
+        <mkdir dir="${pmd.dir}" />
+        <pmd rulesetfiles="pmd.xml">
+            <formatter type="html" toFile="${pmd.dir}/pmd_report.html" toConsole="true" />
+            <fileset dir="${src.dir}">
+                <include name="**/*.java"/>
+            </fileset>
+        </pmd>
+        <cpd minimumTokenCount="100" outputFile="${pmd.dir}/cpd.txt">
+            <fileset dir="${src.dir}">
+                <include name="**/*.java"/>
+            </fileset>
+        </cpd>
+    </target>
+
+	<!-- ===========================================    -->
+    <!-- ALL											-->
+    <!-- ===========================================    -->
+    <target name="all" description="Runs all the targets">
+        <echo>*** Running all targets ***</echo>
+    </target>
+
+	<!-- ===========================================    -->
+    <!-- RELEASE										-->
+    <!-- ===========================================    -->
+    <target name="release" description="Creates a release candidate apk">
+        <echo>*** Building release candidate ***</echo>
+    </target>
+
+	<!-- ===========================================    -->
+    <!-- KT-CLEAN										-->
+    <!-- ===========================================    -->
+    <target name="kt-clean" description="Cleans out all temporary directories">
+        <echo>*** Building release candidate ***</echo>
+		<delete dir="${dist.dir}" failonerror="false" includeemptydirs="true"/>
+    </target>
+
+</project>
