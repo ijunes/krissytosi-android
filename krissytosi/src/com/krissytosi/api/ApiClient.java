@@ -23,5 +23,7 @@ import com.krissytosi.api.services.PortfolioService;
  */
 public interface ApiClient {
 
+	void setBaseUrl(String baseUrl);
+
 	PortfolioService getPortfolioService();
 }

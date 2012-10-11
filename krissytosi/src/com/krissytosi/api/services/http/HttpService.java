@@ -56,9 +56,6 @@ public class HttpService {
 	private static final String GZIP_ENCODING = "gzip";
 	private static final String CONTENT_ENCODING_HEADER = "Content-Encoding";
 
-	// TODO - this should be passed down to the HttpService
-	private static final String API_URL = "http://localhost:8080";
-
 	static {
 		HttpParams params = new BasicHttpParams();
 		params.setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 15000);
@@ -78,10 +75,9 @@ public class HttpService {
 
 	private static ThreadSafeClientConnManager connectionManager = null;
 
-	public String createUrl(Map<String, String> options) {
+	public String createUrl(String baseUrl, Map<String, String> options) {
 		StringBuffer url = new StringBuffer();
-		final String apiUrl = API_URL;
-		url.append(apiUrl);
+		url.append(baseUrl);
 		for (Map.Entry<String, String> entry : options.entrySet()) {
 			String key = entry.getKey();
 			final String value = entry.getValue();

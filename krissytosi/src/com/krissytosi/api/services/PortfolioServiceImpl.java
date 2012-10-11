@@ -27,12 +27,26 @@ import com.krissytosi.api.services.http.HttpService;
 public class PortfolioServiceImpl extends HttpService implements
 		PortfolioService {
 
+	private String baseUrl;
+
 	@Override
 	public List<Portfolio> getPortfolios() {
 		Map<String, String> options = new HashMap<String, String>();
-		String portfolioUrl = createUrl(options);
+		options.put("q", "portfolios");
+		String portfolioUrl = createUrl(baseUrl, options);
 		String response = doGet(portfolioUrl);
 		return ParserFactoryImpl.getInstance().getPortfolioParser()
 				.parsePortfolios(response);
+	}
+
+	// Getters/Setters
+
+	public String getBaseUrl() {
+		return baseUrl;
+	}
+
+	@Override
+	public void setBaseUrl(String baseUrl) {
+		this.baseUrl = baseUrl;
 	}
 }

@@ -22,5 +22,7 @@ import com.krissytosi.api.domain.Portfolio;
 
 public interface PortfolioService {
 
+	public void setBaseUrl(String baseUrl);
+	
 	public List<Portfolio> getPortfolios();
 }

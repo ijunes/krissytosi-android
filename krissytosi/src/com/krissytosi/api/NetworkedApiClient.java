@@ -24,10 +24,20 @@ import com.krissytosi.api.services.PortfolioServiceImpl;
  */
 public class NetworkedApiClient implements ApiClient {
 
+	private PortfolioService portfolioService;
+	private String baseUrl;
+
 	@Override
 	public PortfolioService getPortfolioService() {
-		// TODO - do I need a new one each time or should I be storing a member
-		// variable?
-		return new PortfolioServiceImpl();
+		if (portfolioService == null) {
+			portfolioService = new PortfolioServiceImpl();
+			portfolioService.setBaseUrl(baseUrl);
+		}
+		return portfolioService;
+	}
+
+	@Override
+	public void setBaseUrl(String baseUrl) {
+		this.baseUrl = baseUrl;
 	}
 }

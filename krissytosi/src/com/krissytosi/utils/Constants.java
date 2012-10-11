@@ -13,19 +13,13 @@
    See the License for the specific language governing permissions and
    limitations under the License.
  */
+package com.krissytosi.utils;
 
-package com.krissytosi.activities;
+/**
+ * Some constants for the app.
+ */
+public class Constants {
 
-import android.app.Activity;
-import android.os.Bundle;
-
-import com.krissytosi.R;
-
-public class HomeActivity extends Activity {
-
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.main);
-	}
+	public static final String PROD_API_URL = "http://www.krissytosi.com/api";
+	public static final String TEST_API_URL = "http://localhost:8080/api";
 }
