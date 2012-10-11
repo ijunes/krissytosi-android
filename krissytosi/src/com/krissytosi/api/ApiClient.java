@@ -16,19 +16,12 @@
 
 package com.krissytosi.api;
 
-import java.util.List;
-
-import com.krissytosi.domain.Portfolio;
+import com.krissytosi.api.services.PortfolioService;
 
 /**
  * Defines all methods used to interact with the API server.
  */
 public interface ApiClient {
 
-	/**
-	 * Gets the list of portfolios.
-	 * 
-	 * @return a list of {@link Portfolio} objects.
-	 */
-	public List<Portfolio> getPortfolios();
+	PortfolioService getPortfolioService();
 }

@@ -14,9 +14,9 @@
    limitations under the License.
  */
 
-package com.krissytosi.parse;
+package com.krissytosi.api.parse;
 
-import com.krissytosi.parse.json.JsonParserFactory;
+import com.krissytosi.api.parse.json.JsonParserFactory;
 
 public class ParserFactoryImpl {
 

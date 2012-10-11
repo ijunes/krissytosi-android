@@ -14,7 +14,7 @@
    limitations under the License.
  */
 
-package com.krissytosi.parse;
+package com.krissytosi.api.parse;
 
 /**
  * Factory for retrieving API parsers.
@@ -28,5 +28,5 @@ public interface ParserFactory {
 	 * 
 	 * @return a implementation of a {@link PortfolioParser}
 	 */
-	PortfolioParser getPortfolioParser();
+	public PortfolioParser getPortfolioParser();
 }

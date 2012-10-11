@@ -14,7 +14,7 @@
    limitations under the License.
  */
 
-package com.krissytosi.domain;
+package com.krissytosi.api.domain;
 
 /**
  * Defines what makes up a portfolio.

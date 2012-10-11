@@ -13,20 +13,18 @@
    See the License for the specific language governing permissions and
    limitations under the License.
  */
-package com.krissytosi.parse;
 
-import java.util.List;
+package com.krissytosi.api.parse.json;
 
-import com.krissytosi.domain.Portfolio;
+import com.krissytosi.api.parse.ParserFactory;
+import com.krissytosi.api.parse.PortfolioParser;
 
-public interface PortfolioParser {
+public class JsonParserFactory implements ParserFactory {
 
-	/**
-	 * Parses a list of {@link Portfolio}s from a RAW API response.
-	 * 
-	 * @param bytes
-	 *            the bytes retrieved from the API server.
-	 * @return a list of {@link Portfolio} objects.
-	 */
-	public List<Portfolio> parsePortfolios(byte[] bytes);
+	@Override
+	public PortfolioParser getPortfolioParser() {
+		// TODO - do I need a new one each time, or should I store a member
+		// variable
+		return new JsonPortfolioParser();
+	}
 }

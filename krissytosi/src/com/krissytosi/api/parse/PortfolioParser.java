@@ -13,21 +13,13 @@
    See the License for the specific language governing permissions and
    limitations under the License.
  */
+package com.krissytosi.api.parse;
 
-package com.krissytosi.api;
+import java.util.List;
 
-import com.krissytosi.api.services.PortfolioService;
-import com.krissytosi.api.services.PortfolioServiceImpl;
+import com.krissytosi.api.domain.Portfolio;
 
-/**
- * Uses HttpClient to interact with the API server.
- */
-public class NetworkedApiClient implements ApiClient {
+public interface PortfolioParser {
 
-	@Override
-	public PortfolioService getPortfolioService() {
-		// TODO - do I need a new one each time or should I be storing a member
-		// variable?
-		return new PortfolioServiceImpl();
-	}
+	public List<Portfolio> parsePortfolios(String response);
 }

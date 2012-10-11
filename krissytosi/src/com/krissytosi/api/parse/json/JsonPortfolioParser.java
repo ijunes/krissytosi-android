@@ -14,55 +14,30 @@
    limitations under the License.
  */
 
-package com.krissytosi.parse.json;
+package com.krissytosi.api.parse.json;
 
-import java.io.UnsupportedEncodingException;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.krissytosi.domain.Portfolio;
-import com.krissytosi.parse.ParserFactory;
-import com.krissytosi.parse.PortfolioParser;
+import com.krissytosi.api.domain.Portfolio;
+import com.krissytosi.api.parse.PortfolioParser;
 
 public class JsonPortfolioParser implements PortfolioParser {
 
 	@Override
-	public List<Portfolio> parsePortfolios(byte[] bytes) {
+	public List<Portfolio> parsePortfolios(String response) {
 		List<Portfolio> portfolios = new ArrayList<Portfolio>();
-		if (bytes != null) {
+		if (response != null && !"".equalsIgnoreCase(response)) {
 			try {
-				JSONObject rootJson = new JSONObject(parseString(bytes));
+				JSONObject rootJson = new JSONObject(response);
 				// TODO - iterate through the response.
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
 		}
 		return portfolios;
-	}
-
-	/**
-	 * Parses a string from the bytes parameter.
-	 * 
-	 * @param bytes
-	 *            the raw response from the API server.
-	 * @return a string representation of the bytes.
-	 */
-	private String parseString(byte[] bytes) {
-		String str = null;
-		try {
-			if (Charset.isSupported(ParserFactory.DEFAULT_ENCODING)) {
-				str = new String(bytes, ParserFactory.DEFAULT_ENCODING);
-			} else {
-				str = new String(bytes, Charset.defaultCharset().name());
-			}
-		} catch (UnsupportedEncodingException e) {
-			// fallback
-			str = new String(bytes);
-		}
-		return str;
 	}
 }

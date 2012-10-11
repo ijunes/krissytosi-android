@@ -14,15 +14,13 @@
    limitations under the License.
  */
 
-package com.krissytosi.parse.json;
+package com.krissytosi.api.services;
 
-import com.krissytosi.parse.ParserFactory;
-import com.krissytosi.parse.PortfolioParser;
+import java.util.List;
 
-public class JsonParserFactory implements ParserFactory {
+import com.krissytosi.api.domain.Portfolio;
 
-	@Override
-	public PortfolioParser getPortfolioParser() {
-		return new JsonPortfolioParser();
-	}
+public interface PortfolioService {
+
+	public List<Portfolio> getPortfolios();
 }
