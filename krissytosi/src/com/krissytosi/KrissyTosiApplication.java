@@ -49,7 +49,7 @@ public class KrissyTosiApplication extends Application {
 	@Override
 	public void onCreate() {
 		apiClient = new NetworkedApiClient();
-		apiClient.setBaseUrl(Constants.PROD_API_URL);
+		apiClient.setBaseUrl(Constants.TEST_API_URL);
 		getPortfoliosTask = new GetPortfoliosTask();
 		getPortfoliosTask.execute();
 		super.onCreate();
