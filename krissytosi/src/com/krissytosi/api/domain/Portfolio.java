@@ -21,57 +21,57 @@ package com.krissytosi.api.domain;
  */
 public class Portfolio {
 
-	/**
-	 * The portfolio's name.
-	 */
-	private String name;
+    /**
+     * The portfolio's name.
+     */
+    private String name;
 
-	/**
-	 * How many images are associated with the portfolio.
-	 */
-	private int numberOfImages;
+    /**
+     * How many images are associated with the portfolio.
+     */
+    private int numberOfImages;
 
-	/**
-	 * Where to start showing photos in the portfolio.
-	 */
-	private int startIndex;
+    /**
+     * Where to start showing photos in the portfolio.
+     */
+    private int startIndex;
 
-	/**
-	 * Where the portfolio ranks in relation to other portfolios.
-	 */
-	private int orderIndex;
+    /**
+     * Where the portfolio ranks in relation to other portfolios.
+     */
+    private int orderIndex;
 
-	// Getters/Setters
+    // Getters/Setters
 
-	public String getName() {
-		return name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public int getNumberOfImages() {
-		return numberOfImages;
-	}
+    public int getNumberOfImages() {
+        return numberOfImages;
+    }
 
-	public void setNumberOfImages(int numberOfImages) {
-		this.numberOfImages = numberOfImages;
-	}
+    public void setNumberOfImages(int numberOfImages) {
+        this.numberOfImages = numberOfImages;
+    }
 
-	public int getStartIndex() {
-		return startIndex;
-	}
+    public int getStartIndex() {
+        return startIndex;
+    }
 
-	public void setStartIndex(int startIndex) {
-		this.startIndex = startIndex;
-	}
+    public void setStartIndex(int startIndex) {
+        this.startIndex = startIndex;
+    }
 
-	public int getOrderIndex() {
-		return orderIndex;
-	}
+    public int getOrderIndex() {
+        return orderIndex;
+    }
 
-	public void setOrderIndex(int orderIndex) {
-		this.orderIndex = orderIndex;
-	}
+    public void setOrderIndex(int orderIndex) {
+        this.orderIndex = orderIndex;
+    }
 }

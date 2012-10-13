@@ -16,13 +16,27 @@
 
 package com.krissytosi.api.services;
 
-import java.util.List;
-
 import com.krissytosi.api.domain.Portfolio;
 
+import java.util.List;
+
+/**
+ * Defines methods which should be implemented by any object proposing to be a
+ * portfolio service.
+ */
 public interface PortfolioService {
 
-	public void setBaseUrl(String baseUrl);
-	
-	public List<Portfolio> getPortfolios();
+    /**
+     * Sets the base url which this portfolio service should target.
+     * 
+     * @param baseUrl the base url.
+     */
+    void setBaseUrl(String baseUrl);
+
+    /**
+     * Retrieves a list of {@link Portfolio} objects.
+     * 
+     * @return a list of {@link Portfolio} objects
+     */
+    List<Portfolio> getPortfolios();
 }

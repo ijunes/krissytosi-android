@@ -16,37 +16,47 @@
 
 package com.krissytosi.api.services;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import com.krissytosi.api.domain.Portfolio;
 import com.krissytosi.api.parse.ParserFactoryImpl;
 import com.krissytosi.api.services.http.HttpService;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * HTTP specific implementation of a {@link PortfolioService}.
+ */
 public class PortfolioServiceImpl extends HttpService implements
-		PortfolioService {
+        PortfolioService {
 
-	private String baseUrl;
+    /**
+     * The base url which this service is targeting.
+     */
+    private String baseUrl;
 
-	@Override
-	public List<Portfolio> getPortfolios() {
-		Map<String, String> options = new HashMap<String, String>();
-		options.put("q", "portfolios");
-		String portfolioUrl = createUrl(baseUrl, options);
-		String response = doGet(portfolioUrl);
-		return ParserFactoryImpl.getInstance().getPortfolioParser()
-				.parsePortfolios(response);
-	}
+    @Override
+    public List<Portfolio> getPortfolios() {
+        // prepare the options.
+        Map<String, String> options = new HashMap<String, String>();
+        options.put("q", "portfolios");
+        // prepare the url
+        String portfolioUrl = createUrl(baseUrl, options);
+        // execute the request
+        String response = doGet(portfolioUrl);
+        // parse & return the response
+        return ParserFactoryImpl.getInstance().getPortfolioParser()
+                .parsePortfolios(response);
+    }
 
-	// Getters/Setters
+    // Getters/Setters
 
-	public String getBaseUrl() {
-		return baseUrl;
-	}
+    public String getBaseUrl() {
+        return baseUrl;
+    }
 
-	@Override
-	public void setBaseUrl(String baseUrl) {
-		this.baseUrl = baseUrl;
-	}
+    @Override
+    public void setBaseUrl(String baseUrl) {
+        this.baseUrl = baseUrl;
+    }
 }

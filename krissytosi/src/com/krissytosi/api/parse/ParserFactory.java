@@ -21,12 +21,10 @@ package com.krissytosi.api.parse;
  */
 public interface ParserFactory {
 
-	public static final String DEFAULT_ENCODING = "UTF-8";
-
-	/**
-	 * Getter method for a {@link PortfolioParser}
-	 * 
-	 * @return a implementation of a {@link PortfolioParser}
-	 */
-	public PortfolioParser getPortfolioParser();
+    /**
+     * Getter method for a {@link PortfolioParser}
+     * 
+     * @return a implementation of a {@link PortfolioParser}
+     */
+    PortfolioParser getPortfolioParser();
 }

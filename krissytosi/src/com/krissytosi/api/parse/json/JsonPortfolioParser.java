@@ -16,43 +16,47 @@
 
 package com.krissytosi.api.parse.json;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.util.Log;
 
 import com.krissytosi.api.domain.Portfolio;
 import com.krissytosi.api.parse.PortfolioParser;
+import com.krissytosi.utils.Constants;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * JSON-specific implementation of a {@link PortfolioParser}
+ */
 public class JsonPortfolioParser implements PortfolioParser {
 
-	private static final String LOG_TAG = "JsonPortfolioParser";
+    private static final String LOG_TAG = "JsonPortfolioParser";
 
-	@Override
-	public List<Portfolio> parsePortfolios(String response) {
-		List<Portfolio> portfolios = new ArrayList<Portfolio>();
-		// make sure we got at least *something* back from the API server
-		if (response != null && !"".equalsIgnoreCase(response)) {
-			// make sure it wasn't just a HTTP status code
-			if (response.length() != 3) {
-				try {
-					JSONObject rootJson = new JSONObject(response);
-					// TODO - iterate through the response.
-				} catch (JSONException e) {
-					// TODO - should never just leave an exception block empty
-				}
-			} else {
-				Log.d(LOG_TAG,
-						"Failed to retrieve portfolios - got a HTTP response code back from the API server instead "
-								+ response);
-			}
-		} else {
-			Log.d(LOG_TAG,
-					"Failed to retrieve portfolios - got nothing back from the API server");
-		}
-		return portfolios;
-	}
+    @Override
+    public List<Portfolio> parsePortfolios(String response) {
+        List<Portfolio> portfolios = new ArrayList<Portfolio>();
+        // make sure we got at least *something* back from the API server
+        if (response != null && !"".equalsIgnoreCase(response)) {
+            // make sure it wasn't just a HTTP status code
+            if (response.length() != Constants.HTTP_RESPONSE_CODE_LENGTH) {
+                try {
+                    JSONObject rootJson = new JSONObject(response);
+                    // TODO - iterate through the response.
+                } catch (JSONException e) {
+                    // TODO - should never just leave an exception block empty
+                }
+            } else {
+                Log.d(LOG_TAG,
+                        "Failed to retrieve portfolios - got a HTTP response code back from the API server instead "
+                                + response);
+            }
+        } else {
+            Log.d(LOG_TAG,
+                    "Failed to retrieve portfolios - got nothing back from the API server");
+        }
+        return portfolios;
+    }
 }

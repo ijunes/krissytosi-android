@@ -19,12 +19,21 @@ package com.krissytosi.api.parse.json;
 import com.krissytosi.api.parse.ParserFactory;
 import com.krissytosi.api.parse.PortfolioParser;
 
+/**
+ * JSON-specific implementation of a {@link ParserFactory}.
+ */
 public class JsonParserFactory implements ParserFactory {
 
-	@Override
-	public PortfolioParser getPortfolioParser() {
-		// TODO - do I need a new one each time, or should I store a member
-		// variable
-		return new JsonPortfolioParser();
-	}
+    /**
+     * Instance variable for the portfolio parser.
+     */
+    private PortfolioParser portfolioParser;
+
+    @Override
+    public PortfolioParser getPortfolioParser() {
+        if (portfolioParser == null) {
+            portfolioParser = new JsonPortfolioParser();
+        }
+        return portfolioParser;
+    }
 }

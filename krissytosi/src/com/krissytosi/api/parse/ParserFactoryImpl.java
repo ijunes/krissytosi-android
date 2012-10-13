@@ -18,23 +18,29 @@ package com.krissytosi.api.parse;
 
 import com.krissytosi.api.parse.json.JsonParserFactory;
 
+/**
+ * Implementation instance of a parser factory.
+ */
 public class ParserFactoryImpl {
 
-	private static ParserFactory instance;
+    /**
+     * Singleton instance variable
+     */
+    private static ParserFactory instance = new JsonParserFactory();
 
-	protected ParserFactoryImpl() {
+    /**
+     * Private singleton constructor
+     */
+    private ParserFactoryImpl() {
 
-	}
+    }
 
-	public static ParserFactory getInstance() {
-		if (instance == null) {
-			// TODO - if the server returned anything other than json, this is
-			// where we'd
-			// make a decision on what parser to use.
-			synchronized (ParserFactoryImpl.class) {
-				instance = new JsonParserFactory();
-			}
-		}
-		return instance;
-	}
+    /**
+     * Singleton accessor.
+     * 
+     * @return the singleton instance for {@link ParserFactoryImpl}
+     */
+    public static ParserFactory getInstance() {
+        return instance;
+    }
 }

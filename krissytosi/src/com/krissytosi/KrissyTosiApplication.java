@@ -16,8 +16,6 @@
 
 package com.krissytosi;
 
-import java.util.List;
-
 import android.app.Application;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -27,6 +25,8 @@ import com.krissytosi.api.NetworkedApiClient;
 import com.krissytosi.api.domain.Portfolio;
 import com.krissytosi.utils.Constants;
 
+import java.util.List;
+
 /**
  * Extensions to the {@link Application} class to include specifics for this
  * app. Responsible for setting up the API client and initiating the call to
@@ -34,63 +34,63 @@ import com.krissytosi.utils.Constants;
  */
 public class KrissyTosiApplication extends Application {
 
-	private static final String LOG_TAG = "KrissyTosiApplication";
+    private static final String LOG_TAG = "KrissyTosiApplication";
 
-	/**
-	 * Used to interact with the API server.
-	 */
-	private ApiClient apiClient;
+    /**
+     * Used to interact with the API server.
+     */
+    private ApiClient apiClient;
 
-	/**
-	 * Task used to retrieve the portfolios from the API server.
-	 */
-	private GetPortfoliosTask getPortfoliosTask;
+    /**
+     * Task used to retrieve the portfolios from the API server.
+     */
+    private GetPortfoliosTask getPortfoliosTask;
 
-	@Override
-	public void onCreate() {
-		apiClient = new NetworkedApiClient();
-		apiClient.setBaseUrl(Constants.TEST_API_URL);
-		getPortfoliosTask = new GetPortfoliosTask();
-		getPortfoliosTask.execute();
-		super.onCreate();
-	}
+    @Override
+    public void onCreate() {
+        apiClient = new NetworkedApiClient();
+        apiClient.setBaseUrl(Constants.TEST_API_URL);
+        getPortfoliosTask = new GetPortfoliosTask();
+        getPortfoliosTask.execute();
+        super.onCreate();
+    }
 
-	protected void onGetPortfolios(List<Portfolio> portfolios) {
-		// check to see that we actually have *a* portfolio back from the API
-		// server
-		if (portfolios.size() > 0) {
-			// tell everyone else that we have the list of portfolios back from
-			// the server
-			// TODO
-		} else {
-			Log.d(LOG_TAG, "Failed to retrieve portfolios from the API server");
-		}
-	}
+    protected void onGetPortfolios(List<Portfolio> portfolios) {
+        // check to see that we actually have *a* portfolio back from the API
+        // server
+        if (portfolios.size() > 0) {
+            // tell everyone else that we have the list of portfolios back from
+            // the server
+            // TODO
+        } else {
+            Log.d(LOG_TAG, "Failed to retrieve portfolios from the API server");
+        }
+    }
 
-	/**
-	 * Simple AsynTask to retrieve the list of portfolios from the API server.
-	 */
-	private class GetPortfoliosTask extends
-			AsyncTask<Void, Void, List<Portfolio>> {
+    /**
+     * Simple AsynTask to retrieve the list of portfolios from the API server.
+     */
+    private class GetPortfoliosTask extends
+            AsyncTask<Void, Void, List<Portfolio>> {
 
-		@Override
-		protected List<Portfolio> doInBackground(Void... params) {
-			return apiClient.getPortfolioService().getPortfolios();
-		}
+        @Override
+        protected List<Portfolio> doInBackground(Void... params) {
+            return apiClient.getPortfolioService().getPortfolios();
+        }
 
-		@Override
-		protected void onPostExecute(List<Portfolio> result) {
-			onGetPortfolios(result);
-		}
-	}
+        @Override
+        protected void onPostExecute(List<Portfolio> result) {
+            onGetPortfolios(result);
+        }
+    }
 
-	// Getters/Setters
+    // Getters/Setters
 
-	public ApiClient getApiClient() {
-		return apiClient;
-	}
+    public ApiClient getApiClient() {
+        return apiClient;
+    }
 
-	public void setApiClient(ApiClient apiClient) {
-		this.apiClient = apiClient;
-	}
+    public void setApiClient(ApiClient apiClient) {
+        this.apiClient = apiClient;
+    }
 }

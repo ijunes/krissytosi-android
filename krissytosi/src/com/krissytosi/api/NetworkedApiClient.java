@@ -20,24 +20,32 @@ import com.krissytosi.api.services.PortfolioService;
 import com.krissytosi.api.services.PortfolioServiceImpl;
 
 /**
- * Uses HttpClient to interact with the API server.
+ * Uses a HttpClient to interact with the API server.
  */
 public class NetworkedApiClient implements ApiClient {
 
-	private PortfolioService portfolioService;
-	private String baseUrl;
+    /**
+     * Member variable for the portfolio service.
+     */
+    private PortfolioService portfolioService;
 
-	@Override
-	public PortfolioService getPortfolioService() {
-		if (portfolioService == null) {
-			portfolioService = new PortfolioServiceImpl();
-			portfolioService.setBaseUrl(baseUrl);
-		}
-		return portfolioService;
-	}
+    /**
+     * Base url to target in this API client.
+     */
+    private String baseUrl;
 
-	@Override
-	public void setBaseUrl(String baseUrl) {
-		this.baseUrl = baseUrl;
-	}
+    @Override
+    public PortfolioService getPortfolioService() {
+        // lazy instantiation is lazy
+        if (portfolioService == null) {
+            portfolioService = new PortfolioServiceImpl();
+            portfolioService.setBaseUrl(baseUrl);
+        }
+        return portfolioService;
+    }
+
+    @Override
+    public void setBaseUrl(String baseUrl) {
+        this.baseUrl = baseUrl;
+    }
 }

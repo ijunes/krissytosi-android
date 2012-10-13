@@ -17,13 +17,25 @@
 package com.krissytosi.api;
 
 import com.krissytosi.api.services.PortfolioService;
+import com.krissytosi.utils.Constants;
 
 /**
  * Defines all methods used to interact with the API server.
  */
 public interface ApiClient {
 
-	void setBaseUrl(String baseUrl);
+    /**
+     * Sets the base URL which this API client should target. See
+     * {@link Constants} for example base urls.
+     * 
+     * @param baseUrl the base url to set.
+     */
+    void setBaseUrl(String baseUrl);
 
-	PortfolioService getPortfolioService();
+    /**
+     * Accessor for the portfolio service.
+     * 
+     * @return an instance of a {@link PortfolioService}.
+     */
+    PortfolioService getPortfolioService();
 }

@@ -13,6 +13,7 @@
    See the License for the specific language governing permissions and
    limitations under the License.
  */
+
 package com.krissytosi.utils;
 
 /**
@@ -20,7 +21,9 @@ package com.krissytosi.utils;
  */
 public class Constants {
 
-	public static final String PROD_API_URL = "http://www.krissytosi.com/api";
-	public static final String LOCAL_API_URL = "http://localhost:8080/api";
-	public static final String TEST_API_URL = "krissytosi.appspot.com/api";
+    public static final String PROD_API_URL = "http://www.krissytosi.com/api";
+    public static final String LOCAL_API_URL = "http://localhost:8080/api";
+    public static final String TEST_API_URL = "krissytosi.appspot.com/api";
+
+    public static final int HTTP_RESPONSE_CODE_LENGTH = 3;
 }

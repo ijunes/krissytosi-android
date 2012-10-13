@@ -13,13 +13,25 @@
    See the License for the specific language governing permissions and
    limitations under the License.
  */
-package com.krissytosi.api.parse;
 
-import java.util.List;
+package com.krissytosi.api.parse;
 
 import com.krissytosi.api.domain.Portfolio;
 
+import java.util.List;
+
+/**
+ * Defines the API parsing methods associated with generating {@link Portfolio}
+ * objects.
+ */
 public interface PortfolioParser {
 
-	public List<Portfolio> parsePortfolios(String response);
+    /**
+     * Parses a list of {@link Portfolio}s from a String representation of an
+     * API response.
+     * 
+     * @param response an API response.
+     * @return a list of {@link Portfolio} objects.
+     */
+    List<Portfolio> parsePortfolios(String response);
 }

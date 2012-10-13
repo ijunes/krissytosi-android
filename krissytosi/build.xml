@@ -15,9 +15,6 @@
     <import file="custom_rules.xml" optional="true" />
     <import file="${sdk.dir}/tools/ant/build.xml" />
 
-	<!-- Get the ant-contrib libraries -->
-    <taskdef resource="net/sf/antcontrib/antcontrib.properties"/>
-
     <!-- =========================================== -->
     <!-- PATHS                                       -->
     <!-- =========================================== -->
