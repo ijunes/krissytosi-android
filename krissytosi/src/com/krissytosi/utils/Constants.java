@@ -19,11 +19,27 @@ package com.krissytosi.utils;
 /**
  * Some constants for the app.
  */
-public class Constants {
+public final class Constants {
 
     public static final String PROD_API_URL = "http://www.krissytosi.com/api";
     public static final String LOCAL_API_URL = "http://localhost:8080/api";
-    public static final String TEST_API_URL = "krissytosi.appspot.com/api";
+    public static final String TEST_API_URL = "http://krissytosi.appspot.com/api";
 
     public static final int HTTP_RESPONSE_CODE_LENGTH = 3;
+
+    public static final String NAME_ID = "name";
+    public static final String NUMBER_OF_IMAGES_ID = "numberOfImages";
+    public static final String START_INDEX_ID = "startIndex";
+    public static final String ORDER_INDEX_ID = "orderIndex";
+
+    public static final String ERROR_IDENTIFIER = "error";
+    public static final String ERROR_DESCRIPTION = "description";
+    public static final String ERROR_CODE = "code";
+    public static final String NO_PORTFOLIOS_DESCRIPTION = "There are no portfolios";
+    public static final int ERROR_CODE_INVALID_API_REQUEST = 1;
+    public static final int NO_PORTFOLIOS = 2;
+    public static final int API_ERROR = 3;
+
+    public static final String RESPONSE_HEADER_NAME = "X-KT-API";
+    public static final String RESPONSE_HEADER_VALUE = "X-KT-API";
 }

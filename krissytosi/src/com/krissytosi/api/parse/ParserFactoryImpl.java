@@ -21,7 +21,7 @@ import com.krissytosi.api.parse.json.JsonParserFactory;
 /**
  * Implementation instance of a parser factory.
  */
-public class ParserFactoryImpl {
+public final class ParserFactoryImpl {
 
     /**
      * Singleton instance variable

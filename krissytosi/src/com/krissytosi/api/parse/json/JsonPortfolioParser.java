@@ -22,6 +22,7 @@ import com.krissytosi.api.domain.Portfolio;
 import com.krissytosi.api.parse.PortfolioParser;
 import com.krissytosi.utils.Constants;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -43,20 +44,84 @@ public class JsonPortfolioParser implements PortfolioParser {
             // make sure it wasn't just a HTTP status code
             if (response.length() != Constants.HTTP_RESPONSE_CODE_LENGTH) {
                 try {
-                    JSONObject rootJson = new JSONObject(response);
-                    // TODO - iterate through the response.
+                    // parse the response into an array and iterate
+                    JSONArray rootJson = new JSONArray(response);
+                    for (int i = 0, l = rootJson.length(); i < l; i++) {
+                        // digest one portfolio
+                        JSONObject portfolioJson = rootJson.getJSONObject(i);
+                        Portfolio portfolio = digestPortfolio(portfolioJson);
+                        portfolios.add(portfolio);
+                        // check to see if its an error
+                        if (portfolio.getErrorCode() != -1
+                                || portfolio.getErrorDescription() != null) {
+                            break;
+                        }
+                    }
                 } catch (JSONException e) {
-                    // TODO - should never just leave an exception block empty
+                    portfolios.add(createErrorPortfolio(Constants.NO_PORTFOLIOS));
+                    Log.e(LOG_TAG, "parsePortfolios", e);
                 }
             } else {
+                portfolios.add(createErrorPortfolio(Constants.API_ERROR));
                 Log.d(LOG_TAG,
                         "Failed to retrieve portfolios - got a HTTP response code back from the API server instead "
                                 + response);
             }
         } else {
+            portfolios.add(createErrorPortfolio(Constants.API_ERROR));
             Log.d(LOG_TAG,
                     "Failed to retrieve portfolios - got nothing back from the API server");
         }
         return portfolios;
+    }
+
+    /**
+     * Parses a portfolio from the API response.
+     * 
+     * @param portfolioJson a portfolio object in json format.
+     * @return a {@link Portfolio} object which corresponds to the portfolioJson
+     *         parameter.
+     * @throws JSONException
+     */
+    private Portfolio digestPortfolio(JSONObject portfolioJson) throws JSONException {
+        Portfolio portfolio = new Portfolio();
+        if (!portfolioJson.has(Constants.ERROR_IDENTIFIER)) {
+            portfolio.setName(portfolioJson.getString(Constants.NAME_ID));
+            portfolio.setNumberOfImages(portfolioJson.getInt(Constants.NUMBER_OF_IMAGES_ID));
+            portfolio.setStartIndex(portfolioJson.getInt(Constants.START_INDEX_ID));
+            portfolio.setOrderIndex(portfolioJson.getInt(Constants.ORDER_INDEX_ID));
+        } else {
+            digestErrorResponse(portfolioJson.getJSONObject(Constants.ERROR_IDENTIFIER));
+        }
+        return portfolio;
+    }
+
+    /**
+     * Checks the JSON returned from the API server for errors.
+     * 
+     * @param errorJson the JSON returned from the API server.
+     * @return a {@link Portfolio} object which has details on what caused the
+     *         error.
+     * @throws JSONException
+     */
+    private Portfolio digestErrorResponse(JSONObject errorJson) throws JSONException {
+        Portfolio errorPortfolio = new Portfolio();
+        errorPortfolio.setErrorCode(errorJson.getInt(Constants.ERROR_CODE));
+        errorPortfolio.setErrorDescription(errorJson.getString(Constants.ERROR_DESCRIPTION));
+        return errorPortfolio;
+    }
+
+    /**
+     * Creates a dummy Portfolio error object due to parsing errors or the fact
+     * that the HTTP request was dropped or interrupted.
+     * 
+     * @param errorCode the error code to associate with the portfolio.
+     * @return a {@link Portfolio} object describing the error.
+     */
+    private Portfolio createErrorPortfolio(int errorCode) {
+        Portfolio errorPortfolio = new Portfolio();
+        errorPortfolio.setErrorCode(errorCode);
+        errorPortfolio.setErrorDescription(Constants.NO_PORTFOLIOS_DESCRIPTION);
+        return errorPortfolio;
     }
 }

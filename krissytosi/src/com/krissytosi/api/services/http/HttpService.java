@@ -18,6 +18,8 @@ package com.krissytosi.api.services.http;
 
 import android.util.Log;
 
+import com.krissytosi.utils.Constants;
+
 import org.apache.commons.io.IOUtils;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
@@ -70,6 +72,11 @@ public class HttpService {
     private static final String GZIP_ENCODING = "gzip";
     private static final String CONTENT_ENCODING_HEADER = "Content-Encoding";
 
+    /**
+     * Used to manage a pool of connections.
+     */
+    private static ThreadSafeClientConnManager connectionManager;
+
     static {
         HttpParams params = new BasicHttpParams();
         params.setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, CONNECTION_TIMEOUT);
@@ -86,11 +93,6 @@ public class HttpService {
         HttpService.connectionManager = new ThreadSafeClientConnManager(params,
                 schemeRegistry);
     }
-
-    /**
-     * Used to manage a pool of connections.
-     */
-    private static ThreadSafeClientConnManager connectionManager = null;
 
     /**
      * Creates a url which can be handed off to a GET or a POST operation based
@@ -118,7 +120,13 @@ public class HttpService {
                 } catch (UnsupportedEncodingException e) {
                     Log.e(LOG_TAG, "createUrl", e);
                 }
-                url.append("&");
+                String separator = "&";
+                // make sure that the first separator in the query string is a
+                // question mark.
+                if (url.indexOf("?") == -1) {
+                    separator = "?";
+                }
+                url.append(separator);
                 url.append(safeKey);
                 url.append("=");
                 url.append(safeValue);
@@ -187,32 +195,64 @@ public class HttpService {
      */
     private String parseApiResponse(HttpResponse response) {
         String result = "500";
-        final int httpResponseCode = response.getStatusLine().getStatusCode();
-        if (httpResponseCode == HttpStatus.SC_OK) {
-            HttpEntity entity = response.getEntity();
-            if (entity != null) {
-                InputStream instream;
-                try {
-                    instream = entity.getContent();
-                    Header contentEncoding = response
-                            .getFirstHeader(CONTENT_ENCODING_HEADER);
-                    if (contentEncoding != null
-                            && contentEncoding.getValue().equalsIgnoreCase(
-                                    GZIP_ENCODING)) {
-                        instream = new GZIPInputStream(instream);
+        // check that we're getting back a valid header - this helps when the
+        // user runs into splash screens
+        if (checkResponseForCustomHeader(response)) {
+            // see if we got a viable HTTP response back from the API server.
+            final int httpResponseCode = response.getStatusLine().getStatusCode();
+            if (httpResponseCode == HttpStatus.SC_OK) {
+                // get the entity and parse the response
+                HttpEntity entity = response.getEntity();
+                if (entity != null) {
+                    InputStream instream;
+                    try {
+                        instream = entity.getContent();
+                        // check to see if gzip is enabled ...
+                        Header contentEncoding = response
+                                .getFirstHeader(CONTENT_ENCODING_HEADER);
+                        if (contentEncoding != null
+                                && contentEncoding.getValue().equalsIgnoreCase(
+                                        GZIP_ENCODING)) {
+                            instream = new GZIPInputStream(instream);
+                        }
+                        // get the bytes and create a string
+                        byte[] bytes = IOUtils.toByteArray(instream);
+                        result = parseString(bytes);
+                    } catch (IllegalStateException e) {
+                        Log.e(LOG_TAG, "parseApiResponse", e);
+                    } catch (IOException e) {
+                        Log.e(LOG_TAG, "parseApiResponse", e);
                     }
-                    byte[] bytes = IOUtils.toByteArray(instream);
-                    result = parseString(bytes);
-                } catch (IllegalStateException e) {
-                    Log.e(LOG_TAG, "parseApiResponse", e);
-                } catch (IOException e) {
-                    Log.e(LOG_TAG, "parseApiResponse", e);
                 }
+            } else {
+                result = String.valueOf(httpResponseCode);
             }
-        } else {
-            result = String.valueOf(httpResponseCode);
         }
         return result;
+    }
+
+    /**
+     * Checks the response to ensure that we've definitely hit our API server.
+     * 
+     * @param response the HTTP response from the wire.
+     * @return boolean indicating that a specific header is available in the
+     *         response. See {@link Constants} for details of the header key
+     *         value pair.
+     */
+    private boolean checkResponseForCustomHeader(HttpResponse response) {
+        // TODO - custom headers and python responses?
+        boolean hasValidHeader = true;
+        Header headers[] = response.getHeaders(Constants.RESPONSE_HEADER_NAME);
+        if (headers != null) {
+            for (Header header : headers) {
+                if (header.getValue().equalsIgnoreCase(
+                        Constants.RESPONSE_HEADER_VALUE)) {
+                    hasValidHeader = true;
+                    break;
+                }
+            }
+        }
+        return hasValidHeader;
     }
 
     /**

@@ -59,12 +59,25 @@ public class KrissyTosiApplication extends Application {
         // check to see that we actually have *a* portfolio back from the API
         // server
         if (portfolios.size() > 0) {
-            // tell everyone else that we have the list of portfolios back from
-            // the server
-            // TODO
+            // check to see that the first portfolio isn't an error (is there a
+            // better way to communicate these errors?)
+            Portfolio portfolio = portfolios.get(0);
+            if (portfolio.getErrorCode() != -1 && portfolio.getErrorDescription() == null) {
+
+            } else {
+                handlePortfolioApiError(portfolio);
+            }
         } else {
-            Log.d(LOG_TAG, "Failed to retrieve portfolios from the API server");
+            Portfolio portfolio = new Portfolio();
+            portfolio.setErrorCode(Constants.NO_PORTFOLIOS);
+            portfolio.setErrorDescription(Constants.NO_PORTFOLIOS_DESCRIPTION);
+            handlePortfolioApiError(portfolio);
         }
+    }
+
+    protected void handlePortfolioApiError(Portfolio errorPortfolio) {
+        // TODO - communicate this to the rest of the app.
+        Log.d(LOG_TAG, "Portfolio Failure: " + errorPortfolio.getErrorDescription());
     }
 
     /**
@@ -82,6 +95,14 @@ public class KrissyTosiApplication extends Application {
         protected void onPostExecute(List<Portfolio> result) {
             onGetPortfolios(result);
         }
+    }
+
+    @Override
+    public void onTerminate() {
+        if (getPortfoliosTask != null) {
+            getPortfoliosTask.cancel(true);
+        }
+        super.onTerminate();
     }
 
     // Getters/Setters

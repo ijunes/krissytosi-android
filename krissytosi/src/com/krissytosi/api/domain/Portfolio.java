@@ -19,7 +19,7 @@ package com.krissytosi.api.domain;
 /**
  * Defines what makes up a portfolio.
  */
-public class Portfolio {
+public class Portfolio extends ApiResponse {
 
     /**
      * The portfolio's name.
