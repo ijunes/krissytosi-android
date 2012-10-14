@@ -16,17 +16,13 @@
 
 package com.krissytosi;
 
-import android.test.ActivityInstrumentationTestCase2;
+import android.test.suitebuilder.TestSuiteBuilder;
 
-import com.krissytosi.activities.HomeActivity;
+import junit.framework.Test;
+import junit.framework.TestSuite;
 
-public class HomeActivityTest extends ActivityInstrumentationTestCase2<HomeActivity> {
-
-    public HomeActivityTest() {
-        super("com.krissytosi", HomeActivity.class);
-    }
-
-    public void testOneTwoThree() {
-        assertEquals(true, true);
+public class AllTests extends TestSuite {
+    public static Test suite() {
+        return new TestSuiteBuilder(AllTests.class).includeAllPackagesUnderHere().build();
     }
 }
