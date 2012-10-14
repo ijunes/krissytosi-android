@@ -16,6 +16,7 @@
     </rule>
     <rule ref="rulesets/java/coupling.xml">
         <exclude name="LawOfDemeter"></exclude>
+        <exclude name="LoosePackageCoupling"></exclude>
     </rule>
     <rule ref="rulesets/java/design.xml">
         <exclude name="ConfusingTernary" />

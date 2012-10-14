@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <lint>
-    <issue id="BackButton" severity="warning" />
+	<issue id="ContentDescription" severity="ignore" />
+    <issue id="BackButton" severity="error" />
     <issue id="FieldGetter" severity="warning" />
     <issue id="IconExpectedSize" severity="warning" />
     <issue id="IconLocation" severity="ignore" />
-    <issue id="MissingTranslation" severity="informational" />
-    <issue id="TypographyQuotes" severity="warning" />
-    <issue id="UnusedIds" severity="informational" />
+    <issue id="MissingTranslation" severity="error" />
+    <issue id="TypographyQuotes" severity="error" />
+    <issue id="UnusedIds" severity="error" />
 </lint>

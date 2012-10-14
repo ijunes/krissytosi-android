@@ -20,6 +20,9 @@
     <!-- =========================================== -->
     <path id="compile.classpath">
         <pathelement path="${android.jar}" />
+		<fileset dir="${libs.dir}">
+            <include name="**/*.jar"/>
+        </fileset>
     </path>
     <path id="test.classpath">
         <fileset dir="${libs.test.dir}">
@@ -60,17 +63,18 @@
         <echo message="kt-findbugs      --> Run findbugs on the codebase" />
         <echo message="kt-javancss      --> Run javancss on the codebase" />
         <echo message="kt-pmd           --> Run pmd on the codebase" />
-        <echo message="docs             --> Run doc tool on the project" />
-        <echo message="all              --> Run all targets in the build file" />
-		<echo message="release          --> Build a release candidate" />
+		<echo message="kt-lint          --> Run the Android linter on the codebase" />
+		<echo message="kt-sca           --> Run ALL static code analysis on the codebase" />
+        <echo message="kt-docs          --> Run doc tool on the project" />
+		<echo message="kt-release       --> Build a release candidate" />
 		<echo message="kt-clean         --> Clean out all temporary directories" />
         <echo message="" />
     </target>
 
     <!-- ===========================================    -->
-    <!-- ALTER-MANIFEST									-->
+    <!-- KT-ALTER-MANIFEST								-->
     <!-- ===========================================    -->
-    <target name="alter-manifest" description="Alters the AndroidManifest file to change the version code and version name">
+    <target name="kt-alter-manifest" description="Alters the AndroidManifest file to change the version code and version name">
         <echo>*** Altering AndroidManifest.xml ***</echo>
         <xslt in="${basedir}/AndroidManifest.xml"
             out="${basedir}/_AndroidManifest.xml"
@@ -128,11 +132,11 @@
     <!-- ===========================================    -->
     <!-- KT-FINDBUGS                                    -->
     <!-- ===========================================    -->
-    <target name="kt-findbugs" description="Static code analyzer for the project">
+    <target name="kt-findbugs" description="Runs findbugs on the codebase">
         <echo>*** Running findbugs ***</echo>
         <mkdir dir="${findbugs.dir}" />
         <findbugs home="${findbugs.home}" output="xml:withMessages"
-            outputFile="${findbugs.dir}/fb.xml" excludefilter="${common-targets.imported.basedir}/findbugs-exclude.xml">
+            outputFile="${findbugs.dir}/fb.xml" excludefilter="findbugs-exclude.xml">
             <auxClasspath refid="compile.classpath" />
             <sourcePath path="${src.dir}" />
             <class location="${out.dir}" />
@@ -143,7 +147,7 @@
     <!-- ===========================================    -->
     <!-- KT-JAVANCSS                                    -->
     <!-- ===========================================    -->
-    <target name="kt-javancss" description="Running javancss on the codebase">
+    <target name="kt-javancss" description="Runs javancss on the codebase">
         <echo>*** Running javancss ***</echo>
         <!-- NCSS = Non Commenting Source Statements -->
         <!-- CCN = Cyclomatic Complexity Number -->
@@ -173,17 +177,31 @@
         </cpd>
     </target>
 
-	<!-- ===========================================    -->
-    <!-- ALL											-->
     <!-- ===========================================    -->
-    <target name="all" description="Runs all the targets">
-        <echo>*** Running all targets ***</echo>
+    <!-- ANDROID LINT                                   -->
+    <!-- ===========================================    -->
+    <target name="kt-lint" description="Runs Android lint on the codebase">
+        <echo>*** Running Android linting ***</echo>
+        <mkdir dir="${dist.dir}" />
+        <mkdir dir="${lint.dir}" />
+        <exec executable="${sdk.dir}/tools/lint" output="${lint.dir}/lint.txt">
+            <!-- Uncomment this ignore when/if accessibility becomes a priority -->
+            <arg line="--ignore ContentDescription"/>
+            <arg line="${basedir} --html ${lint.dir}/lint.html"/>
+        </exec>
+    </target>
+    
+    <!-- ===========================================    -->
+    <!-- KT-SCA											-->
+    <!-- ===========================================    -->
+    <target name="kt-sca" description="Runs all static code analysis on the codebase" depends="kt-checkstyle,kt-findbugs,kt-javancss,kt-pmd,kt-lint">
+        <echo>*** Running ALL static code analysis targets ***</echo>
     </target>
 
 	<!-- ===========================================    -->
-    <!-- RELEASE										-->
+    <!-- KT-RELEASE										-->
     <!-- ===========================================    -->
-    <target name="release" description="Creates a release candidate apk">
+    <target name="kt-release" description="Creates a release candidate apk" depends="kt-clean,kt-sca,kt-alter-manifest,clean,release">
         <echo>*** Building release candidate ***</echo>
     </target>
 
