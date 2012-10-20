@@ -21,6 +21,10 @@ import android.os.Bundle;
 
 import com.krissytosi.R;
 
+/**
+ * Main activity in the application. Gives the user the choice to browse
+ * portfolios, view news or contact.
+ */
 public class HomeActivity extends Activity {
 
     @Override

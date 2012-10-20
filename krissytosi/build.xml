@@ -15,12 +15,12 @@
     <import file="custom_rules.xml" optional="true" />
     <import file="${sdk.dir}/tools/ant/build.xml" />
 
-    <!-- =========================================== -->
-    <!-- PATHS                                       -->
-    <!-- =========================================== -->
+    <!-- ===========================================    -->
+    <!-- PATHS                                          -->
+    <!-- ===========================================    -->
     <path id="compile.classpath">
         <pathelement path="${android.jar}" />
-		<fileset dir="${libs.dir}">
+        <fileset dir="${libs.dir}">
             <include name="**/*.jar"/>
         </fileset>
     </path>
@@ -37,9 +37,9 @@
         </fileset>
     </path>
 
-    <!-- =========================================== -->
-    <!-- CUSTOM TASKDEFS                             -->
-    <!-- =========================================== -->
+    <!-- ===========================================    -->
+    <!-- CUSTOM TASKDEFS                                -->
+    <!-- ===========================================    -->
     <taskdef name="pmd" classname="net.sourceforge.pmd.ant.PMDTask" classpathref="pmd.classpath" />
     <taskdef name="cpd" classname="net.sourceforge.pmd.cpd.CPDTask" classpathref="pmd.classpath" />
     <taskdef name="findbugs" classname="edu.umd.cs.findbugs.anttask.FindBugsTask" classpath="${build.lib.dir}/findbugs/lib/findbugs-ant.jar" />
@@ -63,16 +63,16 @@
         <echo message="kt-findbugs      --> Run findbugs on the codebase" />
         <echo message="kt-javancss      --> Run javancss on the codebase" />
         <echo message="kt-pmd           --> Run pmd on the codebase" />
-		<echo message="kt-lint          --> Run the Android linter on the codebase" />
-		<echo message="kt-sca           --> Run ALL static code analysis on the codebase" />
+        <echo message="kt-lint          --> Run the Android linter on the codebase" />
+        <echo message="kt-sca           --> Run ALL static code analysis on the codebase" />
         <echo message="kt-docs          --> Run doc tool on the project" />
-		<echo message="kt-release       --> Build a release candidate" />
-		<echo message="kt-clean         --> Clean out all temporary directories" />
+        <echo message="kt-release       --> Build a release candidate" />
+        <echo message="kt-clean         --> Clean out all temporary directories" />
         <echo message="" />
     </target>
 
     <!-- ===========================================    -->
-    <!-- KT-ALTER-MANIFEST								-->
+    <!-- KT-ALTER-MANIFEST                              -->
     <!-- ===========================================    -->
     <target name="kt-alter-manifest" description="Alters the AndroidManifest file to change the version code and version name">
         <echo>*** Altering AndroidManifest.xml ***</echo>
@@ -85,7 +85,7 @@
         <move file="${basedir}/_AndroidManifest.xml" tofile="${basedir}/AndroidManifest.xml"/>
     </target>
 
-	<!-- ===========================================    -->
+    <!-- ===========================================    -->
     <!-- MONKEY                                         -->
     <!-- ===========================================    -->
     <target name="monkey" description="Runs the exerciser monkey">
@@ -157,7 +157,7 @@
         <xslt in="${javancss.dir}/javancss.xml" out="${javancss.dir}/javancss.html" style="${build.lib.dir}/javancss/xslt/javancss2html.xsl" />
     </target>
 
-	<!-- ===========================================    -->
+    <!-- ===========================================    -->
     <!-- KT-PMD                                         -->
     <!-- ===========================================    -->
     <target name="kt-pmd" description="Runs pmd on the codebase">
@@ -192,25 +192,25 @@
     </target>
     
     <!-- ===========================================    -->
-    <!-- KT-SCA											-->
+    <!-- KT-SCA                                         -->
     <!-- ===========================================    -->
     <target name="kt-sca" description="Runs all static code analysis on the codebase" depends="kt-checkstyle,kt-findbugs,kt-javancss,kt-pmd,kt-lint">
         <echo>*** Running ALL static code analysis targets ***</echo>
     </target>
 
-	<!-- ===========================================    -->
-    <!-- KT-RELEASE										-->
+    <!-- ===========================================    -->
+    <!-- KT-RELEASE                                     -->
     <!-- ===========================================    -->
     <target name="kt-release" description="Creates a release candidate apk" depends="kt-clean,kt-sca,kt-alter-manifest,clean,release">
         <echo>*** Building release candidate ***</echo>
     </target>
 
-	<!-- ===========================================    -->
-    <!-- KT-CLEAN										-->
+    <!-- ===========================================    -->
+    <!-- KT-CLEAN                                       -->
     <!-- ===========================================    -->
     <target name="kt-clean" description="Cleans out all temporary directories">
         <echo>*** Building release candidate ***</echo>
-		<delete dir="${dist.dir}" failonerror="false" includeemptydirs="true"/>
+        <delete dir="${dist.dir}" failonerror="false" includeemptydirs="true"/>
     </target>
 
 </project>

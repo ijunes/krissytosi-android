@@ -65,6 +65,7 @@ public class HttpService {
     private static final int HTTP_PORT = 80;
     private static final int HTTPS_PORT = 443;
 
+    // header constants
     private static final String httpProtocolKey = "http.protocol.version";
     private static final String httpUserAgentKey = "http.useragent";
     private static final String USER_AGENT_HEADER = "Java API Client";
@@ -105,7 +106,10 @@ public class HttpService {
      * @return a fully qualified URL with all parameters accounted for.
      */
     public String createUrl(String baseUrl, Map<String, String> options) {
+        // the url is appended to for each key/value pair in the options
+        // parameter.
         StringBuffer url = new StringBuffer();
+        // first append the base url to hit.
         url.append(baseUrl);
         for (Map.Entry<String, String> entry : options.entrySet()) {
             String key = entry.getKey();
@@ -114,6 +118,7 @@ public class HttpService {
                 String safeValue = null;
                 String safeKey = null;
                 try {
+                    // ensure that the keys and values are safely encoded.
                     safeValue = java.net.URLEncoder.encode(value,
                             DEFAULT_ENCODING);
                     safeKey = java.net.URLEncoder.encode(key, DEFAULT_ENCODING);
@@ -126,6 +131,7 @@ public class HttpService {
                 if (url.indexOf("?") == -1) {
                     separator = "?";
                 }
+                // add the key/value pair to the query string.
                 url.append(separator);
                 url.append(safeKey);
                 url.append("=");

@@ -47,10 +47,13 @@ public class ParseTest extends AndroidTestCase {
 
     public void testErrorParserImplementation() {
         String fileContents = readFile("/assets/responses/json/" + ERROR_FILE_NAME);
+        System.out.println("HERE WE GO");
         List<Portfolio> portfolios = ParserFactoryImpl.getInstance().getPortfolioParser()
                 .parsePortfolios(fileContents);
         assertTrue(portfolios.size() == 1);
         Portfolio firstPortfolio = portfolios.get(0);
+        System.out.println("ERROR CODE IS " + firstPortfolio.getErrorCode() + " and the desc "
+                + firstPortfolio.getErrorDescription());
         assertTrue(firstPortfolio.getErrorCode() == 1);
         assertTrue(firstPortfolio.getErrorDescription().equalsIgnoreCase("There was an error"));
     }

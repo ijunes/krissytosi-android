@@ -34,6 +34,9 @@ import java.util.List;
  */
 public class KrissyTosiApplication extends Application {
 
+    /**
+     * Basic log tag for the main application.
+     */
     private static final String LOG_TAG = "KrissyTosiApplication";
 
     /**
@@ -49,12 +52,18 @@ public class KrissyTosiApplication extends Application {
     @Override
     public void onCreate() {
         apiClient = new NetworkedApiClient();
-        apiClient.setBaseUrl(Constants.TEST_API_URL);
+        apiClient.setBaseUrl(Constants.LOCAL_API_URL);
         getPortfoliosTask = new GetPortfoliosTask();
         getPortfoliosTask.execute();
         super.onCreate();
     }
 
+    /**
+     * Callback executed when the portfolios API response has returned.
+     * 
+     * @param portfolios the list of portfolios from the server (or a list of
+     *            errors detailing why the portfolios were not available).
+     */
     protected void onGetPortfolios(List<Portfolio> portfolios) {
         // check to see that we actually have *a* portfolio back from the API
         // server
@@ -63,7 +72,7 @@ public class KrissyTosiApplication extends Application {
             // better way to communicate these errors?)
             Portfolio portfolio = portfolios.get(0);
             if (portfolio.getErrorCode() != -1 && portfolio.getErrorDescription() == null) {
-
+                Log.d(LOG_TAG, "Retrieved at least one portfolio from the server");
             } else {
                 handlePortfolioApiError(portfolio);
             }

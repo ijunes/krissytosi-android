@@ -91,7 +91,7 @@ public class JsonPortfolioParser implements PortfolioParser {
             portfolio.setStartIndex(portfolioJson.getInt(Constants.START_INDEX_ID));
             portfolio.setOrderIndex(portfolioJson.getInt(Constants.ORDER_INDEX_ID));
         } else {
-            digestErrorResponse(portfolioJson.getJSONObject(Constants.ERROR_IDENTIFIER));
+            portfolio = digestErrorResponse(portfolioJson.getJSONObject(Constants.ERROR_IDENTIFIER));
         }
         return portfolio;
     }
