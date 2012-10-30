@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <string name="app_name">Krissy Tosi</string>
+    <string name="home">Home</string>
+    <string name="portfolio">Portfolio</string>
+    <string name="store">Store</string>
+    <string name="news">News</string>
+    <string name="biography">Biography</string>
+    <string name="contact">Contact</string>
+
 </resources>

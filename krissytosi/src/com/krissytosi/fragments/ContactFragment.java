@@ -14,22 +14,21 @@
    limitations under the License.
  */
 
-package com.krissytosi.activities;
+package com.krissytosi.fragments;
 
-import android.app.Activity;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import com.krissytosi.R;
 
-/**
- * Main activity in the application. Gives the user the choice to browse
- * portfolios, view news or contact.
- */
-public class HomeActivity extends Activity {
+public class ContactFragment extends Fragment {
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View v = inflater.inflate(R.layout.contact, container, false);
+        return v;
     }
 }

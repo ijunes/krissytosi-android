@@ -42,4 +42,11 @@ public final class Constants {
 
     public static final String RESPONSE_HEADER_NAME = "X-KT-API";
     public static final String RESPONSE_HEADER_VALUE = "X-KT-API";
+
+    public static final String FRAGMENT_HOME_ID = "home";
+    public static final String FRAGMENT_PORTFOLIO_ID = "portfolio";
+    public static final String FRAGMENT_STORE_ID = "store";
+    public static final String FRAGMENT_BIOGRAPHY_ID = "biography";
+    public static final String FRAGMENT_NEWS_ID = "news";
+    public static final String FRAGMENT_CONTACT_ID = "contact";
 }
