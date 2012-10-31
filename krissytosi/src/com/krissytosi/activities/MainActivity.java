@@ -17,6 +17,7 @@
 package com.krissytosi.activities;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -25,7 +26,6 @@ import android.view.View;
 import android.widget.TabHost;
 
 import com.krissytosi.R;
-import com.krissytosi.fragments.BiographyFragment;
 import com.krissytosi.fragments.ContactFragment;
 import com.krissytosi.fragments.HomeFragment;
 import com.krissytosi.fragments.NewsFragment;
@@ -41,44 +41,54 @@ import java.util.HashMap;
  */
 public class MainActivity extends FragmentActivity {
 
+    private final static String CURRENT_TAB_IDENTIFIER = "com.krissytosi.activities.CURRENT_TAB_IDENTIFIER";
+
     TabHost mTabHost;
     TabManager mTabManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.main);
+
         mTabHost = (TabHost) findViewById(android.R.id.tabhost);
         mTabHost.setup();
-
         mTabManager = new TabManager(this, mTabHost, R.id.realtabcontent);
 
-        mTabManager.addTab(mTabHost.newTabSpec(Constants.FRAGMENT_HOME_ID).setIndicator("Home"),
-                HomeFragment.class, null);
-        mTabManager.addTab(
-                mTabHost.newTabSpec(Constants.FRAGMENT_PORTFOLIO_ID).setIndicator("Portfolio"),
-                PortfolioFragment.class, null);
-        mTabManager.addTab(mTabHost.newTabSpec(Constants.FRAGMENT_STORE_ID).setIndicator("Store"),
-                StoreFragment.class, null);
-        mTabManager.addTab(
-                mTabHost.newTabSpec(Constants.FRAGMENT_BIOGRAPHY_ID).setIndicator("Biography"),
-                BiographyFragment.class, null);
-        mTabManager.addTab(mTabHost.newTabSpec(Constants.FRAGMENT_NEWS_ID).setIndicator("News"),
-                NewsFragment.class, null);
-        mTabManager.addTab(
-                mTabHost.newTabSpec(Constants.FRAGMENT_CONTACT_ID).setIndicator("Contact"),
-                ContactFragment.class, null);
+        initializeTabs(getApplicationContext().getResources());
 
         if (savedInstanceState != null) {
-            mTabHost.setCurrentTabByTag(savedInstanceState.getString("tab"));
+            mTabHost.setCurrentTabByTag(savedInstanceState.getString(CURRENT_TAB_IDENTIFIER));
         }
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString("tab", mTabHost.getCurrentTabTag());
+        outState.putString(CURRENT_TAB_IDENTIFIER, mTabHost.getCurrentTabTag());
+    }
+
+    private void initializeTabs(Resources resources) {
+        mTabManager.addTab(
+                mTabHost.newTabSpec(Constants.FRAGMENT_HOME_ID).setIndicator(
+                        resources.getString(R.string.home)),
+                HomeFragment.class, null);
+        mTabManager.addTab(
+                mTabHost.newTabSpec(Constants.FRAGMENT_PORTFOLIO_ID).setIndicator(
+                        resources.getString(R.string.portfolio)),
+                PortfolioFragment.class, null);
+        mTabManager.addTab(
+                mTabHost.newTabSpec(Constants.FRAGMENT_STORE_ID).setIndicator(
+                        resources.getString(R.string.store)),
+                StoreFragment.class, null);
+        mTabManager.addTab(
+                mTabHost.newTabSpec(Constants.FRAGMENT_NEWS_ID).setIndicator(
+                        resources.getString(R.string.news)),
+                NewsFragment.class, null);
+        mTabManager.addTab(
+                mTabHost.newTabSpec(Constants.FRAGMENT_CONTACT_ID).setIndicator(
+                        resources.getString(R.string.contact)),
+                ContactFragment.class, null);
     }
 
     public static class TabManager implements TabHost.OnTabChangeListener {
@@ -144,10 +154,8 @@ public class MainActivity extends FragmentActivity {
             TabInfo newTab = mTabs.get(tabId);
             if (mLastTab != newTab) {
                 FragmentTransaction ft = mActivity.getSupportFragmentManager().beginTransaction();
-                if (mLastTab != null) {
-                    if (mLastTab.fragment != null) {
-                        ft.detach(mLastTab.fragment);
-                    }
+                if (mLastTab != null && mLastTab.fragment != null) {
+                    ft.detach(mLastTab.fragment);
                 }
                 if (newTab != null) {
                     if (newTab.fragment == null) {

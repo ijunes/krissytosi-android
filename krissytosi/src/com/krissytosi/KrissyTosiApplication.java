@@ -24,6 +24,8 @@ import com.krissytosi.api.ApiClient;
 import com.krissytosi.api.NetworkedApiClient;
 import com.krissytosi.api.domain.Portfolio;
 import com.krissytosi.utils.Constants;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 import java.util.List;
 
@@ -55,7 +57,12 @@ public class KrissyTosiApplication extends Application {
         apiClient.setBaseUrl(Constants.LOCAL_API_URL);
         getPortfoliosTask = new GetPortfoliosTask();
         getPortfoliosTask.execute();
+        initializeImageLoader();
         super.onCreate();
+    }
+
+    private void initializeImageLoader() {
+        ImageLoader.getInstance().init(ImageLoaderConfiguration.createDefault(this));
     }
 
     /**

@@ -32,21 +32,21 @@ public interface Tracking {
      * @param key typically the API/tracking key for the app. This is usually
      *            retrieved from the third-party tracking company.
      */
-    public void initialize(Context context, String key);
+    void initialize(Context context, String key);
 
     /**
      * Executed when a user changes to a different tab.
      * 
      * @param tabIdentifier unique identifier for the tab.
      */
-    public void trackTabChange(String tabIdentifier);
+    void trackTabChange(String tabIdentifier);
 
     /**
      * Executed when a user changes to a different portfolio.
      * 
      * @param portfolioIdentifier unique identifier for a portfolio.
      */
-    public void trackPortfolioChange(String portfolioIdentifier);
+    void trackPortfolioChange(String portfolioIdentifier);
 
     /**
      * Executed when a user decides that they want to share one of the images in
@@ -56,19 +56,19 @@ public interface Tracking {
      * @param mode the way in which the media was shared (Twitter, Facebook,
      *            etc)
      */
-    public void mediaShared(String portfolioIdentifier, long mode);
+    void mediaShared(String portfolioIdentifier, long mode);
 
     /**
      * Disables tracking.
      * 
      * @param context the app context.
      */
-    public void disableTracking(Context context);
+    void disableTracking(Context context);
 
     /**
      * Enables tracking.
      * 
      * @param context the app context.
      */
-    public void enableTracking(Context context);
+    void enableTracking(Context context);
 }
