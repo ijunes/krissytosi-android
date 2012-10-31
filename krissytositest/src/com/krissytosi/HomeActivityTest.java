@@ -18,12 +18,12 @@ package com.krissytosi;
 
 import android.test.ActivityInstrumentationTestCase2;
 
-import com.krissytosi.activities.HomeActivity;
+import com.krissytosi.activities.MainActivity;
 
-public class HomeActivityTest extends ActivityInstrumentationTestCase2<HomeActivity> {
+public class HomeActivityTest extends ActivityInstrumentationTestCase2<MainActivity> {
 
     public HomeActivityTest() {
-        super("com.krissytosi", HomeActivity.class);
+        super("com.krissytosi", MainActivity.class);
     }
 
     public void testOneTwoThree() {
