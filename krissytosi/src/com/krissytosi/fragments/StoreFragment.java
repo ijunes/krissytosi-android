@@ -16,19 +16,78 @@
 
 package com.krissytosi.fragments;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.etsy.etsyCore.EtsyRequestManager;
+import com.etsy.etsyCore.EtsyResult;
+import com.etsy.etsyRequests.ShopsRequest;
 import com.krissytosi.R;
+import com.krissytosi.utils.ApiConstants;
 
 public class StoreFragment extends Fragment {
+
+    /**
+     * Task used to retrieve the portfolios from the API server.
+     */
+    private GetShopTask getShopTask;
+
+    /**
+     * Manager which is used to execute etsy API requests.
+     */
+    private EtsyRequestManager requestManager;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.store, container, false);
         return v;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (requestManager == null) {
+            requestManager = new EtsyRequestManager(ApiConstants.ETSY_API_KEY,
+                    ApiConstants.ETSY_API_SECRET, ApiConstants.ETSY_CALLBACK,
+                    ApiConstants.ETSY_SCOPE);
+        }
+        if (getShopTask == null) {
+            getShopTask = new GetShopTask();
+            getShopTask.execute();
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (getShopTask != null) {
+            getShopTask.cancel(true);
+        }
+    }
+
+    protected void onGetShop(EtsyResult result) {
+
+    }
+
+    /**
+     * Simple AsynTask to retrieve the list of portfolios from the API server.
+     */
+    private class GetShopTask extends
+            AsyncTask<Void, Void, EtsyResult> {
+
+        @Override
+        protected EtsyResult doInBackground(Void... params) {
+            ShopsRequest request = ShopsRequest.getShop(ApiConstants.ETSY_STORE_ID);
+            return requestManager.runRequest(request);
+        }
+
+        @Override
+        protected void onPostExecute(EtsyResult result) {
+            onGetShop(result);
+        }
     }
 }
