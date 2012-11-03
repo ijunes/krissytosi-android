@@ -26,6 +26,7 @@ import android.view.View;
 import android.widget.TabHost;
 
 import com.krissytosi.R;
+import com.krissytosi.fragments.BlogFragment;
 import com.krissytosi.fragments.ContactFragment;
 import com.krissytosi.fragments.HomeFragment;
 import com.krissytosi.fragments.NewsFragment;
@@ -81,6 +82,10 @@ public class MainActivity extends FragmentActivity {
                 mTabHost.newTabSpec(Constants.FRAGMENT_STORE_ID).setIndicator(
                         resources.getString(R.string.store)),
                 StoreFragment.class, null);
+        mTabManager.addTab(
+                mTabHost.newTabSpec(Constants.FRAGMENT_BLOG_ID).setIndicator(
+                        resources.getString(R.string.blog)),
+                BlogFragment.class, null);
         mTabManager.addTab(
                 mTabHost.newTabSpec(Constants.FRAGMENT_NEWS_ID).setIndicator(
                         resources.getString(R.string.news)),
