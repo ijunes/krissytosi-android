@@ -75,7 +75,9 @@ public class PortfolioFragment extends Fragment {
 
         @Override
         public void destroyItem(View container, int position, Object object) {
-            ((ViewPager) container).removeView((View) object);
+            if (container instanceof ViewPager && object instanceof View) {
+                ((ViewPager) container).removeView((View) object);
+            }
         }
 
         @Override

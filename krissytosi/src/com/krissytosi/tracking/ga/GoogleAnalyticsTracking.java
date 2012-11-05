@@ -43,13 +43,11 @@ public class GoogleAnalyticsTracking implements Tracking {
     private final boolean debugEnabled = TrackingConstants.DEFAULT_DEBUG_ENABLED;
 
     @Override
-    public void initialize(Context context, String key) {
+    public synchronized void initialize(Context context, String key) {
         if (enabled && tracker == null) {
-            synchronized (tracker) {
-                GoogleAnalytics.getInstance(context).setDebug(debugEnabled);
-                tracker = GoogleAnalytics.getInstance(context).getTracker(key);
-                tracker.setSampleRate(sampleRate);
-            }
+            GoogleAnalytics.getInstance(context).setDebug(debugEnabled);
+            tracker = GoogleAnalytics.getInstance(context).getTracker(key);
+            tracker.setSampleRate(sampleRate);
         }
     }
 

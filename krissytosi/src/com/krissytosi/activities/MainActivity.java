@@ -35,6 +35,7 @@ import com.krissytosi.fragments.StoreFragment;
 import com.krissytosi.utils.Constants;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Main activity in the application. Gives the user the choice to browse
@@ -101,7 +102,7 @@ public class MainActivity extends FragmentActivity {
         private final FragmentActivity mActivity;
         private final TabHost mTabHost;
         private final int mContainerId;
-        private final HashMap<String, TabInfo> mTabs = new HashMap<String, TabInfo>();
+        private final Map<String, TabInfo> mTabs = new HashMap<String, TabInfo>();
         TabInfo mLastTab;
 
         static final class TabInfo {
@@ -157,7 +158,7 @@ public class MainActivity extends FragmentActivity {
         @Override
         public void onTabChanged(String tabId) {
             TabInfo newTab = mTabs.get(tabId);
-            if (mLastTab != newTab) {
+            if (!mLastTab.equals(newTab)) {
                 FragmentTransaction ft = mActivity.getSupportFragmentManager().beginTransaction();
                 if (mLastTab != null && mLastTab.fragment != null) {
                     ft.detach(mLastTab.fragment);

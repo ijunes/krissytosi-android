@@ -25,7 +25,7 @@ import android.view.ViewGroup;
 
 import com.etsy.etsyCore.EtsyRequestManager;
 import com.etsy.etsyCore.EtsyResult;
-import com.etsy.etsyRequests.ShopsRequest;
+import com.etsy.etsyRequests.ListingsRequest;
 import com.krissytosi.R;
 import com.krissytosi.utils.ApiConstants;
 
@@ -74,14 +74,15 @@ public class StoreFragment extends Fragment {
     }
 
     /**
-     * Simple AsynTask to retrieve the list of portfolios from the API server.
+     * Simple AsynTask to retrieve the listings for an Etsy shop.
      */
     private class GetShopTask extends
             AsyncTask<Void, Void, EtsyResult> {
 
         @Override
         protected EtsyResult doInBackground(Void... params) {
-            ShopsRequest request = ShopsRequest.getShop(ApiConstants.ETSY_STORE_ID);
+            ListingsRequest request = ListingsRequest
+                    .findAllShopListingsActive(ApiConstants.ETSY_STORE_ID);
             return requestManager.runRequest(request);
         }
 
