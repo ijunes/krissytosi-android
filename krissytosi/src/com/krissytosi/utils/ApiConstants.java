@@ -25,7 +25,7 @@ public class ApiConstants {
 
     public static final String ETSY_API_KEY = "l5k8bfu3uyvjy80n0o547zlq";
     public static final String ETSY_API_SECRET = "lxep7iqhx9";
-    public static final String ETSY_STORE_ID = "7386975";
+    public static final String ETSY_STORE_ID = "5547124";
     public static final String ETSY_CALLBACK = "oob";
     private static final String[] ETSY_SCOPE_ARRAY = {
             PermissionScope.READ_LISTINGS, PermissionScope.READ_FEEDBACK

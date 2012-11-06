@@ -158,7 +158,7 @@ public class MainActivity extends FragmentActivity {
         @Override
         public void onTabChanged(String tabId) {
             TabInfo newTab = mTabs.get(tabId);
-            if (!mLastTab.equals(newTab)) {
+            if (mLastTab != newTab) {
                 FragmentTransaction ft = mActivity.getSupportFragmentManager().beginTransaction();
                 if (mLastTab != null && mLastTab.fragment != null) {
                     ft.detach(mLastTab.fragment);

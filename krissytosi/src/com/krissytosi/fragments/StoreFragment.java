@@ -19,27 +19,45 @@ package com.krissytosi.fragments;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 
 import com.etsy.etsyCore.EtsyRequestManager;
 import com.etsy.etsyCore.EtsyResult;
+import com.etsy.etsyModels.BaseModel;
+import com.etsy.etsyModels.Listing;
 import com.etsy.etsyRequests.ListingsRequest;
 import com.krissytosi.R;
+import com.krissytosi.fragments.adapters.StoreAdapter;
 import com.krissytosi.utils.ApiConstants;
 
+import org.apache.http.HttpStatus;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Retrieves listings for a store & displays them to the user.
+ */
 public class StoreFragment extends Fragment {
 
+    private static final String LOG_TAG = "StoreFragment";
+
     /**
-     * Task used to retrieve the portfolios from the API server.
+     * Task used to retrieve the shop's listings from the API server.
      */
-    private GetShopTask getShopTask;
+    private GetListingsTask getListingsTask;
 
     /**
      * Manager which is used to execute etsy API requests.
      */
     private EtsyRequestManager requestManager;
+
+    private ListView listView;
+    private StoreAdapter adapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -55,28 +73,73 @@ public class StoreFragment extends Fragment {
                     ApiConstants.ETSY_API_SECRET, ApiConstants.ETSY_CALLBACK,
                     ApiConstants.ETSY_SCOPE);
         }
-        if (getShopTask == null) {
-            getShopTask = new GetShopTask();
-            getShopTask.execute();
+        if (getListingsTask == null) {
+            getListingsTask = new GetListingsTask();
+            getListingsTask.execute();
         }
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        if (getShopTask != null) {
-            getShopTask.cancel(true);
+        if (getListingsTask != null) {
+            getListingsTask.cancel(true);
         }
     }
 
-    protected void onGetShop(EtsyResult result) {
+    /**
+     * Given the listings parameter, this method is responsible for building out
+     * the ListView of listings.
+     * 
+     * @param listings the listings retrieved from the API server.
+     */
+    protected void buildView(List<Listing> listings) {
+        if (adapter == null) {
+            adapter = new StoreAdapter(getActivity(), R.layout.store_listing,
+                    (ArrayList<Listing>) listings);
+        }
+        if (listView == null) {
+            listView = (ListView) getView().findViewById(R.id.listings);
+        }
+        if (listView.getAdapter() == null) {
+            listView.setAdapter(adapter);
+        }
+        adapter.notifyDataSetChanged();
+    }
 
+    /**
+     * Executed when we've figured out the listings for the store.
+     * 
+     * @param result should contain all the shop listings
+     */
+    protected void onGetListings(EtsyResult result) {
+        List<BaseModel> results = result.getResults();
+        if (HttpStatus.SC_OK == result.getCode()) {
+            Log.d(LOG_TAG, "Got some listings back from the API server");
+            List<Listing> listings = new ArrayList<Listing>();
+            for (BaseModel listingResult : results) {
+                listings.add((Listing) listingResult);
+            }
+            buildView(listings);
+        } else {
+            onGetListingsFailure(result.getCode());
+        }
+    }
+
+    /**
+     * Executed when something went awry with the API call to retrieve the
+     * listings.
+     * 
+     * @param errorCode the HTTP status error code returned from the API server.
+     */
+    protected void onGetListingsFailure(int errorCode) {
+        Log.d(LOG_TAG, "Failed to get listings " + errorCode);
     }
 
     /**
      * Simple AsynTask to retrieve the listings for an Etsy shop.
      */
-    private class GetShopTask extends
+    private class GetListingsTask extends
             AsyncTask<Void, Void, EtsyResult> {
 
         @Override
@@ -88,7 +151,7 @@ public class StoreFragment extends Fragment {
 
         @Override
         protected void onPostExecute(EtsyResult result) {
-            onGetShop(result);
+            onGetListings(result);
         }
     }
 }
