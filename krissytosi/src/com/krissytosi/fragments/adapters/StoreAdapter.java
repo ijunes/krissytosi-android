@@ -35,17 +35,25 @@ import com.etsy.etsyRequests.ListingImagesRequest;
 import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 import com.krissytosi.KrissyTosiApplication;
 import com.krissytosi.R;
+import com.krissytosi.fragments.StoreFragment;
 
 import org.apache.http.HttpStatus;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+/**
+ * Backs the list which is displayed in the {@link StoreFragment}.
+ */
 public class StoreAdapter extends ArrayAdapter<Listing> {
 
     private static final String LOG_TAG = "StoreAdapter";
 
     private final List<Listing> listings;
+
+    private final Map<Integer, GetListingImagesTask> tasks = new HashMap<Integer, GetListingImagesTask>();
 
     public StoreAdapter(Context context, int textViewResourceId, ArrayList<Listing> listings) {
         super(context, textViewResourceId, listings);
@@ -83,10 +91,15 @@ public class StoreAdapter extends ArrayAdapter<Listing> {
                         UrlImageViewHelper.setUrlDrawable(holder.listingImageView,
                                 image.getUrl75x75());
                     } else {
-                        // no images for this listing - need to request them
-                        new GetListingImagesTask().execute(listing,
-                                ((KrissyTosiApplication) v.getContext().getApplicationContext())
-                                        .getRequestManager());
+                        // no images for this listing - need to request them -
+                        // avoid duplicates too
+                        Integer listingId = listing.getListingId();
+                        if (!tasks.containsKey(listingId)) {
+                            GetListingImagesTask task = new GetListingImagesTask();
+                            task.execute(listing, ((KrissyTosiApplication) v.getContext()
+                                    .getApplicationContext()).getRequestManager());
+                            tasks.put(listingId, task);
+                        }
                     }
                 }
             }
@@ -103,7 +116,22 @@ public class StoreAdapter extends ArrayAdapter<Listing> {
         return count;
     }
 
+    public void onStop() {
+        if (tasks != null && tasks.entrySet().size() > 0) {
+            // TODO - cancel and remove
+            tasks.clear();
+        }
+    }
+
+    protected void removeTask(int listingId) {
+        GetListingImagesTask task = tasks.get(listingId);
+        if (task != null) {
+            tasks.remove(task);
+        }
+    }
+
     protected void updateDataSetWithListingImages(List<ListingImage> images) {
+        boolean foundListing = false;
         ListingImage image = images.get(0);
         int listingId = image.getListingId();
         // TODO - should I be using a map here instead of an array?
@@ -111,13 +139,18 @@ public class StoreAdapter extends ArrayAdapter<Listing> {
         for (int i = 0, l = listings.size(); i < l; i++) {
             Listing listing = listings.get(i);
             if (listing.getListingId() == listingId) {
-                Log.d(LOG_TAG, "Found a listing which corresponds to the listing id");
+                ListingImage[] listingImages = images.toArray(new ListingImage[images.size()]);
+                listing.setImages(listingImages);
+                foundListing = true;
                 break;
             }
         }
+        if (foundListing) {
+            notifyDataSetChanged();
+        }
     }
 
-    protected void onGetListingImages(EtsyResult result) {
+    protected void onGetListingImages(EtsyResult result, int listingId) {
         List<BaseModel> results = result.getResults();
         if (HttpStatus.SC_OK == result.getCode() && results.size() > 0) {
             List<ListingImage> listingImages = new ArrayList<ListingImage>();
@@ -128,6 +161,9 @@ public class StoreAdapter extends ArrayAdapter<Listing> {
         } else {
             onGetListingImagesFailure(result.getCode());
         }
+        // always remember to remove the task regardless of whether it was
+        // successful or not
+        removeTask(listingId);
     }
 
     protected void onGetListingImagesFailure(int errorCode) {
@@ -142,10 +178,13 @@ public class StoreAdapter extends ArrayAdapter<Listing> {
 
     public class GetListingImagesTask extends AsyncTask<Object, Void, EtsyResult> {
 
+        private int listingId;
+
         @Override
         protected EtsyResult doInBackground(Object... params) {
             Listing listing = (Listing) params[0];
             EtsyRequestManager requestManager = (EtsyRequestManager) params[1];
+            listingId = listing.getListingId();
             ListingImagesRequest request = ListingImagesRequest.getImage_Listing(
                     String.valueOf(listing.getListingId()), "");
             return requestManager.runRequest(request);
@@ -153,7 +192,7 @@ public class StoreAdapter extends ArrayAdapter<Listing> {
 
         @Override
         protected void onPostExecute(EtsyResult result) {
-            onGetListingImages(result);
+            onGetListingImages(result, listingId);
         }
     }
 }

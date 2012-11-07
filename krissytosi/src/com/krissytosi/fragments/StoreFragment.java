@@ -18,7 +18,6 @@ package com.krissytosi.fragments;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,7 +42,7 @@ import java.util.List;
 /**
  * Retrieves listings for a store & displays them to the user.
  */
-public class StoreFragment extends Fragment {
+public class StoreFragment extends BaseFragment {
 
     private static final String LOG_TAG = "StoreFragment";
 
@@ -64,6 +63,7 @@ public class StoreFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+        toggleLoading(true, getActivity().findViewById(R.id.listings));
         if (getListingsTask == null) {
             getListingsTask = new GetListingsTask();
             getListingsTask.execute(((KrissyTosiApplication) getActivity().getApplication())
@@ -97,6 +97,7 @@ public class StoreFragment extends Fragment {
             listView.setAdapter(adapter);
         }
         adapter.notifyDataSetChanged();
+        toggleLoading(false, getActivity().findViewById(R.id.listings));
     }
 
     /**

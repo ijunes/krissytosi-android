@@ -8,5 +8,8 @@
     <string name="blog">Blog</string>
     <string name="news">News</string>
     <string name="contact">Contact</string>
+    <string name="loading">Loading &#8230; just a minute</string>
+    <string name="no_network">Can\'t access the internet. Please check your network connection.</string>
+    <string name="try_again">Try Again.</string>
 
 </resources>

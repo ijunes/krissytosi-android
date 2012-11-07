@@ -19,7 +19,6 @@ package com.krissytosi.fragments;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,7 +31,7 @@ import com.krissytosi.utils.Constants;
 /**
  * Just contains a web view which points at cottage farm blogspot.
  */
-public class BlogFragment extends Fragment {
+public class BlogFragment extends BaseFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -44,8 +43,20 @@ public class BlogFragment extends Fragment {
         webView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
         webView.getSettings().setAllowFileAccess(true);
         webView.getSettings().setDomStorageEnabled(true);
-        webView.loadUrl(Constants.BLOG_URL);
         return v;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        toggleLoading(true, getWebView());
+        getWebView().loadUrl(Constants.BLOG_URL);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        getWebView().stopLoading();
     }
 
     public class MyWebViewClient extends WebViewClient {
@@ -61,12 +72,12 @@ public class BlogFragment extends Fragment {
                 return super.shouldOverrideUrlLoading(view, url);
             }
         }
-    }
 
-    @Override
-    public void onStop() {
-        super.onStop();
-        getWebView().stopLoading();
+        @Override
+        public void onPageFinished(WebView view, String url) {
+            super.onPageFinished(view, url);
+            toggleLoading(false, getWebView());
+        }
     }
 
     private WebView getWebView() {
