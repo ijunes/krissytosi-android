@@ -17,6 +17,8 @@
 package com.krissytosi.fragments.adapters;
 
 import android.content.Context;
+import android.os.AsyncTask;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,15 +26,24 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.etsy.etsyCore.EtsyRequestManager;
+import com.etsy.etsyCore.EtsyResult;
+import com.etsy.etsyModels.BaseModel;
 import com.etsy.etsyModels.Listing;
 import com.etsy.etsyModels.ListingImage;
+import com.etsy.etsyRequests.ListingImagesRequest;
 import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
+import com.krissytosi.KrissyTosiApplication;
 import com.krissytosi.R;
+
+import org.apache.http.HttpStatus;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class StoreAdapter extends ArrayAdapter<Listing> {
+
+    private static final String LOG_TAG = "StoreAdapter";
 
     private final List<Listing> listings;
 
@@ -69,11 +80,13 @@ public class StoreAdapter extends ArrayAdapter<Listing> {
                     ListingImage[] images = listing.getImages();
                     if (images != null && images.length > 0) {
                         ListingImage image = images[0];
-                        // TODO - some smarts on whether or not the user is in
-                        // landscape/portrait
-                        // whether or not they are in a tablet or not.
                         UrlImageViewHelper.setUrlDrawable(holder.listingImageView,
                                 image.getUrl75x75());
+                    } else {
+                        // no images for this listing - need to request them
+                        new GetListingImagesTask().execute(listing,
+                                ((KrissyTosiApplication) v.getContext().getApplicationContext())
+                                        .getRequestManager());
                     }
                 }
             }
@@ -90,9 +103,57 @@ public class StoreAdapter extends ArrayAdapter<Listing> {
         return count;
     }
 
+    protected void updateDataSetWithListingImages(List<ListingImage> images) {
+        ListingImage image = images.get(0);
+        int listingId = image.getListingId();
+        // TODO - should I be using a map here instead of an array?
+        // http://stackoverflow.com/questions/5234576/what-adapter-shall-i-use-to-use-hashmap-in-a-listview
+        for (int i = 0, l = listings.size(); i < l; i++) {
+            Listing listing = listings.get(i);
+            if (listing.getListingId() == listingId) {
+                Log.d(LOG_TAG, "Found a listing which corresponds to the listing id");
+                break;
+            }
+        }
+    }
+
+    protected void onGetListingImages(EtsyResult result) {
+        List<BaseModel> results = result.getResults();
+        if (HttpStatus.SC_OK == result.getCode() && results.size() > 0) {
+            List<ListingImage> listingImages = new ArrayList<ListingImage>();
+            for (BaseModel imageResult : results) {
+                listingImages.add((ListingImage) imageResult);
+            }
+            updateDataSetWithListingImages(listingImages);
+        } else {
+            onGetListingImagesFailure(result.getCode());
+        }
+    }
+
+    protected void onGetListingImagesFailure(int errorCode) {
+        Log.d(LOG_TAG, "Failed to get images for listing " + errorCode);
+    }
+
     public static class ViewHolder {
         public ImageView listingImageView;
         public TextView listingTitle;
         public TextView listingPrice;
+    }
+
+    public class GetListingImagesTask extends AsyncTask<Object, Void, EtsyResult> {
+
+        @Override
+        protected EtsyResult doInBackground(Object... params) {
+            Listing listing = (Listing) params[0];
+            EtsyRequestManager requestManager = (EtsyRequestManager) params[1];
+            ListingImagesRequest request = ListingImagesRequest.getImage_Listing(
+                    String.valueOf(listing.getListingId()), "");
+            return requestManager.runRequest(request);
+        }
+
+        @Override
+        protected void onPostExecute(EtsyResult result) {
+            onGetListingImages(result);
+        }
     }
 }

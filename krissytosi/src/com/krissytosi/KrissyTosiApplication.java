@@ -20,9 +20,11 @@ import android.app.Application;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.etsy.etsyCore.EtsyRequestManager;
 import com.krissytosi.api.ApiClient;
 import com.krissytosi.api.NetworkedApiClient;
 import com.krissytosi.api.domain.Portfolio;
+import com.krissytosi.utils.ApiConstants;
 import com.krissytosi.utils.Constants;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -45,6 +47,11 @@ public class KrissyTosiApplication extends Application {
      * Used to interact with the API server.
      */
     private ApiClient apiClient;
+
+    /**
+     * Used to make API requests to the Etsy API server.
+     */
+    private EtsyRequestManager requestManager;
 
     /**
      * Task used to retrieve the portfolios from the API server.
@@ -129,5 +136,18 @@ public class KrissyTosiApplication extends Application {
 
     public void setApiClient(ApiClient apiClient) {
         this.apiClient = apiClient;
+    }
+
+    public EtsyRequestManager getRequestManager() {
+        if (requestManager == null) {
+            requestManager = new EtsyRequestManager(ApiConstants.ETSY_API_KEY,
+                    ApiConstants.ETSY_API_SECRET, ApiConstants.ETSY_CALLBACK,
+                    ApiConstants.ETSY_SCOPE);
+        }
+        return requestManager;
+    }
+
+    public void setRequestManager(EtsyRequestManager requestManager) {
+        this.requestManager = requestManager;
     }
 }

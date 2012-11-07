@@ -30,6 +30,7 @@ import com.etsy.etsyCore.EtsyResult;
 import com.etsy.etsyModels.BaseModel;
 import com.etsy.etsyModels.Listing;
 import com.etsy.etsyRequests.ListingsRequest;
+import com.krissytosi.KrissyTosiApplication;
 import com.krissytosi.R;
 import com.krissytosi.fragments.adapters.StoreAdapter;
 import com.krissytosi.utils.ApiConstants;
@@ -51,11 +52,6 @@ public class StoreFragment extends Fragment {
      */
     private GetListingsTask getListingsTask;
 
-    /**
-     * Manager which is used to execute etsy API requests.
-     */
-    private EtsyRequestManager requestManager;
-
     private ListView listView;
     private StoreAdapter adapter;
 
@@ -68,14 +64,10 @@ public class StoreFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        if (requestManager == null) {
-            requestManager = new EtsyRequestManager(ApiConstants.ETSY_API_KEY,
-                    ApiConstants.ETSY_API_SECRET, ApiConstants.ETSY_CALLBACK,
-                    ApiConstants.ETSY_SCOPE);
-        }
         if (getListingsTask == null) {
             getListingsTask = new GetListingsTask();
-            getListingsTask.execute();
+            getListingsTask.execute(((KrissyTosiApplication) getActivity().getApplication())
+                    .getRequestManager());
         }
     }
 
@@ -140,10 +132,11 @@ public class StoreFragment extends Fragment {
      * Simple AsynTask to retrieve the listings for an Etsy shop.
      */
     private class GetListingsTask extends
-            AsyncTask<Void, Void, EtsyResult> {
+            AsyncTask<EtsyRequestManager, Void, EtsyResult> {
 
         @Override
-        protected EtsyResult doInBackground(Void... params) {
+        protected EtsyResult doInBackground(EtsyRequestManager... params) {
+            EtsyRequestManager requestManager = params[0];
             ListingsRequest request = ListingsRequest
                     .findAllShopListingsActive(ApiConstants.ETSY_STORE_ID);
             return requestManager.runRequest(request);
