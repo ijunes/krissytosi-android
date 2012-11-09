@@ -24,12 +24,15 @@ import android.util.Log;
 
 import com.etsy.etsyCore.EtsyRequestManager;
 import com.krissytosi.api.ApiClient;
-import com.krissytosi.api.NetworkedApiClient;
 import com.krissytosi.api.domain.Portfolio;
+import com.krissytosi.modules.KrissyTosiModule;
+import com.krissytosi.tracking.Tracking;
 import com.krissytosi.utils.ApiConstants;
 import com.krissytosi.utils.Constants;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+
+import dagger.ObjectGraph;
 
 import java.util.List;
 
@@ -64,6 +67,11 @@ public class KrissyTosiApplication extends Application {
     private ApiClient apiClient;
 
     /**
+     * Used to send user interaction details off to an analytics back end.
+     */
+    private Tracking tracker;
+
+    /**
      * Used to make API requests to the Etsy API server.
      */
     private EtsyRequestManager requestManager;
@@ -75,13 +83,21 @@ public class KrissyTosiApplication extends Application {
 
     @Override
     public void onCreate() {
+        super.onCreate();
         initializeStrictMode();
-        apiClient = new NetworkedApiClient();
-        apiClient.setBaseUrl(Constants.LOCAL_API_URL);
+        initializeModules();
+        initializeImageLoader();
         getPortfoliosTask = new GetPortfoliosTask();
         getPortfoliosTask.execute();
-        initializeImageLoader();
-        super.onCreate();
+    }
+
+    private void initializeModules() {
+        ObjectGraph objectGraph = ObjectGraph.create(new KrissyTosiModule());
+        // API first
+        apiClient = objectGraph.get(ApiClient.class);
+        apiClient.setBaseUrl(Constants.LOCAL_API_URL);
+        // then the tracker implementation
+        tracker = objectGraph.get(Tracking.class);
     }
 
     @TargetApi(11)

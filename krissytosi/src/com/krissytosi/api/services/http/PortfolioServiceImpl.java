@@ -14,11 +14,14 @@
    limitations under the License.
  */
 
-package com.krissytosi.api.services;
+package com.krissytosi.api.services.http;
 
 import com.krissytosi.api.domain.Portfolio;
-import com.krissytosi.api.parse.ParserFactoryImpl;
-import com.krissytosi.api.services.http.HttpService;
+import com.krissytosi.api.modules.ApiModule;
+import com.krissytosi.api.parse.PortfolioParser;
+import com.krissytosi.api.services.PortfolioService;
+
+import dagger.ObjectGraph;
 
 import java.util.HashMap;
 import java.util.List;
@@ -29,6 +32,8 @@ import java.util.Map;
  */
 public class PortfolioServiceImpl extends HttpService implements
         PortfolioService {
+
+    private PortfolioParser parser;
 
     /**
      * The base url which this service is targeting.
@@ -45,11 +50,18 @@ public class PortfolioServiceImpl extends HttpService implements
         // execute the request
         String response = doGet(portfolioUrl);
         // parse & return the response
-        return ParserFactoryImpl.getInstance().getPortfolioParser()
-                .parsePortfolios(response);
+        return getPortfolioParser().parsePortfolios(response);
     }
 
     // Getters/Setters
+
+    private PortfolioParser getPortfolioParser() {
+        if (parser == null) {
+            ObjectGraph objectGraph = ObjectGraph.create(new ApiModule());
+            parser = objectGraph.get(PortfolioParser.class);
+        }
+        return parser;
+    }
 
     public String getBaseUrl() {
         return baseUrl;

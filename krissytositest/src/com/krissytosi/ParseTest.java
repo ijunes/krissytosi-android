@@ -19,7 +19,10 @@ package com.krissytosi;
 import android.test.AndroidTestCase;
 
 import com.krissytosi.api.domain.Portfolio;
-import com.krissytosi.api.parse.ParserFactoryImpl;
+import com.krissytosi.api.modules.ApiModule;
+import com.krissytosi.api.parse.PortfolioParser;
+
+import dagger.ObjectGraph;
 
 import org.apache.commons.io.IOUtils;
 
@@ -31,10 +34,11 @@ public class ParseTest extends AndroidTestCase {
     private static final String FILE_NAME = "portfolios.json";
     private static final String ERROR_FILE_NAME = "portfolios_error.json";
 
+    private PortfolioParser parser;
+
     public void testSuccessfulParserImplementation() {
         String fileContents = readFile("/assets/responses/json/" + FILE_NAME);
-        List<Portfolio> portfolios = ParserFactoryImpl.getInstance().getPortfolioParser()
-                .parsePortfolios(fileContents);
+        List<Portfolio> portfolios = getPortfolioParser().parsePortfolios(fileContents);
         assertTrue(portfolios.size() == 3);
         Portfolio firstPortfolio = portfolios.get(0);
         assertTrue(firstPortfolio.getName().equalsIgnoreCase("portfolioOne"));
@@ -47,20 +51,15 @@ public class ParseTest extends AndroidTestCase {
 
     public void testErrorParserImplementation() {
         String fileContents = readFile("/assets/responses/json/" + ERROR_FILE_NAME);
-        System.out.println("HERE WE GO");
-        List<Portfolio> portfolios = ParserFactoryImpl.getInstance().getPortfolioParser()
-                .parsePortfolios(fileContents);
+        List<Portfolio> portfolios = getPortfolioParser().parsePortfolios(fileContents);
         assertTrue(portfolios.size() == 1);
         Portfolio firstPortfolio = portfolios.get(0);
-        System.out.println("ERROR CODE IS " + firstPortfolio.getErrorCode() + " and the desc "
-                + firstPortfolio.getErrorDescription());
         assertTrue(firstPortfolio.getErrorCode() == 1);
         assertTrue(firstPortfolio.getErrorDescription().equalsIgnoreCase("There was an error"));
     }
 
     public void testNullParserImplementation() {
-        List<Portfolio> portfolios = ParserFactoryImpl.getInstance().getPortfolioParser()
-                .parsePortfolios(null);
+        List<Portfolio> portfolios = getPortfolioParser().parsePortfolios(null);
         assertTrue(portfolios.size() == 1);
         Portfolio firstPortfolio = portfolios.get(0);
         assertTrue(firstPortfolio.getErrorCode() == 3);
@@ -75,5 +74,13 @@ public class ParseTest extends AndroidTestCase {
             e.printStackTrace();
         }
         return new String(bytes);
+    }
+
+    private PortfolioParser getPortfolioParser() {
+        if (parser == null) {
+            ObjectGraph objectGraph = ObjectGraph.create(new ApiModule());
+            parser = objectGraph.get(PortfolioParser.class);
+        }
+        return parser;
     }
 }

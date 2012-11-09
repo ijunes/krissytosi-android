@@ -17,7 +17,7 @@
 package com.krissytosi.api;
 
 import com.krissytosi.api.services.PortfolioService;
-import com.krissytosi.api.services.PortfolioServiceImpl;
+import com.krissytosi.api.services.http.PortfolioServiceImpl;
 
 /**
  * Uses a HttpClient to interact with the API server.

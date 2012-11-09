@@ -14,26 +14,33 @@
    limitations under the License.
  */
 
-package com.krissytosi.api.parse.json;
+package com.krissytosi.api.modules;
 
-import com.krissytosi.api.parse.ParserFactory;
 import com.krissytosi.api.parse.PortfolioParser;
+import com.krissytosi.api.parse.json.JsonPortfolioParser;
+import com.krissytosi.api.services.PortfolioService;
+import com.krissytosi.api.services.http.PortfolioServiceImpl;
 
-/**
- * JSON-specific implementation of a {@link ParserFactory}.
- */
-public class JsonParserFactory implements ParserFactory {
+import dagger.Module;
+import dagger.Provides;
 
-    /**
-     * Instance variable for the portfolio parser.
-     */
-    private PortfolioParser portfolioParser;
+import javax.inject.Singleton;
 
-    @Override
-    public PortfolioParser getPortfolioParser() {
-        if (portfolioParser == null) {
-            portfolioParser = new JsonPortfolioParser();
-        }
-        return portfolioParser;
+@Module(entryPoints = {
+        PortfolioService.class, PortfolioParser.class
+})
+public class ApiModule {
+
+    @Provides
+    @Singleton
+    PortfolioService providePortfolioService() {
+        return new PortfolioServiceImpl();
     }
+
+    @Provides
+    @Singleton
+    PortfolioParser providePortfolioParser() {
+        return new JsonPortfolioParser();
+    }
+
 }

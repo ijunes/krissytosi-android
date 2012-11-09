@@ -14,33 +14,19 @@
    limitations under the License.
  */
 
-package com.krissytosi.api.parse;
+package com.krissytosi;
 
-import com.krissytosi.api.parse.json.JsonParserFactory;
+import android.test.ActivityInstrumentationTestCase2;
 
-/**
- * Implementation instance of a parser factory.
- */
-public final class ParserFactoryImpl {
+import com.krissytosi.activities.MainActivity;
 
-    /**
-     * Singleton instance variable
-     */
-    private static ParserFactory instance = new JsonParserFactory();
+public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActivity> {
 
-    /**
-     * Private singleton constructor
-     */
-    private ParserFactoryImpl() {
-
+    public MainActivityTest() {
+        super("com.krissytosi", MainActivity.class);
     }
 
-    /**
-     * Singleton accessor.
-     * 
-     * @return the singleton instance for {@link ParserFactoryImpl}
-     */
-    public static ParserFactory getInstance() {
-        return instance;
+    public void testOneTwoThree() {
+        assertEquals(true, true);
     }
 }
