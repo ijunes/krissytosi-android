@@ -16,8 +16,10 @@
 
 package com.krissytosi;
 
+import android.annotation.TargetApi;
 import android.app.Application;
 import android.os.AsyncTask;
+import android.os.StrictMode;
 import android.util.Log;
 
 import com.etsy.etsyCore.EtsyRequestManager;
@@ -44,6 +46,19 @@ public class KrissyTosiApplication extends Application {
     private static final String LOG_TAG = "KrissyTosiApplication";
 
     /**
+     * Defines what mode the application is in. Different functionality is
+     * available for different modes.
+     */
+    public enum ApplicationMode {
+        DEVELOP, TEST, PROD
+    }
+
+    /**
+     * Defines what {@link ApplicationMode} the application is in.
+     */
+    private ApplicationMode applicationMode = ApplicationMode.DEVELOP;
+
+    /**
      * Used to interact with the API server.
      */
     private ApiClient apiClient;
@@ -60,12 +75,27 @@ public class KrissyTosiApplication extends Application {
 
     @Override
     public void onCreate() {
+        initializeStrictMode();
         apiClient = new NetworkedApiClient();
         apiClient.setBaseUrl(Constants.LOCAL_API_URL);
         getPortfoliosTask = new GetPortfoliosTask();
         getPortfoliosTask.execute();
         initializeImageLoader();
         super.onCreate();
+    }
+
+    @TargetApi(11)
+    private void initializeStrictMode() {
+        if (applicationMode == ApplicationMode.DEVELOP) {
+            StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
+                    .detectAll()
+                    .penaltyLog()
+                    .build());
+            StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
+                    .detectAll()
+                    .penaltyLog()
+                    .build());
+        }
     }
 
     private void initializeImageLoader() {
@@ -149,5 +179,13 @@ public class KrissyTosiApplication extends Application {
 
     public void setRequestManager(EtsyRequestManager requestManager) {
         this.requestManager = requestManager;
+    }
+
+    public ApplicationMode getApplicationMode() {
+        return applicationMode;
+    }
+
+    public void setApplicationMode(ApplicationMode applicationMode) {
+        this.applicationMode = applicationMode;
     }
 }
