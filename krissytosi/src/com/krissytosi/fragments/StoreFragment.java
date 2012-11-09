@@ -139,7 +139,7 @@ public class StoreFragment extends BaseFragment {
         protected EtsyResult doInBackground(EtsyRequestManager... params) {
             EtsyRequestManager requestManager = params[0];
             ListingsRequest request = ListingsRequest
-                    .findAllShopListingsActive(ApiConstants.ETSY_STORE_ID);
+                    .findAllShopListingsActive(ApiConstants.ETSY_STORE_ID, true);
             return requestManager.runRequest(request);
         }
 
