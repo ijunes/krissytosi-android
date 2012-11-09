@@ -49,14 +49,6 @@ public class KrissyTosiApplication extends Application {
     private static final String LOG_TAG = "KrissyTosiApplication";
 
     /**
-     * Defines what mode the application is in. Different functionality is
-     * available for different modes.
-     */
-    public enum ApplicationMode {
-        DEVELOP, TEST, PROD
-    }
-
-    /**
      * Defines what {@link ApplicationMode} the application is in.
      */
     private ApplicationMode applicationMode = ApplicationMode.DEVELOP;
@@ -69,7 +61,7 @@ public class KrissyTosiApplication extends Application {
     /**
      * Used to send user interaction details off to an analytics back end.
      */
-    private Tracking tracker;
+    private Tracking tracking;
 
     /**
      * Used to make API requests to the Etsy API server.
@@ -80,6 +72,14 @@ public class KrissyTosiApplication extends Application {
      * Task used to retrieve the portfolios from the API server.
      */
     private GetPortfoliosTask getPortfoliosTask;
+
+    /**
+     * Defines what mode the application is in. Different functionality is
+     * available for different modes.
+     */
+    public enum ApplicationMode {
+        DEVELOP, TEST, PROD
+    }
 
     @Override
     public void onCreate() {
@@ -97,7 +97,7 @@ public class KrissyTosiApplication extends Application {
         apiClient = objectGraph.get(ApiClient.class);
         apiClient.setBaseUrl(Constants.LOCAL_API_URL);
         // then the tracker implementation
-        tracker = objectGraph.get(Tracking.class);
+        tracking = objectGraph.get(Tracking.class);
     }
 
     @TargetApi(11)

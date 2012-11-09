@@ -21,6 +21,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,6 +42,8 @@ import com.nostra13.universalimageloader.core.assist.ImageScaleType;
  * portfolios.
  */
 public class PortfolioFragment extends Fragment {
+
+    private static final String LOG_TAG = "PortfolioFragment";
 
     protected ImageLoader imageLoader = ImageLoader.getInstance();
     private ViewPager pager;
@@ -115,11 +118,11 @@ public class PortfolioFragment extends Fragment {
                                 case OUT_OF_MEMORY:
                                     message = "Out Of Memory error";
                                     break;
-                                case UNKNOWN:
+                                default:
                                     message = "Unknown error";
                                     break;
                             }
-                            // TODO - display error message
+                            Log.e(LOG_TAG, "Failed to load portfolio image " + message);
                         }
 
                         @Override
@@ -136,8 +139,9 @@ public class PortfolioFragment extends Fragment {
                             // Do nothing
                         }
                     });
-
-            ((ViewPager) view).addView(imageLayout, 0);
+            if (view instanceof ViewPager) {
+                ((ViewPager) view).addView(imageLayout, 0);
+            }
             return imageLayout;
         }
 
