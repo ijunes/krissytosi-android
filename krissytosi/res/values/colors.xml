@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="kt_white">#FFFEFEFE</color>
+    <color name="kt_dark_grey">#FF333333</color>
+    <color name="kt_grey">#FF666666</color>
+    <color name="kt_light_grey">#FF999999</color>
+
+</resources>

@@ -18,7 +18,10 @@ package com.krissytosi;
 
 import android.annotation.TargetApi;
 import android.app.Application;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.StrictMode;
+import android.util.Log;
 
 import com.etsy.etsyCore.EtsyRequestManager;
 import com.krissytosi.api.ApiClient;
@@ -75,6 +78,7 @@ public class KrissyTosiApplication extends Application {
     public void onCreate() {
         super.onCreate();
         initializeStrictMode();
+        initializeLogging();
         initializeModules();
         initializeImageLoader();
     }
@@ -83,6 +87,31 @@ public class KrissyTosiApplication extends Application {
     public void onLowMemory() {
         super.onLowMemory();
         ImageLoader.getInstance().clearMemoryCache();
+    }
+
+    private void initializeLogging() {
+        PackageInfo packageInfo = null;
+        try {
+            packageInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+            StringBuilder builder = new StringBuilder("**** Version Information **** \n");
+            builder.append("versionName = ");
+            builder.append(packageInfo.versionName);
+            builder.append("\n");
+            builder.append("versionCode = ");
+            builder.append(packageInfo.versionCode);
+            builder.append("\n");
+            builder.append("Device = ");
+            builder.append(android.os.Build.DEVICE);
+            builder.append("\n");
+            builder.append("Model = ");
+            builder.append(android.os.Build.MODEL);
+            builder.append("\n");
+            builder.append("Product = ");
+            builder.append(android.os.Build.PRODUCT);
+            Log.d(LOG_TAG, builder.toString());
+        } catch (NameNotFoundException e) {
+            Log.e(LOG_TAG, "initializeLogging getPackageInfo", e);
+        }
     }
 
     private void initializeModules() {
