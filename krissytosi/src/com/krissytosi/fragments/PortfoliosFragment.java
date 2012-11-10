@@ -17,8 +17,8 @@
 package com.krissytosi.fragments;
 
 import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
@@ -30,20 +30,31 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
+import com.krissytosi.KrissyTosiApplication;
 import com.krissytosi.R;
+import com.krissytosi.api.ApiClient;
+import com.krissytosi.api.domain.Portfolio;
+import com.krissytosi.utils.Constants;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.assist.ImageLoadingListener;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 
+import java.util.List;
+
 /**
  * Just display *a* portfolio for now. Ideally, this should support multiple
  * portfolios.
  */
-public class PortfolioFragment extends Fragment {
+public class PortfoliosFragment extends BaseFragment {
 
     private static final String LOG_TAG = "PortfolioFragment";
+
+    /**
+     * Task used to retrieve the portfolios from the API server.
+     */
+    private GetPortfoliosTask getPortfoliosTask;
 
     protected ImageLoader imageLoader = ImageLoader.getInstance();
     private ViewPager pager;
@@ -51,21 +62,38 @@ public class PortfolioFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.portfolio, container, false);
+        View v = inflater.inflate(R.layout.portfolios, container, false);
         options = new DisplayImageOptions.Builder()
                 .cacheOnDisc()
                 .imageScaleType(ImageScaleType.IN_SAMPLE_INT)
                 .build();
         pager = (ViewPager) v.findViewById(R.id.pager);
-        // TODO - load these from the API
-        String[] images = {
-                "http://tabletpcssource.com/wp-content/uploads/2011/05/android-logo.png",
-                "http://simpozia.com/pages/images/stories/windows-icon.png",
-                "https://si0.twimg.com/profile_images/1135218951/gmail_profile_icon3_normal.png"
-        };
-        pager.setAdapter(new ImagePagerAdapter(images));
-        pager.setCurrentItem(0);
         return v;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        reload();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (getPortfoliosTask != null) {
+            getPortfoliosTask.cancel(true);
+        }
+    }
+
+    @Override
+    protected void reload() {
+        super.reload();
+        if (getActivity() != null) {
+            toggleLoading(true, pager);
+            getPortfoliosTask = new GetPortfoliosTask();
+            getPortfoliosTask.execute(((KrissyTosiApplication) getActivity().getApplication())
+                    .getApiClient());
+        }
     }
 
     private class ImagePagerAdapter extends PagerAdapter {
@@ -148,6 +176,67 @@ public class PortfolioFragment extends Fragment {
         @Override
         public boolean isViewFromObject(View view, Object object) {
             return view.equals(object);
+        }
+    }
+
+    /**
+     * Callback executed when the portfolios API response has returned.
+     * 
+     * @param portfolios the list of portfolios from the server (or a list of
+     *            errors detailing why the portfolios were not available).
+     */
+    protected void onGetPortfolios(List<Portfolio> portfolios) {
+        // check to see that we actually have *a* portfolio back from the API
+        // server
+        if (portfolios.size() > 0) {
+            // check to see that the first portfolio isn't an error (is there a
+            // better way to communicate these errors?)
+            Portfolio portfolio = portfolios.get(0);
+            if (portfolio.getErrorCode() != -1 && portfolio.getErrorDescription() == null) {
+                Log.d(LOG_TAG, "Retrieved at least one portfolio from the server");
+                String[] images = {
+                        "http://tabletpcssource.com/wp-content/uploads/2011/05/android-logo.png",
+                        "http://simpozia.com/pages/images/stories/windows-icon.png",
+                        "https://si0.twimg.com/profile_images/1135218951/gmail_profile_icon3_normal.png"
+                };
+                pager.setAdapter(new ImagePagerAdapter(images));
+                pager.setCurrentItem(0);
+            } else {
+                handlePortfolioApiError(portfolio);
+            }
+        } else {
+            Portfolio portfolio = new Portfolio();
+            portfolio.setErrorCode(Constants.NO_PORTFOLIOS);
+            portfolio.setErrorDescription(Constants.NO_PORTFOLIOS_DESCRIPTION);
+            handlePortfolioApiError(portfolio);
+        }
+    }
+
+    /**
+     * Callback executed when we fail to retrieve the portfolios from the API.
+     * 
+     * @param errorPortfolio
+     */
+    protected void handlePortfolioApiError(Portfolio errorPortfolio) {
+        Log.d(LOG_TAG, "Portfolio Failure: " + errorPortfolio.getErrorDescription());
+        toggleNoNetwork(true, pager);
+    }
+
+    /**
+     * Simple AsynTask to retrieve the list of portfolios from the API server.
+     */
+    private class GetPortfoliosTask extends
+            AsyncTask<ApiClient, Void, List<Portfolio>> {
+
+        @Override
+        protected List<Portfolio> doInBackground(ApiClient... params) {
+            ApiClient apiClient = params[0];
+            return apiClient.getPortfolioService().getPortfolios();
+        }
+
+        @Override
+        protected void onPostExecute(List<Portfolio> result) {
+            onGetPortfolios(result);
         }
     }
 }

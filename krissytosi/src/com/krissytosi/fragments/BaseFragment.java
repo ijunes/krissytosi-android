@@ -18,28 +18,89 @@ package com.krissytosi.fragments;
 
 import android.support.v4.app.Fragment;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 
 import com.krissytosi.R;
 
 /**
  * Includes some common functionality which is shared across all fragments.
  */
-public class BaseFragment extends Fragment {
+public class BaseFragment extends Fragment implements OnClickListener {
 
-    protected void toggleLoading(boolean show, View view) {
-        View baseFragment = getActivity().findViewById(R.id.base_fragment);
-        if (baseFragment != null && view != null) {
-            baseFragment.setVisibility(show ? View.VISIBLE : View.GONE);
-            view.setVisibility(show ? View.GONE : View.VISIBLE);
+    /**
+     * Button which allows the user to re-initiate a request should they get the
+     * 'No Network' message
+     */
+    private Button noNetworkButton;
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (getView() != null) {
+            noNetworkButton = (Button) getView().findViewById(R.id.no_network_button);
+            noNetworkButton.setOnClickListener(this);
         }
     }
 
-    protected void toggleNoNetwork(boolean show) {
-        View baseFragment = getActivity().findViewById(R.id.base_fragment);
-        View noNetworkMessage = getActivity().findViewById(R.id.no_network_message);
-        View noNetworkButton = getActivity().findViewById(R.id.no_network_button);
-        baseFragment.setVisibility(show ? View.GONE : View.VISIBLE);
-        noNetworkMessage.setVisibility(show ? View.VISIBLE : View.GONE);
-        noNetworkButton.setVisibility(show ? View.VISIBLE : View.GONE);
+    @Override
+    public void onClick(View view) {
+        // just to be sure
+        if (view.equals(noNetworkButton)) {
+            toggleNoNetwork(false, null);
+            toggleLoading(true, null);
+            reload();
+        }
+    }
+
+    /**
+     * Any fragment which requires the network to load backing data should
+     * implement this method. All API calls which help build data for backing
+     * child fragments should be included in this method.
+     */
+    protected void reload() {
+
+    }
+
+    /**
+     * Hide/shows a loading message.
+     * 
+     * @param show dictating whether the loading message should be shown.
+     * @param view the view to toggle out of view if the loading view needs to
+     *            be shown.
+     */
+    protected void toggleLoading(boolean show, View view) {
+        if (getActivity() != null) {
+            View baseFragment = getActivity().findViewById(R.id.base_fragment);
+            if (baseFragment != null && view != null) {
+                baseFragment.setVisibility(show ? View.VISIBLE : View.GONE);
+                view.setVisibility(show ? View.GONE : View.VISIBLE);
+            }
+        }
+    }
+
+    /**
+     * Hides/shows a 'No Network' message.
+     * 
+     * @param show dictates whether the 'No Network' message should be shown.
+     * @param view the view to toggle out of view if the 'No Network' view needs
+     *            to be shown.
+     */
+    protected void toggleNoNetwork(boolean show, View view) {
+        if (getActivity() != null) {
+            View baseFragment = getActivity().findViewById(R.id.base_fragment);
+            View loadingMessage = getActivity().findViewById(R.id.loading_message);
+            View noNetworkMessage = getActivity().findViewById(R.id.no_network_message);
+            View noNetworkButton = getActivity().findViewById(R.id.no_network_button);
+            baseFragment.setVisibility(show ? View.VISIBLE : View.GONE);
+            noNetworkMessage.setVisibility(show ? View.VISIBLE : View.GONE);
+            noNetworkButton.setVisibility(show ? View.VISIBLE : View.GONE);
+            if (view != null) {
+                view.setVisibility(show ? View.GONE : View.VISIBLE);
+            }
+            if (show) {
+                loadingMessage.setVisibility(View.GONE);
+            }
+        }
     }
 }

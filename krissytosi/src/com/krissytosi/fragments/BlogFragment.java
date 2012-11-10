@@ -49,14 +49,20 @@ public class BlogFragment extends BaseFragment {
     @Override
     public void onStart() {
         super.onStart();
-        toggleLoading(true, getWebView());
-        getWebView().loadUrl(Constants.BLOG_URL);
+        reload();
     }
 
     @Override
     public void onStop() {
         super.onStop();
         getWebView().stopLoading();
+    }
+
+    @Override
+    protected void reload() {
+        super.reload();
+        toggleLoading(true, getWebView());
+        getWebView().loadUrl(Constants.BLOG_URL);
     }
 
     public class MyWebViewClient extends WebViewClient {

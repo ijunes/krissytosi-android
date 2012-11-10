@@ -2,8 +2,7 @@
 <resources>
 
     <string name="app_name">Krissy Tosi</string>
-    <string name="home">Home</string>
-    <string name="portfolio">Portfolio</string>
+    <string name="portfolios">Portfolios</string>
     <string name="store">Store</string>
     <string name="blog">Blog</string>
     <string name="news">News</string>
