@@ -16,12 +16,17 @@
 
 package com.krissytosi.fragments;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.support.v4.app.Fragment;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 
 import com.krissytosi.R;
+import com.krissytosi.utils.Constants;
 
 /**
  * Includes some common functionality which is shared across all fragments.
@@ -34,6 +39,23 @@ public class BaseFragment extends Fragment implements OnClickListener {
      */
     private Button noNetworkButton;
 
+    /**
+     * Used to understand which fragment is currently selected in the tab
+     * container.
+     */
+    private final BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            if (action.equals(Constants.KT_TAB_SELECTED)) {
+                String tabIdentifier = intent.getStringExtra(Constants.KT_TAB_SELECTED_KEY);
+                if (getFragmentIdentifier().equals(tabIdentifier)) {
+                    onTabSelected();
+                }
+            }
+        }
+    };
+
     @Override
     public void onStart() {
         super.onStart();
@@ -44,22 +66,31 @@ public class BaseFragment extends Fragment implements OnClickListener {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        if (getActivity() != null) {
+            IntentFilter filter = new IntentFilter(Constants.KT_TAB_SELECTED);
+            getActivity().registerReceiver(broadcastReceiver, filter);
+        }
+        onTabSelected();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (getActivity() != null) {
+            getActivity().unregisterReceiver(broadcastReceiver);
+        }
+    }
+
+    @Override
     public void onClick(View view) {
         // just to be sure
         if (view.equals(noNetworkButton)) {
             toggleNoNetwork(false, null);
             toggleLoading(true, null);
-            reload();
+            onTabSelected();
         }
-    }
-
-    /**
-     * Any fragment which requires the network to load backing data should
-     * implement this method. All API calls which help build data for backing
-     * child fragments should be included in this method.
-     */
-    protected void reload() {
-
     }
 
     /**
@@ -102,5 +133,22 @@ public class BaseFragment extends Fragment implements OnClickListener {
                 loadingMessage.setVisibility(View.GONE);
             }
         }
+    }
+
+    /**
+     * Uniquely identifies this fragment. Any child fragment should override
+     * this method and provide it's own distinct implementation.
+     * 
+     * @return String representation of an id.
+     */
+    protected String getFragmentIdentifier() {
+        return "";
+    }
+
+    /**
+     * Executed when a tab is selected.
+     */
+    protected void onTabSelected() {
+
     }
 }

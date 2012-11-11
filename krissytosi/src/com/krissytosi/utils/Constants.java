@@ -43,7 +43,6 @@ public final class Constants {
     public static final String RESPONSE_HEADER_NAME = "X-KT-API";
     public static final String RESPONSE_HEADER_VALUE = "X-KT-API";
 
-    public static final String FRAGMENT_HOME_ID = "home";
     public static final String FRAGMENT_PORTFOLIO_ID = "portfolio";
     public static final String FRAGMENT_STORE_ID = "store";
     public static final String FRAGMENT_BLOG_ID = "blog";
@@ -51,4 +50,11 @@ public final class Constants {
     public static final String FRAGMENT_CONTACT_ID = "contact";
 
     public static final String BLOG_URL = "http://cottagefarm.blogspot.com/";
+
+    public static final String TRACKING_KEY = "";
+
+    // broadcast receiver constants
+
+    public static final String KT_TAB_SELECTED = "com.krissytosi.utils.Constants.KT_TAB_SELECTED";
+    public static final String KT_TAB_SELECTED_KEY = "com.krissytosi.utils.Constants.KT_TAB_SELECTED_KEY";
 }

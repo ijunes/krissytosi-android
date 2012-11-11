@@ -121,6 +121,7 @@ public class KrissyTosiApplication extends Application {
         apiClient.setBaseUrl(Constants.LOCAL_API_URL);
         // then the tracker implementation
         tracking = objectGraph.get(Tracking.class);
+        tracking.initialize(this, Constants.TRACKING_KEY);
     }
 
     @TargetApi(11)
@@ -149,6 +150,14 @@ public class KrissyTosiApplication extends Application {
 
     public void setApiClient(ApiClient apiClient) {
         this.apiClient = apiClient;
+    }
+
+    public Tracking getTracking() {
+        return tracking;
+    }
+
+    public void setTracking(Tracking tracking) {
+        this.tracking = tracking;
     }
 
     public EtsyRequestManager getRequestManager() {

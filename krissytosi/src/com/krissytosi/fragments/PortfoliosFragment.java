@@ -72,9 +72,8 @@ public class PortfoliosFragment extends BaseFragment {
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        reload();
+    protected String getFragmentIdentifier() {
+        return Constants.FRAGMENT_PORTFOLIO_ID;
     }
 
     @Override
@@ -86,9 +85,9 @@ public class PortfoliosFragment extends BaseFragment {
     }
 
     @Override
-    protected void reload() {
-        super.reload();
-        if (getActivity() != null) {
+    protected void onTabSelected() {
+        super.onTabSelected();
+        if (getActivity() != null && getPortfoliosTask == null) {
             toggleLoading(true, pager);
             getPortfoliosTask = new GetPortfoliosTask();
             getPortfoliosTask.execute(((KrissyTosiApplication) getActivity().getApplication())

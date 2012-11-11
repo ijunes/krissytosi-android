@@ -17,18 +17,23 @@
 package com.krissytosi.fragments;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.krissytosi.R;
+import com.krissytosi.utils.Constants;
 
-public class ContactFragment extends Fragment {
+public class ContactFragment extends BaseFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.contact, container, false);
         return v;
+    }
+
+    @Override
+    protected String getFragmentIdentifier() {
+        return Constants.FRAGMENT_CONTACT_ID;
     }
 }

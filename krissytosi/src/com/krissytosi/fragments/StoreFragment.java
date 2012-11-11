@@ -33,6 +33,7 @@ import com.krissytosi.KrissyTosiApplication;
 import com.krissytosi.R;
 import com.krissytosi.fragments.adapters.StoreAdapter;
 import com.krissytosi.utils.ApiConstants;
+import com.krissytosi.utils.Constants;
 
 import org.apache.http.HttpStatus;
 
@@ -61,10 +62,16 @@ public class StoreFragment extends BaseFragment {
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        toggleLoading(true, getActivity().findViewById(R.id.listings));
-        if (getListingsTask == null) {
+    protected String getFragmentIdentifier() {
+        return Constants.FRAGMENT_STORE_ID;
+    }
+
+    @Override
+    protected void onTabSelected() {
+        super.onTabSelected();
+        if (getActivity() != null && getListingsTask == null && adapter == null) {
+            // check to see whether we even need to get more store listings
+            toggleLoading(true, getActivity().findViewById(R.id.listings));
             getListingsTask = new GetListingsTask();
             getListingsTask.execute(((KrissyTosiApplication) getActivity().getApplication())
                     .getRequestManager());
