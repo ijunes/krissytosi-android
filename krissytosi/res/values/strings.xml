@@ -10,5 +10,9 @@
     <string name="loading">Loading &#8230; just a minute</string>
     <string name="no_network">Can\'t access the internet. Please check your network connection.</string>
     <string name="try_again">Try Again.</string>
+    <!-- Settings -->
+    <string name="settings">Settings</string>
+    <string name="tracking_preference">Tracking</string>
+    <string name="tracking_preference_summary">Allow tracking of interactions with the application to gain a better understanding of what sections of the application are most popular.</string>
 
 </resources>

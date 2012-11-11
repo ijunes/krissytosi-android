@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <PreferenceCategory android:title="@string/tracking_preference" >
+        <CheckBoxPreference
+            android:key="tracking_preference"
+            android:summary="@string/tracking_preference_summary"
+            android:title="@string/tracking_preference" />
+    </PreferenceCategory>
+
+</PreferenceScreen>

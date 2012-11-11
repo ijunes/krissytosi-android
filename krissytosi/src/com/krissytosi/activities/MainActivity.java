@@ -24,6 +24,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.TabHost;
 
 import com.krissytosi.KrissyTosiApplication;
@@ -42,22 +44,21 @@ import java.util.Map;
  * Main activity in the application. Gives the user the choice to browse
  * portfolios, view news or contact.
  */
-public class MainActivity extends FragmentActivity {
+public class MainActivity extends FragmentActivity implements OnClickListener {
 
+    private static final String LOG_TAG = "MainActivity";
     private final static String CURRENT_TAB_IDENTIFIER = "com.krissytosi.activities.CURRENT_TAB_IDENTIFIER";
 
-    TabHost tabHost;
-    TabManager tabManager;
+    private Button settingsButton;
+    private TabHost tabHost;
+    private TabManager tabManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
-        tabHost = (TabHost) findViewById(android.R.id.tabhost);
-        tabHost.setup();
-        tabManager = new TabManager(this, tabHost, R.id.realtabcontent);
-
+        initializeViewElements();
         initializeTabs(getApplicationContext().getResources());
 
         if (savedInstanceState != null) {
@@ -69,6 +70,23 @@ public class MainActivity extends FragmentActivity {
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putString(CURRENT_TAB_IDENTIFIER, tabHost.getCurrentTabTag());
+    }
+
+    @Override
+    public void onClick(View v) {
+        // just to be sure
+        if (v.equals(settingsButton)) {
+            Intent intent = new Intent(this, SettingsActivity.class);
+            startActivity(intent);
+        }
+    }
+
+    private void initializeViewElements() {
+        tabHost = (TabHost) findViewById(android.R.id.tabhost);
+        tabHost.setup();
+        tabManager = new TabManager(this, tabHost, R.id.realtabcontent);
+        settingsButton = (Button) findViewById(R.id.settings_button);
+        settingsButton.setOnClickListener(this);
     }
 
     private void initializeTabs(Resources resources) {
