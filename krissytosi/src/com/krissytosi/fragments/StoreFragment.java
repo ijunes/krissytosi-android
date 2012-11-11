@@ -23,8 +23,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.etsy.etsyCore.EtsyRequestManager;
 import com.etsy.etsyCore.EtsyResult;
+import com.etsy.etsyCore.RequestManager;
 import com.etsy.etsyModels.BaseModel;
 import com.etsy.etsyModels.Listing;
 import com.etsy.etsyRequests.ListingsRequest;
@@ -136,11 +136,11 @@ public class StoreFragment extends BaseListFragment {
      * Simple AsynTask to retrieve the listings for an Etsy shop.
      */
     private class GetListingsTask extends
-            AsyncTask<EtsyRequestManager, Void, EtsyResult> {
+            AsyncTask<RequestManager, Void, EtsyResult> {
 
         @Override
-        protected EtsyResult doInBackground(EtsyRequestManager... params) {
-            EtsyRequestManager requestManager = params[0];
+        protected EtsyResult doInBackground(RequestManager... params) {
+            RequestManager requestManager = params[0];
             ListingsRequest request = ListingsRequest
                     .findAllShopListingsActive(ApiConstants.ETSY_STORE_ID, true);
             return requestManager.runRequest(request);

@@ -23,11 +23,10 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.StrictMode;
 import android.util.Log;
 
-import com.etsy.etsyCore.EtsyRequestManager;
+import com.etsy.etsyCore.RequestManager;
 import com.krissytosi.api.ApiClient;
 import com.krissytosi.modules.KrissyTosiModule;
 import com.krissytosi.tracking.Tracking;
-import com.krissytosi.utils.ApiConstants;
 import com.krissytosi.utils.Constants;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -64,7 +63,7 @@ public class KrissyTosiApplication extends Application {
     /**
      * Used to make API requests to the Etsy API server.
      */
-    private EtsyRequestManager requestManager;
+    private RequestManager requestManager;
 
     /**
      * Defines what mode the application is in. Different functionality is
@@ -122,6 +121,8 @@ public class KrissyTosiApplication extends Application {
         // then the tracker implementation
         tracking = objectGraph.get(Tracking.class);
         tracking.initialize(this, Constants.TRACKING_KEY);
+        // finally, the etsy API implementation
+        requestManager = objectGraph.get(RequestManager.class);
     }
 
     @TargetApi(11)
@@ -160,16 +161,11 @@ public class KrissyTosiApplication extends Application {
         this.tracking = tracking;
     }
 
-    public EtsyRequestManager getRequestManager() {
-        if (requestManager == null) {
-            requestManager = new EtsyRequestManager(ApiConstants.ETSY_API_KEY,
-                    ApiConstants.ETSY_API_SECRET, ApiConstants.ETSY_CALLBACK,
-                    ApiConstants.ETSY_SCOPE);
-        }
+    public RequestManager getRequestManager() {
         return requestManager;
     }
 
-    public void setRequestManager(EtsyRequestManager requestManager) {
+    public void setRequestManager(RequestManager requestManager) {
         this.requestManager = requestManager;
     }
 
