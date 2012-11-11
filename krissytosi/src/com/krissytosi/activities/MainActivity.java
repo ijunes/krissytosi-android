@@ -48,7 +48,7 @@ import java.util.Map;
  */
 public class MainActivity extends FragmentActivity implements OnClickListener {
 
-    private final static String CURRENT_TAB_IDENTIFIER = "com.krissytosi.activities.CURRENT_TAB_IDENTIFIER";
+    private static final String CURRENT_TAB_IDENTIFIER = "com.krissytosi.activities.CURRENT_TAB_IDENTIFIER";
 
     private Button settingsButton;
     private TabHost tabHost;

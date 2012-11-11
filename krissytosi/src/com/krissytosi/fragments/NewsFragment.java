@@ -24,6 +24,9 @@ import android.view.ViewGroup;
 import com.krissytosi.R;
 import com.krissytosi.utils.KrissyTosiConstants;
 
+/**
+ * Displays any news associated with the application.
+ */
 public class NewsFragment extends BaseFragment {
 
     @Override

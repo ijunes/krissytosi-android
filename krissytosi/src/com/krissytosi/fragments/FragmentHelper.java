@@ -40,9 +40,10 @@ public class FragmentHelper {
     /**
      * Common lifecycle functionality for a Fragment's onStart method.
      * 
-     * @param fragment
-     * @param baseView
-     * @param noNetworkButton
+     * @param fragment the fragment which was just started.
+     * @param baseView the view associated with the fragment.
+     * @param noNetworkButton button which allows the user to reinitiate API
+     *            calls should their network be initially down.
      */
     public static void onStart(TabbedFragment fragment, View baseView, Button noNetworkButton) {
         if (baseView != null) {
@@ -57,9 +58,10 @@ public class FragmentHelper {
     /**
      * Common lifecycle functionality for a Fragment's onResume method.
      * 
-     * @param fragment
-     * @param activity
-     * @param broadcastReceiver
+     * @param fragment the fragment which was just resumned.
+     * @param activity the activity associated with the fragment.
+     * @param broadcastReceiver common broadcast receiver which needs to be
+     *            registered to the activity when the fragment is resumed.
      */
     public static void onResume(TabbedFragment fragment, FragmentActivity activity,
             BroadcastReceiver broadcastReceiver) {
@@ -73,8 +75,10 @@ public class FragmentHelper {
     /**
      * Common lifecycle functionality for a Fragment's onStop method.
      * 
-     * @param activity
-     * @param broadcastReceiver
+     * @param activity activity associated with the fragment which was just
+     *            stopped.
+     * @param broadcastReceiver receiver which needs to be unregistered after
+     *            the activity is stopped.
      */
     public static void onStop(FragmentActivity activity, BroadcastReceiver broadcastReceiver) {
         if (activity != null) {
@@ -150,6 +154,13 @@ public class FragmentHelper {
         }
     }
 
+    /**
+     * Executed when the user clicks on the 'No Network' button. Re-initiates
+     * the API call which usually builds the page.
+     * 
+     * @param fragment the fragment associated with the button.
+     * @param baseView the view in which the 'No Network' button lives.
+     */
     public static void handleNoNetworkButtonClick(TabbedFragment fragment, View baseView) {
         toggleNoNetwork(false, null, baseView);
         toggleLoading(true, null, baseView);

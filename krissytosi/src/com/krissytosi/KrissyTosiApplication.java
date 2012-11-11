@@ -125,7 +125,7 @@ public class KrissyTosiApplication extends Application {
         requestManager = objectGraph.get(RequestManager.class);
     }
 
-    @TargetApi(11)
+    @TargetApi(KrissyTosiConstants.HONEYCOMB_OS_VERSION)
     private void initializeStrictMode() {
         if (applicationMode == ApplicationMode.DEVELOP) {
             StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
