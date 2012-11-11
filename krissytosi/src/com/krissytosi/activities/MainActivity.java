@@ -20,6 +20,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
@@ -47,8 +48,6 @@ import java.util.Map;
  */
 public class MainActivity extends FragmentActivity implements OnClickListener {
 
-    private static final String LOG_TAG = "MainActivity";
-
     private final static String CURRENT_TAB_IDENTIFIER = "com.krissytosi.activities.CURRENT_TAB_IDENTIFIER";
 
     private Button settingsButton;
@@ -60,6 +59,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
+        PreferenceManager.setDefaultValues(this, R.xml.settings, false);
         initializeViewElements();
         initializeTabs(getApplicationContext().getResources());
 

@@ -57,4 +57,9 @@ public final class KrissyTosiConstants {
 
     public static final String KT_TAB_SELECTED = "com.krissytosi.utils.Constants.KT_TAB_SELECTED";
     public static final String KT_TAB_SELECTED_KEY = "com.krissytosi.utils.Constants.KT_TAB_SELECTED_KEY";
+
+    // settings constants
+
+    public static final boolean TRACKING_PREFERENCE_DEFAULT = true;
+    public static final String TRACKING_PREFERENCE = "tracking_preference";
 }

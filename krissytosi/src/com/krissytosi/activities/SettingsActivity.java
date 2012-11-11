@@ -16,6 +16,8 @@
 
 package com.krissytosi.activities;
 
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
 
@@ -25,12 +27,30 @@ import com.krissytosi.R;
  * Allows users to enable/disable a few different settings in the application.
  * This is used when the application is running < honeycomb.
  */
-public class SettingsActivity extends PreferenceActivity {
+public class SettingsActivity extends PreferenceActivity implements
+        OnSharedPreferenceChangeListener {
 
     @SuppressWarnings("deprecation")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.settings);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        ActivityHelper.toggleRegisterOnSharedPreferenceChangeListener(this, true);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        ActivityHelper.toggleRegisterOnSharedPreferenceChangeListener(this, false);
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        ActivityHelper.onSharedPreferenceChanged(this, sharedPreferences, key);
     }
 }
