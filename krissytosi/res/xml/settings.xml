@@ -3,6 +3,7 @@
 
     <PreferenceCategory android:title="@string/tracking_preference" >
         <CheckBoxPreference
+            android:defaultValue="true"
             android:key="tracking_preference"
             android:summary="@string/tracking_preference_summary"
             android:title="@string/tracking_preference" />

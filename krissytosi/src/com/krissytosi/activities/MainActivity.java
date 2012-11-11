@@ -35,7 +35,8 @@ import com.krissytosi.fragments.ContactFragment;
 import com.krissytosi.fragments.NewsFragment;
 import com.krissytosi.fragments.PortfoliosFragment;
 import com.krissytosi.fragments.StoreFragment;
-import com.krissytosi.utils.Constants;
+import com.krissytosi.utils.KrissyTosiConstants;
+import com.krissytosi.utils.KrissyTosiUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -47,6 +48,7 @@ import java.util.Map;
 public class MainActivity extends FragmentActivity implements OnClickListener {
 
     private static final String LOG_TAG = "MainActivity";
+
     private final static String CURRENT_TAB_IDENTIFIER = "com.krissytosi.activities.CURRENT_TAB_IDENTIFIER";
 
     private Button settingsButton;
@@ -76,7 +78,12 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
     public void onClick(View v) {
         // just to be sure
         if (v.equals(settingsButton)) {
-            Intent intent = new Intent(this, SettingsActivity.class);
+            Intent intent = null;
+            if (KrissyTosiUtils.atLeastHoneyComb()) {
+                intent = new Intent(this, SettingsActivityHC.class);
+            } else {
+                intent = new Intent(this, SettingsActivity.class);
+            }
             startActivity(intent);
         }
     }
@@ -91,23 +98,23 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 
     private void initializeTabs(Resources resources) {
         tabManager.addTab(
-                tabHost.newTabSpec(Constants.FRAGMENT_PORTFOLIO_ID).setIndicator(
+                tabHost.newTabSpec(KrissyTosiConstants.FRAGMENT_PORTFOLIO_ID).setIndicator(
                         resources.getString(R.string.portfolios)),
                 PortfoliosFragment.class, null);
         tabManager.addTab(
-                tabHost.newTabSpec(Constants.FRAGMENT_STORE_ID).setIndicator(
+                tabHost.newTabSpec(KrissyTosiConstants.FRAGMENT_STORE_ID).setIndicator(
                         resources.getString(R.string.store)),
                 StoreFragment.class, null);
         tabManager.addTab(
-                tabHost.newTabSpec(Constants.FRAGMENT_BLOG_ID).setIndicator(
+                tabHost.newTabSpec(KrissyTosiConstants.FRAGMENT_BLOG_ID).setIndicator(
                         resources.getString(R.string.blog)),
                 BlogFragment.class, null);
         tabManager.addTab(
-                tabHost.newTabSpec(Constants.FRAGMENT_NEWS_ID).setIndicator(
+                tabHost.newTabSpec(KrissyTosiConstants.FRAGMENT_NEWS_ID).setIndicator(
                         resources.getString(R.string.news)),
                 NewsFragment.class, null);
         tabManager.addTab(
-                tabHost.newTabSpec(Constants.FRAGMENT_CONTACT_ID).setIndicator(
+                tabHost.newTabSpec(KrissyTosiConstants.FRAGMENT_CONTACT_ID).setIndicator(
                         resources.getString(R.string.contact)),
                 ContactFragment.class, null);
     }
@@ -190,8 +197,8 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
                 lastTab = newTab;
                 ft.commit();
                 activity.getSupportFragmentManager().executePendingTransactions();
-                Intent intent = new Intent(Constants.KT_TAB_SELECTED);
-                intent.putExtra(Constants.KT_TAB_SELECTED_KEY, newTab.tag);
+                Intent intent = new Intent(KrissyTosiConstants.KT_TAB_SELECTED);
+                intent.putExtra(KrissyTosiConstants.KT_TAB_SELECTED_KEY, newTab.tag);
                 activity.sendBroadcast(intent);
                 ((KrissyTosiApplication) activity.getApplication()).getTracking().trackTabChange(
                         newTab.tag);

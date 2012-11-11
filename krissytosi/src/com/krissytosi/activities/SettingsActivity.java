@@ -23,9 +23,11 @@ import com.krissytosi.R;
 
 /**
  * Allows users to enable/disable a few different settings in the application.
+ * This is used when the application is running < honeycomb.
  */
 public class SettingsActivity extends PreferenceActivity {
 
+    @SuppressWarnings("deprecation")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

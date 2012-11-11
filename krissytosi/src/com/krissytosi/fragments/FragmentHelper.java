@@ -26,7 +26,7 @@ import android.widget.Button;
 import android.widget.ListView;
 
 import com.krissytosi.R;
-import com.krissytosi.utils.Constants;
+import com.krissytosi.utils.KrissyTosiConstants;
 
 /**
  * Includes common functionality which is shared between the
@@ -64,7 +64,7 @@ public class FragmentHelper {
     public static void onResume(TabbedFragment fragment, FragmentActivity activity,
             BroadcastReceiver broadcastReceiver) {
         if (activity != null) {
-            IntentFilter filter = new IntentFilter(Constants.KT_TAB_SELECTED);
+            IntentFilter filter = new IntentFilter(KrissyTosiConstants.KT_TAB_SELECTED);
             activity.registerReceiver(broadcastReceiver, filter);
         }
         fragment.onTabSelected();
@@ -95,8 +95,8 @@ public class FragmentHelper {
     public static boolean onReceive(Context context, Intent intent, String fragmentIdentifier) {
         boolean shouldSelectTab = false;
         String action = intent.getAction();
-        if (action.equals(Constants.KT_TAB_SELECTED)) {
-            String tabIdentifier = intent.getStringExtra(Constants.KT_TAB_SELECTED_KEY);
+        if (action.equals(KrissyTosiConstants.KT_TAB_SELECTED)) {
+            String tabIdentifier = intent.getStringExtra(KrissyTosiConstants.KT_TAB_SELECTED_KEY);
             if (fragmentIdentifier.equals(tabIdentifier)) {
                 shouldSelectTab = true;
             }

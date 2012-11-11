@@ -32,7 +32,7 @@ import com.krissytosi.KrissyTosiApplication;
 import com.krissytosi.R;
 import com.krissytosi.fragments.adapters.StoreAdapter;
 import com.krissytosi.utils.ApiConstants;
-import com.krissytosi.utils.Constants;
+import com.krissytosi.utils.KrissyTosiConstants;
 
 import org.apache.http.HttpStatus;
 
@@ -61,7 +61,7 @@ public class StoreFragment extends BaseListFragment {
 
     @Override
     public String getFragmentIdentifier() {
-        return Constants.FRAGMENT_STORE_ID;
+        return KrissyTosiConstants.FRAGMENT_STORE_ID;
     }
 
     @Override

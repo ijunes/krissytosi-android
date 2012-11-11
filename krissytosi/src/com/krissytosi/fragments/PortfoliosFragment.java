@@ -34,7 +34,7 @@ import com.krissytosi.KrissyTosiApplication;
 import com.krissytosi.R;
 import com.krissytosi.api.ApiClient;
 import com.krissytosi.api.domain.Portfolio;
-import com.krissytosi.utils.Constants;
+import com.krissytosi.utils.KrissyTosiConstants;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
@@ -73,7 +73,7 @@ public class PortfoliosFragment extends BaseFragment {
 
     @Override
     public String getFragmentIdentifier() {
-        return Constants.FRAGMENT_PORTFOLIO_ID;
+        return KrissyTosiConstants.FRAGMENT_PORTFOLIO_ID;
     }
 
     @Override
@@ -204,8 +204,8 @@ public class PortfoliosFragment extends BaseFragment {
             }
         } else {
             Portfolio portfolio = new Portfolio();
-            portfolio.setErrorCode(Constants.NO_PORTFOLIOS);
-            portfolio.setErrorDescription(Constants.NO_PORTFOLIOS_DESCRIPTION);
+            portfolio.setErrorCode(KrissyTosiConstants.NO_PORTFOLIOS);
+            portfolio.setErrorDescription(KrissyTosiConstants.NO_PORTFOLIOS_DESCRIPTION);
             handlePortfolioApiError(portfolio);
         }
     }

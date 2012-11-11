@@ -36,6 +36,10 @@
             android:name=".activities.SettingsActivity"
             android:label="@string/settings" >
         </activity>
+        <activity
+            android:name=".activities.SettingsActivityHC"
+            android:label="@string/settings" >
+        </activity>
     </application>
 
 </manifest>

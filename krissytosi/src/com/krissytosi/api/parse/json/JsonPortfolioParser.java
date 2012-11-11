@@ -20,7 +20,7 @@ import android.util.Log;
 
 import com.krissytosi.api.domain.Portfolio;
 import com.krissytosi.api.parse.PortfolioParser;
-import com.krissytosi.utils.Constants;
+import com.krissytosi.utils.KrissyTosiConstants;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -42,7 +42,7 @@ public class JsonPortfolioParser implements PortfolioParser {
         // make sure we got at least *something* back from the API server
         if (response != null && !"".equalsIgnoreCase(response)) {
             // make sure it wasn't just a HTTP status code
-            if (response.length() != Constants.HTTP_RESPONSE_CODE_LENGTH) {
+            if (response.length() != KrissyTosiConstants.HTTP_RESPONSE_CODE_LENGTH) {
                 try {
                     // parse the response into an array and iterate
                     JSONArray rootJson = new JSONArray(response);
@@ -58,17 +58,17 @@ public class JsonPortfolioParser implements PortfolioParser {
                         }
                     }
                 } catch (JSONException e) {
-                    portfolios.add(createErrorPortfolio(Constants.NO_PORTFOLIOS));
+                    portfolios.add(createErrorPortfolio(KrissyTosiConstants.NO_PORTFOLIOS));
                     Log.e(LOG_TAG, "parsePortfolios", e);
                 }
             } else {
-                portfolios.add(createErrorPortfolio(Constants.API_ERROR));
+                portfolios.add(createErrorPortfolio(KrissyTosiConstants.API_ERROR));
                 Log.d(LOG_TAG,
                         "Failed to retrieve portfolios - got a HTTP response code back from the API server instead "
                                 + response);
             }
         } else {
-            portfolios.add(createErrorPortfolio(Constants.API_ERROR));
+            portfolios.add(createErrorPortfolio(KrissyTosiConstants.API_ERROR));
             Log.d(LOG_TAG,
                     "Failed to retrieve portfolios - got nothing back from the API server");
         }
@@ -85,13 +85,13 @@ public class JsonPortfolioParser implements PortfolioParser {
      */
     private Portfolio digestPortfolio(JSONObject portfolioJson) throws JSONException {
         Portfolio portfolio = new Portfolio();
-        if (!portfolioJson.has(Constants.ERROR_IDENTIFIER)) {
-            portfolio.setName(portfolioJson.getString(Constants.NAME_ID));
-            portfolio.setNumberOfImages(portfolioJson.getInt(Constants.NUMBER_OF_IMAGES_ID));
-            portfolio.setStartIndex(portfolioJson.getInt(Constants.START_INDEX_ID));
-            portfolio.setOrderIndex(portfolioJson.getInt(Constants.ORDER_INDEX_ID));
+        if (!portfolioJson.has(KrissyTosiConstants.ERROR_IDENTIFIER)) {
+            portfolio.setName(portfolioJson.getString(KrissyTosiConstants.NAME_ID));
+            portfolio.setNumberOfImages(portfolioJson.getInt(KrissyTosiConstants.NUMBER_OF_IMAGES_ID));
+            portfolio.setStartIndex(portfolioJson.getInt(KrissyTosiConstants.START_INDEX_ID));
+            portfolio.setOrderIndex(portfolioJson.getInt(KrissyTosiConstants.ORDER_INDEX_ID));
         } else {
-            portfolio = digestErrorResponse(portfolioJson.getJSONObject(Constants.ERROR_IDENTIFIER));
+            portfolio = digestErrorResponse(portfolioJson.getJSONObject(KrissyTosiConstants.ERROR_IDENTIFIER));
         }
         return portfolio;
     }
@@ -106,8 +106,8 @@ public class JsonPortfolioParser implements PortfolioParser {
      */
     private Portfolio digestErrorResponse(JSONObject errorJson) throws JSONException {
         Portfolio errorPortfolio = new Portfolio();
-        errorPortfolio.setErrorCode(errorJson.getInt(Constants.ERROR_CODE));
-        errorPortfolio.setErrorDescription(errorJson.getString(Constants.ERROR_DESCRIPTION));
+        errorPortfolio.setErrorCode(errorJson.getInt(KrissyTosiConstants.ERROR_CODE));
+        errorPortfolio.setErrorDescription(errorJson.getString(KrissyTosiConstants.ERROR_DESCRIPTION));
         return errorPortfolio;
     }
 
@@ -121,7 +121,7 @@ public class JsonPortfolioParser implements PortfolioParser {
     private Portfolio createErrorPortfolio(int errorCode) {
         Portfolio errorPortfolio = new Portfolio();
         errorPortfolio.setErrorCode(errorCode);
-        errorPortfolio.setErrorDescription(Constants.NO_PORTFOLIOS_DESCRIPTION);
+        errorPortfolio.setErrorDescription(KrissyTosiConstants.NO_PORTFOLIOS_DESCRIPTION);
         return errorPortfolio;
     }
 }

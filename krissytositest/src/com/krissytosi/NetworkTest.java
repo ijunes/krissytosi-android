@@ -27,7 +27,7 @@ import com.google.code.tempusfugit.temporal.WaitFor;
 import com.krissytosi.api.ApiClient;
 import com.krissytosi.api.NetworkedApiClient;
 import com.krissytosi.api.domain.Portfolio;
-import com.krissytosi.utils.Constants;
+import com.krissytosi.utils.KrissyTosiConstants;
 
 import java.util.List;
 import java.util.concurrent.TimeoutException;
@@ -41,7 +41,7 @@ public class NetworkTest extends AndroidTestCase {
     public void testGetPortfolios() {
         try {
             ApiClient apiClient = new NetworkedApiClient();
-            apiClient.setBaseUrl(Constants.PROD_API_URL);
+            apiClient.setBaseUrl(KrissyTosiConstants.PROD_API_URL);
             portfolioList = apiClient.getPortfolioService().getPortfolios();
             WaitFor.waitOrTimeout(new MarketConditionCheck(),
                     timeout(millis(10000)));

@@ -22,7 +22,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.krissytosi.R;
-import com.krissytosi.utils.Constants;
+import com.krissytosi.utils.KrissyTosiConstants;
 
 public class ContactFragment extends BaseFragment {
 
@@ -41,6 +41,6 @@ public class ContactFragment extends BaseFragment {
 
     @Override
     public String getFragmentIdentifier() {
-        return Constants.FRAGMENT_CONTACT_ID;
+        return KrissyTosiConstants.FRAGMENT_CONTACT_ID;
     }
 }

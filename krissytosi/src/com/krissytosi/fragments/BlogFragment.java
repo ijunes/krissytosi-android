@@ -26,7 +26,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.krissytosi.R;
-import com.krissytosi.utils.Constants;
+import com.krissytosi.utils.KrissyTosiConstants;
 
 /**
  * Just contains a web view which points at cottage farm blogspot.
@@ -48,7 +48,7 @@ public class BlogFragment extends BaseFragment {
 
     @Override
     public String getFragmentIdentifier() {
-        return Constants.FRAGMENT_BLOG_ID;
+        return KrissyTosiConstants.FRAGMENT_BLOG_ID;
     }
 
     @Override
@@ -60,7 +60,7 @@ public class BlogFragment extends BaseFragment {
     @Override
     public void onTabSelected() {
         toggleLoading(true, getWebView());
-        getWebView().loadUrl(Constants.BLOG_URL);
+        getWebView().loadUrl(KrissyTosiConstants.BLOG_URL);
     }
 
     public class MyWebViewClient extends WebViewClient {

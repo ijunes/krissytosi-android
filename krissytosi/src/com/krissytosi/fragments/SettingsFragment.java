@@ -16,31 +16,19 @@
 
 package com.krissytosi.fragments;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.preference.PreferenceFragment;
 
 import com.krissytosi.R;
-import com.krissytosi.utils.KrissyTosiConstants;
 
-public class NewsFragment extends BaseFragment {
+@SuppressLint("NewApi")
+public class SettingsFragment extends PreferenceFragment {
 
+    @SuppressLint("NewApi")
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.news, container, false);
-        return v;
-    }
-
-    @Override
-    public void onTabSelected() {
-        if (getView() != null) {
-            getView().findViewById(R.id.base_fragment).setVisibility(View.GONE);
-        }
-    }
-
-    @Override
-    public String getFragmentIdentifier() {
-        return KrissyTosiConstants.FRAGMENT_NEWS_ID;
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        addPreferencesFromResource(R.xml.settings);
     }
 }

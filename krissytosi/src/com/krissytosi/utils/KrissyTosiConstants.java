@@ -19,7 +19,7 @@ package com.krissytosi.utils;
 /**
  * Some constants for the app.
  */
-public final class Constants {
+public final class KrissyTosiConstants {
 
     public static final String PROD_API_URL = "http://www.krissytosi.com/api";
     public static final String LOCAL_API_URL = "http://localhost:8080/api";

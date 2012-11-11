@@ -27,7 +27,7 @@ import com.etsy.etsyCore.RequestManager;
 import com.krissytosi.api.ApiClient;
 import com.krissytosi.modules.KrissyTosiModule;
 import com.krissytosi.tracking.Tracking;
-import com.krissytosi.utils.Constants;
+import com.krissytosi.utils.KrissyTosiConstants;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
@@ -117,10 +117,10 @@ public class KrissyTosiApplication extends Application {
         ObjectGraph objectGraph = ObjectGraph.create(new KrissyTosiModule());
         // API first
         apiClient = objectGraph.get(ApiClient.class);
-        apiClient.setBaseUrl(Constants.LOCAL_API_URL);
+        apiClient.setBaseUrl(KrissyTosiConstants.LOCAL_API_URL);
         // then the tracker implementation
         tracking = objectGraph.get(Tracking.class);
-        tracking.initialize(this, Constants.TRACKING_KEY);
+        tracking.initialize(this, KrissyTosiConstants.TRACKING_KEY);
         // finally, the etsy API implementation
         requestManager = objectGraph.get(RequestManager.class);
     }

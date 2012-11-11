@@ -14,28 +14,19 @@
    limitations under the License.
  */
 
-package com.krissytosi.api;
+package com.krissytosi.utils;
 
-import com.krissytosi.api.services.PortfolioService;
-import com.krissytosi.utils.KrissyTosiConstants;
+import android.os.Build;
 
 /**
- * Defines all methods used to interact with the API server.
+ * Just some utilities used throughout the application.
  */
-public interface ApiClient {
+public class KrissyTosiUtils {
 
     /**
-     * Sets the base URL which this API client should target. See
-     * {@link KrissyTosiConstants} for example base urls.
-     * 
-     * @param baseUrl the base url to set.
+     * @return boolean indicating that the current OS is >= honeycomb (3.0).
      */
-    void setBaseUrl(String baseUrl);
-
-    /**
-     * Accessor for the portfolio service.
-     * 
-     * @return an instance of a {@link PortfolioService}.
-     */
-    PortfolioService getPortfolioService();
+    public static boolean atLeastHoneyComb() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB;
+    }
 }
