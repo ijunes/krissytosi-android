@@ -47,7 +47,7 @@ public class BlogFragment extends BaseFragment {
     }
 
     @Override
-    protected String getFragmentIdentifier() {
+    public String getFragmentIdentifier() {
         return Constants.FRAGMENT_BLOG_ID;
     }
 
@@ -58,8 +58,7 @@ public class BlogFragment extends BaseFragment {
     }
 
     @Override
-    protected void onTabSelected() {
-        super.onTabSelected();
+    public void onTabSelected() {
         toggleLoading(true, getWebView());
         getWebView().loadUrl(Constants.BLOG_URL);
     }

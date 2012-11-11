@@ -72,7 +72,7 @@ public class PortfoliosFragment extends BaseFragment {
     }
 
     @Override
-    protected String getFragmentIdentifier() {
+    public String getFragmentIdentifier() {
         return Constants.FRAGMENT_PORTFOLIO_ID;
     }
 
@@ -85,8 +85,7 @@ public class PortfoliosFragment extends BaseFragment {
     }
 
     @Override
-    protected void onTabSelected() {
-        super.onTabSelected();
+    public void onTabSelected() {
         if (getActivity() != null && getPortfoliosTask == null) {
             toggleLoading(true, pager);
             getPortfoliosTask = new GetPortfoliosTask();

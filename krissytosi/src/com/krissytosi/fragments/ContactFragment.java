@@ -33,7 +33,14 @@ public class ContactFragment extends BaseFragment {
     }
 
     @Override
-    protected String getFragmentIdentifier() {
+    public void onTabSelected() {
+        if (getView() != null) {
+            getView().findViewById(R.id.base_fragment).setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public String getFragmentIdentifier() {
         return Constants.FRAGMENT_CONTACT_ID;
     }
 }

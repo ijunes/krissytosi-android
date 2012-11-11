@@ -22,7 +22,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 
 import com.etsy.etsyCore.EtsyRequestManager;
 import com.etsy.etsyCore.EtsyResult;
@@ -43,7 +42,7 @@ import java.util.List;
 /**
  * Retrieves listings for a store & displays them to the user.
  */
-public class StoreFragment extends BaseFragment {
+public class StoreFragment extends BaseListFragment {
 
     private static final String LOG_TAG = "StoreFragment";
 
@@ -52,7 +51,6 @@ public class StoreFragment extends BaseFragment {
      */
     private GetListingsTask getListingsTask;
 
-    private ListView listView;
     private StoreAdapter adapter;
 
     @Override
@@ -62,19 +60,20 @@ public class StoreFragment extends BaseFragment {
     }
 
     @Override
-    protected String getFragmentIdentifier() {
+    public String getFragmentIdentifier() {
         return Constants.FRAGMENT_STORE_ID;
     }
 
     @Override
-    protected void onTabSelected() {
-        super.onTabSelected();
+    public void onTabSelected() {
         if (getActivity() != null && getListingsTask == null && adapter == null) {
             // check to see whether we even need to get more store listings
-            toggleLoading(true, getActivity().findViewById(R.id.listings));
+            toggleLoading(true, getActivity().findViewById(android.R.id.list));
             getListingsTask = new GetListingsTask();
-            getListingsTask.execute(((KrissyTosiApplication) getActivity().getApplication())
-                    .getRequestManager());
+            getListingsTask.execute(((KrissyTosiApplication)
+                    getActivity().getApplication()).getRequestManager());
+        } else if (adapter != null && adapter.getCount() > 0) {
+            toggleLoading(false, getActivity().findViewById(android.R.id.list));
         }
     }
 
@@ -97,14 +96,11 @@ public class StoreFragment extends BaseFragment {
             adapter = new StoreAdapter(getActivity(), R.layout.store_listing,
                     (ArrayList<Listing>) listings);
         }
-        if (listView == null) {
-            listView = (ListView) getView().findViewById(R.id.listings);
-        }
-        if (listView.getAdapter() == null) {
-            listView.setAdapter(adapter);
+        if (getListAdapter() == null) {
+            setListAdapter(adapter);
         }
         adapter.notifyDataSetChanged();
-        toggleLoading(false, getActivity().findViewById(R.id.listings));
+        toggleLoading(false, getActivity().findViewById(android.R.id.list));
     }
 
     /**

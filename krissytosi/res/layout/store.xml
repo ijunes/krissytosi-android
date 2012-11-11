@@ -8,9 +8,8 @@
         layout="@layout/base_fragment" />
 
     <ListView
-        android:id="@+id/listings"
+        android:id="@android:id/list"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:visibility="gone" />
+        android:layout_height="fill_parent" />
 
 </LinearLayout>

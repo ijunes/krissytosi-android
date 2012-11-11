@@ -20,14 +20,15 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.ListFragment;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ListView;
 
 /**
- * Includes some common functionality which is shared across all regular
- * fragments.
+ * Base class for {@link Fragment}s which need a {@link ListView}.
  */
-public abstract class BaseFragment extends Fragment implements TabbedFragment {
+public abstract class BaseListFragment extends ListFragment implements TabbedFragment {
 
     /**
      * Button which allows the user to re-initiate a request should they get the
@@ -83,4 +84,5 @@ public abstract class BaseFragment extends Fragment implements TabbedFragment {
     public void toggleNoNetwork(boolean show, View view) {
         FragmentHelper.toggleNoNetwork(show, view, getView());
     }
+
 }
