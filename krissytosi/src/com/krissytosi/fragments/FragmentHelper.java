@@ -20,6 +20,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.widget.Button;
@@ -67,6 +68,7 @@ public class FragmentHelper {
             BroadcastReceiver broadcastReceiver) {
         if (activity != null) {
             IntentFilter filter = new IntentFilter(KrissyTosiConstants.KT_TAB_SELECTED);
+            filter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
             activity.registerReceiver(broadcastReceiver, filter);
         }
         fragment.onTabSelected();
@@ -104,6 +106,8 @@ public class FragmentHelper {
             if (fragmentIdentifier.equals(tabIdentifier)) {
                 shouldSelectTab = true;
             }
+        } else if (action.equals(ConnectivityManager.CONNECTIVITY_ACTION)) {
+            // TODO
         }
         return shouldSelectTab;
     }

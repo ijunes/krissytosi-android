@@ -16,6 +16,9 @@
 
 package com.krissytosi.utils;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Build;
 
 /**
@@ -28,5 +31,21 @@ public class KrissyTosiUtils {
      */
     public static boolean atLeastHoneyComb() {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB;
+    }
+
+    /**
+     * Checks to see whether the application has a viable internet connection.
+     * Does NOT check to see whether any possible Wi-Fi connection is blocked by
+     * a splash screen.
+     * 
+     * @param context
+     * @return boolean indicating that there is at least some internet
+     *         connection (either 3g, 4g or Wi-Fi).
+     */
+    public static boolean isNetworkAvailable(Context context) {
+        ConnectivityManager connectivityManager = (ConnectivityManager) context
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInformation = connectivityManager.getActiveNetworkInfo();
+        return networkInformation != null && networkInformation.isConnectedOrConnecting();
     }
 }
