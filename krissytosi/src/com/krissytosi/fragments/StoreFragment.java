@@ -19,9 +19,13 @@ package com.krissytosi.fragments;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnKeyListener;
 import android.view.ViewGroup;
+import android.widget.ListView;
+import android.widget.RelativeLayout;
 
 import com.etsy.etsyCore.EtsyResult;
 import com.etsy.etsyCore.RequestManager;
@@ -51,11 +55,29 @@ public class StoreFragment extends BaseListFragment {
      */
     private GetListingsTask getListingsTask;
 
+    private ListView listView;
+    private RelativeLayout detailView;
+
+    /**
+     * Adapter which backs this view.
+     */
     private StoreAdapter adapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.store, container, false);
+        v.setOnKeyListener(new OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_BACK) {
+                    if (!isListViewShowing()) {
+                        toggleListView(true);
+                        return true;
+                    }
+                }
+                return false;
+            }
+        });
         return v;
     }
 
@@ -85,6 +107,21 @@ public class StoreFragment extends BaseListFragment {
         }
     }
 
+    @Override
+    public void onListItemClick(ListView l, View v, int position, long id) {
+        super.onListItemClick(l, v, position, id);
+        toggleListView(false);
+    }
+
+    /**
+     * Checks to see whether the main store {@link ListView} is showing or not.
+     * 
+     * @return boolean indicating that the store view is showing.
+     */
+    public boolean isListViewShowing() {
+        return listView != null && listView.getVisibility() != View.GONE;
+    }
+
     /**
      * Given the listings parameter, this method is responsible for building out
      * the ListView of listings.
@@ -92,6 +129,8 @@ public class StoreFragment extends BaseListFragment {
      * @param listings the listings retrieved from the API server.
      */
     protected void buildView(List<Listing> listings) {
+        listView = (ListView) getActivity().findViewById(android.R.id.list);
+        detailView = (RelativeLayout) getActivity().findViewById(R.id.detail_view);
         if (adapter == null) {
             adapter = new StoreAdapter(getActivity(), R.layout.store_listing,
                     (ArrayList<Listing>) listings);
@@ -130,6 +169,17 @@ public class StoreFragment extends BaseListFragment {
      */
     protected void onGetListingsFailure(int errorCode) {
         Log.d(LOG_TAG, "Failed to get listings " + errorCode);
+    }
+
+    private void toggleListView(boolean show) {
+        // TODO - animations?
+        if (show) {
+            detailView.setVisibility(View.GONE);
+            listView.setVisibility(View.VISIBLE);
+        } else {
+            listView.setVisibility(View.GONE);
+            detailView.setVisibility(View.VISIBLE);
+        }
     }
 
     /**
