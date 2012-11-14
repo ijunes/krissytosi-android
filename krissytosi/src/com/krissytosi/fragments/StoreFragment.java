@@ -24,8 +24,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnKeyListener;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.ViewFlipper;
 
 import com.etsy.etsyCore.EtsyResult;
 import com.etsy.etsyCore.RequestManager;
@@ -55,8 +57,15 @@ public class StoreFragment extends BaseListFragment {
      */
     private GetListingsTask getListingsTask;
 
+    /**
+     * Used to flip between the main store & a detailed store item view.
+     */
+    private ViewFlipper flipper;
+
+    /**
+     * ListView which is responsible for rendering the store.
+     */
     private ListView listView;
-    private RelativeLayout detailView;
 
     /**
      * Adapter which backs this view.
@@ -90,12 +99,12 @@ public class StoreFragment extends BaseListFragment {
     public void onTabSelected() {
         if (getActivity() != null && getListingsTask == null && adapter == null) {
             // check to see whether we even need to get more store listings
-            toggleLoading(true, getActivity().findViewById(android.R.id.list));
+            toggleLoading(true, getActivity().findViewById(R.id.store_flipper));
             getListingsTask = new GetListingsTask();
             getListingsTask.execute(((KrissyTosiApplication)
                     getActivity().getApplication()).getRequestManager());
         } else if (adapter != null && adapter.getCount() > 0) {
-            toggleLoading(false, getActivity().findViewById(android.R.id.list));
+            toggleLoading(false, getActivity().findViewById(R.id.store_flipper));
         }
     }
 
@@ -111,6 +120,8 @@ public class StoreFragment extends BaseListFragment {
     public void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
         toggleListView(false);
+        Listing listing = adapter.getItem(position);
+        populateStoreListing(listing);
     }
 
     /**
@@ -129,8 +140,8 @@ public class StoreFragment extends BaseListFragment {
      * @param listings the listings retrieved from the API server.
      */
     protected void buildView(List<Listing> listings) {
+        flipper = (ViewFlipper) getActivity().findViewById(R.id.store_flipper);
         listView = (ListView) getActivity().findViewById(android.R.id.list);
-        detailView = (RelativeLayout) getActivity().findViewById(R.id.detail_view);
         if (adapter == null) {
             adapter = new StoreAdapter(getActivity(), R.layout.store_listing,
                     (ArrayList<Listing>) listings);
@@ -139,7 +150,7 @@ public class StoreFragment extends BaseListFragment {
             setListAdapter(adapter);
         }
         adapter.notifyDataSetChanged();
-        toggleLoading(false, getActivity().findViewById(android.R.id.list));
+        toggleLoading(false, getActivity().findViewById(R.id.store_flipper));
     }
 
     /**
@@ -171,15 +182,50 @@ public class StoreFragment extends BaseListFragment {
         Log.d(LOG_TAG, "Failed to get listings " + errorCode);
     }
 
+    /**
+     * Hides/shows the store list view based on the show parameter.
+     * 
+     * @param show boolean indicating that the list should be visible.
+     */
     private void toggleListView(boolean show) {
-        // TODO - animations?
         if (show) {
-            detailView.setVisibility(View.GONE);
-            listView.setVisibility(View.VISIBLE);
+            flipper.setInAnimation(AnimationUtils.loadAnimation(getActivity(),
+                    android.R.anim.slide_in_left));
+            flipper.setOutAnimation(AnimationUtils.loadAnimation(getActivity(),
+                    android.R.anim.slide_out_right));
+            flipper.showPrevious();
         } else {
-            listView.setVisibility(View.GONE);
-            detailView.setVisibility(View.VISIBLE);
+            flipper.setInAnimation(AnimationUtils.loadAnimation(getActivity(),
+                    R.anim.slide_in_right));
+            flipper.setOutAnimation(AnimationUtils.loadAnimation(getActivity(),
+                    R.anim.slide_out_left));
+            flipper.showNext();
         }
+    }
+
+    /**
+     * Executed when a user clicks on a particular store listing.
+     * 
+     * @param listing the listing on which the user clicked.
+     */
+    private void populateStoreListing(Listing listing) {
+        // perhaps pop these into member variables
+        TextView detailViewTitle = (TextView) getView().findViewById(R.id.detail_view_title);
+        TextView detailViewDescription = (TextView) getView().findViewById(
+                R.id.detail_view_description);
+        TextView detailViewCreated = (TextView) getView().findViewById(R.id.detail_view_created);
+        TextView detailViewPrice = (TextView) getView().findViewById(R.id.detail_view_price);
+        TextView detailViewQuantity = (TextView) getView().findViewById(R.id.detail_view_quantity);
+        TextView detailViewWhenMade = (TextView) getView().findViewById(R.id.detail_view_when_made);
+        TextView detailViewNumFavourers = (TextView) getView().findViewById(
+                R.id.detail_view_num_favorers);
+        detailViewTitle.setText(listing.getTitle());
+        detailViewDescription.setText(listing.getDescription());
+        detailViewCreated.setText(String.valueOf(listing.getCreationTsz()));
+        detailViewPrice.setText(listing.getPrice());
+        detailViewQuantity.setText(String.valueOf(listing.getQuantity()));
+        detailViewWhenMade.setText(listing.getWhenMade());
+        detailViewNumFavourers.setText(String.valueOf(listing.getNumFavorers()));
     }
 
     /**

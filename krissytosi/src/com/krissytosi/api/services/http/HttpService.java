@@ -18,6 +18,7 @@ package com.krissytosi.api.services.http;
 
 import android.util.Log;
 
+import com.krissytosi.utils.ApiConstants;
 import com.krissytosi.utils.KrissyTosiConstants;
 
 import org.apache.commons.io.IOUtils;
@@ -242,17 +243,17 @@ public class HttpService {
      * 
      * @param response the HTTP response from the wire.
      * @return boolean indicating that a specific header is available in the
-     *         response. See {@link KrissyTosiConstants} for details of the header key
-     *         value pair.
+     *         response. See {@link KrissyTosiConstants} for details of the
+     *         header key value pair.
      */
     private boolean checkResponseForCustomHeader(HttpResponse response) {
         // TODO - custom headers and python responses?
         boolean hasValidHeader = true;
-        Header headers[] = response.getHeaders(KrissyTosiConstants.RESPONSE_HEADER_NAME);
+        Header headers[] = response.getHeaders(ApiConstants.RESPONSE_HEADER_NAME);
         if (headers != null) {
             for (Header header : headers) {
                 if (header.getValue().equalsIgnoreCase(
-                        KrissyTosiConstants.RESPONSE_HEADER_VALUE)) {
+                        ApiConstants.RESPONSE_HEADER_VALUE)) {
                     hasValidHeader = true;
                     break;
                 }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <lint>
-	<issue id="ContentDescription" severity="ignore" />
     <issue id="BackButton" severity="error" />
+    <issue id="ContentDescription" severity="ignore" />
     <issue id="FieldGetter" severity="warning" />
     <issue id="IconExpectedSize" severity="warning" />
     <issue id="IconLocation" severity="ignore" />

@@ -34,6 +34,7 @@ import com.krissytosi.KrissyTosiApplication;
 import com.krissytosi.R;
 import com.krissytosi.api.ApiClient;
 import com.krissytosi.api.domain.Portfolio;
+import com.krissytosi.utils.ApiConstants;
 import com.krissytosi.utils.KrissyTosiConstants;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -204,8 +205,8 @@ public class PortfoliosFragment extends BaseFragment {
             }
         } else {
             Portfolio portfolio = new Portfolio();
-            portfolio.setErrorCode(KrissyTosiConstants.NO_PORTFOLIOS);
-            portfolio.setErrorDescription(KrissyTosiConstants.NO_PORTFOLIOS_DESCRIPTION);
+            portfolio.setErrorCode(ApiConstants.NO_PORTFOLIOS);
+            portfolio.setErrorDescription(ApiConstants.NO_PORTFOLIOS_DESCRIPTION);
             handlePortfolioApiError(portfolio);
         }
     }

@@ -25,10 +25,12 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.TabHost;
 
+import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 import com.krissytosi.KrissyTosiApplication;
 import com.krissytosi.R;
 import com.krissytosi.fragments.BlogFragment;
@@ -46,11 +48,10 @@ import java.util.Map;
  * Main activity in the application. Gives the user the choice to browse
  * portfolios, view news or contact.
  */
-public class MainActivity extends FragmentActivity implements OnClickListener {
+public class MainActivity extends SherlockFragmentActivity {
 
     private static final String CURRENT_TAB_IDENTIFIER = "com.krissytosi.activities.CURRENT_TAB_IDENTIFIER";
 
-    private Button settingsButton;
     private TabHost tabHost;
     private TabManager tabManager;
 
@@ -75,9 +76,15 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
     }
 
     @Override
-    public void onClick(View v) {
-        // just to be sure
-        if (v.equals(settingsButton)) {
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getSupportMenuInflater();
+        inflater.inflate(R.xml.main_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.menu_settings) {
             Intent intent = null;
             if (KrissyTosiUtils.atLeastHoneyComb()) {
                 intent = new Intent(this, SettingsActivityHC.class);
@@ -86,14 +93,13 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
             }
             startActivity(intent);
         }
+        return true;
     }
 
     private void initializeViewElements() {
         tabHost = (TabHost) findViewById(android.R.id.tabhost);
         tabHost.setup();
         tabManager = new TabManager(this, tabHost, R.id.realtabcontent);
-        settingsButton = (Button) findViewById(R.id.settings_button);
-        settingsButton.setOnClickListener(this);
     }
 
     private void initializeTabs(Resources resources) {

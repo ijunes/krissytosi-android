@@ -20,6 +20,7 @@
 
     <application
         android:name=".KrissyTosiApplication"
+        android:hardwareAccelerated="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/KrissyTosiTheme" >
@@ -40,6 +41,16 @@
             android:name=".activities.SettingsActivityHC"
             android:label="@string/settings" >
         </activity>
+
+        <receiver android:name=".ApplicationUpdateReceiver" >
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_REPLACED" />
+
+                <data
+                    android:path="com.krissytosi"
+                    android:scheme="package" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>
