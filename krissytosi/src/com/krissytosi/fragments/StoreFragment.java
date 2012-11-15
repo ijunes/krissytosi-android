@@ -18,6 +18,7 @@ package com.krissytosi.fragments;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -229,7 +230,7 @@ public class StoreFragment extends BaseListFragment {
         TextView detailViewNumFavourers = (TextView) getView().findViewById(
                 R.id.detail_view_num_favorers);
         detailViewTitle.setText(listing.getTitle());
-        detailViewDescription.setText(listing.getDescription());
+        detailViewDescription.setText(Html.fromHtml(listing.getDescription()));
         detailViewCreated.setText(String.valueOf(listing.getCreationTsz()));
         detailViewPrice.setText(listing.getPrice());
         detailViewQuantity.setText(String.valueOf(listing.getQuantity()));

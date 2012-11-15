@@ -77,7 +77,7 @@ public class StoreAdapter extends ArrayAdapter<Listing> {
                     if (images != null && images.length > 0) {
                         ListingImage image = images[0];
                         UrlImageViewHelper.setUrlDrawable(holder.listingImageView,
-                                image.getUrl75x75());
+                                image.getUrl170x135());
                     } else {
                         // no images for this listing? TODO - display dummy pic?
                         Log.d(LOG_TAG, "No image for listing " + listing.getListingId());
