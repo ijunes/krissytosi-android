@@ -26,6 +26,7 @@ import android.view.View;
 import android.view.View.OnKeyListener;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
@@ -34,13 +35,17 @@ import com.etsy.etsyCore.EtsyResult;
 import com.etsy.etsyCore.RequestManager;
 import com.etsy.etsyModels.BaseModel;
 import com.etsy.etsyModels.Listing;
+import com.etsy.etsyModels.ListingImage;
 import com.etsy.etsyRequests.ListingsRequest;
+import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 import com.krissytosi.KrissyTosiApplication;
 import com.krissytosi.OnSwipeTouchListener;
 import com.krissytosi.R;
 import com.krissytosi.fragments.adapters.StoreAdapter;
 import com.krissytosi.utils.ApiConstants;
 import com.krissytosi.utils.KrissyTosiConstants;
+import com.krissytosi.utils.KrissyTosiUtils;
+import com.krissytosi.utils.KrissyTosiUtils.ImageSize;
 
 import org.apache.http.HttpStatus;
 
@@ -220,6 +225,7 @@ public class StoreFragment extends BaseListFragment {
      */
     private void populateStoreListing(Listing listing) {
         // perhaps pop these into member variables
+        ImageView detailImageView = (ImageView) getView().findViewById(R.id.detail_view_image);
         TextView detailViewTitle = (TextView) getView().findViewById(R.id.detail_view_title);
         TextView detailViewDescription = (TextView) getView().findViewById(
                 R.id.detail_view_description);
@@ -229,6 +235,13 @@ public class StoreFragment extends BaseListFragment {
         TextView detailViewWhenMade = (TextView) getView().findViewById(R.id.detail_view_when_made);
         TextView detailViewNumFavourers = (TextView) getView().findViewById(
                 R.id.detail_view_num_favorers);
+        ListingImage[] images = listing.getImages();
+        if (images.length > 0) {
+            UrlImageViewHelper.setUrlDrawable(detailImageView,
+                    KrissyTosiUtils.determineImageUrl(listing.getImages()[0], ImageSize.LARGE));
+        } else {
+            // TODO is it feasible for this to even happen
+        }
         detailViewTitle.setText(listing.getTitle());
         detailViewDescription.setText(Html.fromHtml(listing.getDescription()));
         detailViewCreated.setText(String.valueOf(listing.getCreationTsz()));

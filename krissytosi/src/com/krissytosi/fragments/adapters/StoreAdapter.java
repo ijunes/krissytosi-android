@@ -30,6 +30,8 @@ import com.etsy.etsyModels.ListingImage;
 import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 import com.krissytosi.R;
 import com.krissytosi.fragments.StoreFragment;
+import com.krissytosi.utils.KrissyTosiUtils;
+import com.krissytosi.utils.KrissyTosiUtils.ImageSize;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -77,7 +79,7 @@ public class StoreAdapter extends ArrayAdapter<Listing> {
                     if (images != null && images.length > 0) {
                         ListingImage image = images[0];
                         UrlImageViewHelper.setUrlDrawable(holder.listingImageView,
-                                image.getUrl170x135());
+                                KrissyTosiUtils.determineImageUrl(image, ImageSize.MEDIUM));
                     } else {
                         // no images for this listing? TODO - display dummy pic?
                         Log.d(LOG_TAG, "No image for listing " + listing.getListingId());

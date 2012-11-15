@@ -21,10 +21,16 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
 
+import com.etsy.etsyModels.ListingImage;
+
 /**
  * Just some utilities used throughout the application.
  */
 public class KrissyTosiUtils {
+
+    public enum ImageSize {
+        SMALL, MEDIUM, LARGE
+    }
 
     /**
      * @return boolean indicating that the current OS is >= honeycomb (3.0).
@@ -47,5 +53,26 @@ public class KrissyTosiUtils {
                 .getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInformation = connectivityManager.getActiveNetworkInfo();
         return networkInformation != null && networkInformation.isConnectedOrConnecting();
+    }
+
+    /**
+     * Layer of indirection
+     * (http://en.wikipedia.org/wiki/David_Wheeler_(computer_scientist)) which
+     * helps when figuring out the most appropriate image to load.
+     * 
+     * @param listingImage the image returned from the store API.
+     * @param imageSize
+     * @return String where the URL can be accessed.
+     */
+    public static String determineImageUrl(ListingImage listingImage, ImageSize imageSize) {
+        String imageUrl = "";
+        // TODO - take device density into account when determining the most
+        // appropriate image to load.
+        if (imageSize == ImageSize.MEDIUM) {
+            imageUrl = listingImage.getUrl170x135();
+        } else {
+            imageUrl = listingImage.getUrlFullxfull();
+        }
+        return imageUrl;
     }
 }
