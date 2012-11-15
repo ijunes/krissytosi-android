@@ -35,6 +35,7 @@ import com.etsy.etsyModels.BaseModel;
 import com.etsy.etsyModels.Listing;
 import com.etsy.etsyRequests.ListingsRequest;
 import com.krissytosi.KrissyTosiApplication;
+import com.krissytosi.OnSwipeTouchListener;
 import com.krissytosi.R;
 import com.krissytosi.fragments.adapters.StoreAdapter;
 import com.krissytosi.utils.ApiConstants;
@@ -85,6 +86,14 @@ public class StoreFragment extends BaseListFragment {
                     }
                 }
                 return false;
+            }
+        });
+        View storeDetailView = v.findViewById(R.id.store_detail_view);
+        storeDetailView.setOnTouchListener(new OnSwipeTouchListener() {
+
+            @Override
+            public void onSwipeLeft() {
+                toggleListView(true);
             }
         });
         return v;
