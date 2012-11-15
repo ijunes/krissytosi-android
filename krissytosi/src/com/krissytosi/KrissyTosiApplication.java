@@ -18,8 +18,10 @@ package com.krissytosi;
 
 import android.annotation.TargetApi;
 import android.app.Application;
+import android.content.IntentFilter;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.net.ConnectivityManager;
 import android.os.StrictMode;
 import android.util.Log;
 
@@ -67,6 +69,11 @@ public class KrissyTosiApplication extends Application {
     private RequestManager requestManager;
 
     /**
+     * Used to understand the device's network state.
+     */
+    private NetworkReceiver receiver;
+
+    /**
      * Defines what mode the application is in. Different functionality is
      * available for different modes.
      */
@@ -80,6 +87,7 @@ public class KrissyTosiApplication extends Application {
         initializeStrictMode();
         initializeLogging();
         initializeModules();
+        initializeNetworkReceiver();
         initializeImageLoader();
     }
 
@@ -87,6 +95,14 @@ public class KrissyTosiApplication extends Application {
     public void onLowMemory() {
         super.onLowMemory();
         ImageLoader.getInstance().clearMemoryCache();
+    }
+
+    @Override
+    public void onTerminate() {
+        super.onTerminate();
+        if (receiver != null) {
+            this.unregisterReceiver(receiver);
+        }
     }
 
     private void initializeLogging() {
@@ -138,6 +154,12 @@ public class KrissyTosiApplication extends Application {
                     .penaltyLog()
                     .build());
         }
+    }
+
+    private void initializeNetworkReceiver() {
+        receiver = new NetworkReceiver();
+        IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(receiver, filter);
     }
 
     private void initializeImageLoader() {
