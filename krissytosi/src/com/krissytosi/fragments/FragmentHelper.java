@@ -133,6 +133,7 @@ public class FragmentHelper {
             }
             View baseFragment = baseView.findViewById(R.id.base_fragment);
             View loadingMessage = baseView.findViewById(R.id.loading_message);
+            View progressBar = baseView.findViewById(R.id.loading_progress_bar);
             TextView noNetworkMessage = (TextView) baseView.findViewById(R.id.no_network_message);
             View noNetworkButton = baseView.findViewById(R.id.no_network_button);
             noNetworkMessage.setText(noNetworkString);
@@ -144,6 +145,7 @@ public class FragmentHelper {
             }
             if (show) {
                 loadingMessage.setVisibility(View.GONE);
+                progressBar.setVisibility(View.GONE);
             }
         }
     }
@@ -161,7 +163,9 @@ public class FragmentHelper {
             View baseFragment = baseView.findViewById(R.id.base_fragment);
             if (baseFragment != null && view != null) {
                 View loadingMessage = baseView.findViewById(R.id.loading_message);
+                View loadingProgressBar = baseView.findViewById(R.id.loading_progress_bar);
                 loadingMessage.setVisibility(show ? View.VISIBLE : View.GONE);
+                loadingProgressBar.setVisibility(show ? View.VISIBLE : View.GONE);
                 baseFragment.setVisibility(show ? View.VISIBLE : View.GONE);
                 view.setVisibility(show ? View.GONE : View.VISIBLE);
             }
