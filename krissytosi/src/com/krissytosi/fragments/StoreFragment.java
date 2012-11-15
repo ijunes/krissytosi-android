@@ -92,7 +92,7 @@ public class StoreFragment extends BaseListFragment {
         storeDetailView.setOnTouchListener(new OnSwipeTouchListener() {
 
             @Override
-            public void onSwipeLeft() {
+            public void onSwipeRight() {
                 toggleListView(true);
             }
         });
