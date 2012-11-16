@@ -42,11 +42,4 @@ public final class KrissyTosiConstants {
 
     public static final boolean TRACKING_PREFERENCE_DEFAULT = true;
     public static final String TRACKING_PREFERENCE = "tracking_preference";
-
-    public static final int ECLAIR_OS_VERSION = 7;
-    public static final int FROYO_OS_VERSION = 8;
-    public static final int GINGERBREAD_OS_VERSION = 9;
-    public static final int HONEYCOMB_OS_VERSION = 11;
-    public static final int HONEYCOMB_3_2_OS_VERSION = 13;
-    public static final int ICS_OS_VERSION = 14;
 }

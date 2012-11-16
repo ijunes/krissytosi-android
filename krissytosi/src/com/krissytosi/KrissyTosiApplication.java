@@ -22,6 +22,7 @@ import android.content.IntentFilter;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.ConnectivityManager;
+import android.os.Build;
 import android.os.StrictMode;
 import android.util.Log;
 
@@ -142,7 +143,7 @@ public class KrissyTosiApplication extends Application {
         requestManager = objectGraph.get(RequestManager.class);
     }
 
-    @TargetApi(KrissyTosiConstants.HONEYCOMB_OS_VERSION)
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     private void initializeStrictMode() {
         if (applicationMode == ApplicationMode.DEVELOP) {
             StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
