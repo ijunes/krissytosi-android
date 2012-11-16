@@ -99,10 +99,10 @@ public class KrissyTosiApplication extends Application {
 
     @Override
     public void onTerminate() {
-        super.onTerminate();
         if (receiver != null) {
             this.unregisterReceiver(receiver);
         }
+        super.onTerminate();
     }
 
     private void initializeLogging() {
