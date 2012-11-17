@@ -13,19 +13,18 @@
             style="@style/KTParagraphText"
             android:layout_centerHorizontal="true" />
 
-        <ViewFlipper
-            android:id="@+id/detail_view_flipper"
+        <android.support.v4.view.ViewPager
+            android:id="@+id/detail_view_pager"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/detail_view_title"
-            android:layout_centerHorizontal="true" >
-        </ViewFlipper>
+            android:layout_centerHorizontal="true" />
 
         <RelativeLayout
             android:id="@+id/store_detail_view_container"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/detail_view_flipper" >
+            android:layout_below="@+id/detail_view_pager" >
 
             <TextView
                 android:id="@+id/detail_view_description"

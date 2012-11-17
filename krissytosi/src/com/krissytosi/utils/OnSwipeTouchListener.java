@@ -14,7 +14,7 @@
    limitations under the License.
  */
 
-package com.krissytosi;
+package com.krissytosi.utils;
 
 import android.view.GestureDetector;
 import android.view.GestureDetector.SimpleOnGestureListener;
@@ -51,27 +51,29 @@ public class OnSwipeTouchListener implements OnTouchListener {
             // by default, don't consume the event
             boolean consumeEvent = false;
             try {
-                float diffY = e2.getY() - e1.getY();
-                float diffX = e2.getX() - e1.getX();
-                if (Math.abs(diffX) > Math.abs(diffY)) {
-                    if (Math.abs(diffX) > SWIPE_THRESHOLD
-                            && Math.abs(velocityX) > SWIPE_VELOCITY_THRESHOLD) {
-                        if (diffX > 0) {
-                            onSwipeRight();
-                        } else {
-                            onSwipeLeft();
+                if (e1 != null && e2 != null) {
+                    float diffY = e2.getY() - e1.getY();
+                    float diffX = e2.getX() - e1.getX();
+                    if (Math.abs(diffX) > Math.abs(diffY)) {
+                        if (Math.abs(diffX) > SWIPE_THRESHOLD
+                                && Math.abs(velocityX) > SWIPE_VELOCITY_THRESHOLD) {
+                            if (diffX > 0) {
+                                onSwipeRight();
+                            } else {
+                                onSwipeLeft();
+                            }
+                            consumeEvent = true;
                         }
-                        consumeEvent = true;
-                    }
-                } else {
-                    if (Math.abs(diffY) > SWIPE_THRESHOLD
-                            && Math.abs(velocityY) > SWIPE_VELOCITY_THRESHOLD) {
-                        if (diffY > 0) {
-                            onSwipeBottom();
-                        } else {
-                            onSwipeTop();
+                    } else {
+                        if (Math.abs(diffY) > SWIPE_THRESHOLD
+                                && Math.abs(velocityY) > SWIPE_VELOCITY_THRESHOLD) {
+                            if (diffY > 0) {
+                                onSwipeBottom();
+                            } else {
+                                onSwipeTop();
+                            }
+                            consumeEvent = true;
                         }
-                        consumeEvent = true;
                     }
                 }
             } catch (Exception exception) {

@@ -14,24 +14,25 @@
    limitations under the License.
  */
 
-package com.krissytosi;
+package com.krissytosi.fragments;
 
+import android.app.Activity;
 import android.content.Context;
+import android.support.v4.view.ViewPager;
 import android.text.Html;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.LinearLayout.LayoutParams;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.ViewFlipper;
 
 import com.etsy.etsyModels.Listing;
 import com.etsy.etsyModels.ListingImage;
-import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
+import com.krissytosi.R;
+import com.krissytosi.R.id;
+import com.krissytosi.fragments.adapters.ImagePagerAdapter;
 import com.krissytosi.utils.KrissyTosiUtils;
 import com.krissytosi.utils.KrissyTosiUtils.ImageSize;
 
@@ -48,7 +49,7 @@ public class StoreDetailView implements OnClickListener {
     private Listing listing;
     private Context context;
 
-    private ViewFlipper detailViewFlipper;
+    private ViewPager detailViewPager;
     private Button detailViewBuyButton;
     private TextView detailViewDescription;
     private TextView detailViewTitle;
@@ -66,7 +67,7 @@ public class StoreDetailView implements OnClickListener {
     }
 
     public void buildPage() {
-        detailViewFlipper = (ViewFlipper) baseView.findViewById(R.id.detail_view_flipper);
+        detailViewPager = (ViewPager) baseView.findViewById(R.id.detail_view_pager);
         detailViewBuyButton = (Button) baseView.findViewById(R.id.detail_view_buy_button);
         detailViewTitle = (TextView) baseView.findViewById(R.id.detail_view_title);
         detailViewDescription = (TextView) baseView.findViewById(
@@ -90,18 +91,23 @@ public class StoreDetailView implements OnClickListener {
     }
 
     private void addImagesToFlipper(Listing listing, Context context) {
-        detailViewFlipper.removeAllViews();
-        ListingImage[] images = listing.getImages();
-        for (ListingImage listingImage : images) {
-            ImageView imageView = new ImageView(context);
-            LinearLayout.LayoutParams vp =
-                    new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT,
-                            LayoutParams.WRAP_CONTENT);
-            imageView.setLayoutParams(vp);
-            UrlImageViewHelper.setUrlDrawable(imageView,
-                    KrissyTosiUtils.determineImageUrl(listingImage, ImageSize.LARGE));
-            detailViewFlipper.addView(imageView);
+        String[] images = new String[listing.getImages().length];
+        int counter = 0;
+        int fullHeight = 0;
+        for (ListingImage listingImage : listing.getImages()) {
+            int listingHeight = listingImage.getFullHeight();
+            if (listingHeight > fullHeight) {
+                fullHeight = listingHeight;
+            }
+            images[counter] = KrissyTosiUtils.determineImageUrl(listingImage, ImageSize.LARGE);
+            counter++;
         }
+        detailViewPager.setAdapter(new ImagePagerAdapter(images, (Activity) context));
+        detailViewPager.setCurrentItem(0);
+        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) detailViewPager
+                .getLayoutParams();
+        params.height = fullHeight;
+        detailViewPager.setLayoutParams(params);
     }
 
     // Getters/Setters
