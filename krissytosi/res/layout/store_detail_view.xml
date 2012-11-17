@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/store_detail_view"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+
+        <TextView
+            android:id="@+id/detail_view_title"
+            style="@style/KTParagraphText"
+            android:layout_centerHorizontal="true" />
+
+        <ViewFlipper
+            android:id="@+id/detail_view_flipper"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/detail_view_title"
+            android:layout_centerHorizontal="true" >
+        </ViewFlipper>
+
+        <RelativeLayout
+            android:id="@+id/store_detail_view_container"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/detail_view_flipper" >
+
+            <TextView
+                android:id="@+id/detail_view_description"
+                style="@style/KTParagraphText"
+                android:layout_centerHorizontal="true" />
+
+            <Button
+                android:id="@+id/detail_view_buy_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/detail_view_description"
+                android:text="@string/buy_now" />
+
+            <TextView
+                android:id="@+id/detail_view_created"
+                style="@style/KTParagraphText"
+                android:layout_below="@+id/detail_view_buy_button"
+                android:layout_centerHorizontal="true" />
+
+            <TextView
+                android:id="@+id/detail_view_price"
+                style="@style/KTParagraphText"
+                android:layout_below="@+id/detail_view_created"
+                android:layout_centerHorizontal="true" />
+
+            <TextView
+                android:id="@+id/detail_view_quantity"
+                style="@style/KTParagraphText"
+                android:layout_below="@+id/detail_view_price"
+                android:layout_centerHorizontal="true" />
+
+            <TextView
+                android:id="@+id/detail_view_when_made"
+                style="@style/KTParagraphText"
+                android:layout_below="@+id/detail_view_quantity"
+                android:layout_centerHorizontal="true" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+</ScrollView>

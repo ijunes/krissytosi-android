@@ -19,67 +19,9 @@
             android:layout_height="fill_parent"
             android:visibility="gone" />
 
-        <RelativeLayout
+        <include
             android:id="@+id/store_detail_view"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent" >
-
-            <TextView
-                android:id="@+id/detail_view_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:textColor="@android:color/white" />
-
-            <ImageView
-                android:id="@+id/detail_view_image"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/detail_view_title"
-                android:layout_centerHorizontal="true" />
-
-            <TextView
-                android:id="@+id/detail_view_description"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/detail_view_image"
-                android:textColor="@android:color/white" />
-
-            <TextView
-                android:id="@+id/detail_view_created"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/detail_view_description"
-                android:textColor="@android:color/white" />
-
-            <TextView
-                android:id="@+id/detail_view_price"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/detail_view_created"
-                android:textColor="@android:color/white" />
-
-            <TextView
-                android:id="@+id/detail_view_quantity"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/detail_view_price"
-                android:textColor="@android:color/white" />
-
-            <TextView
-                android:id="@+id/detail_view_when_made"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/detail_view_quantity"
-                android:textColor="@android:color/white" />
-
-            <TextView
-                android:id="@+id/detail_view_num_favorers"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/detail_view_when_made"
-                android:textColor="@android:color/white" />
-        </RelativeLayout>
+            layout="@layout/store_detail_view" />
     </ViewFlipper>
 
 </LinearLayout>

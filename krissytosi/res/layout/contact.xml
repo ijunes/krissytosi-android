@@ -8,9 +8,7 @@
         layout="@layout/base_fragment" />
 
     <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:text="@string/contact"
-        android:textColor="@android:color/white" />
+        style="@style/KTParagraphText"
+        android:text="@string/contact" />
 
 </LinearLayout>

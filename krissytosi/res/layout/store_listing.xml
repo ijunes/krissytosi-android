@@ -10,17 +10,15 @@
 
     <TextView
         android:id="@+id/listing_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/listing_image"
-        android:textColor="@android:color/white" />
+        style="@style/KTParagraphText"
+        android:layout_centerHorizontal="true"
+        android:layout_toRightOf="@+id/listing_image" />
 
     <TextView
         android:id="@+id/listing_price"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/KTParagraphText"
         android:layout_below="@+id/listing_title"
-        android:layout_toRightOf="@+id/listing_image"
-        android:textColor="@android:color/white" />
+        android:layout_centerHorizontal="true"
+        android:layout_toRightOf="@+id/listing_image" />
 
 </RelativeLayout>

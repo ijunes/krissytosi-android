@@ -18,7 +18,6 @@ package com.krissytosi.fragments;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.text.Html;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -26,26 +25,21 @@ import android.view.View;
 import android.view.View.OnKeyListener;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
-import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.ViewFlipper;
 
 import com.etsy.etsyCore.EtsyResult;
 import com.etsy.etsyCore.RequestManager;
 import com.etsy.etsyModels.BaseModel;
 import com.etsy.etsyModels.Listing;
-import com.etsy.etsyModels.ListingImage;
 import com.etsy.etsyRequests.ListingsRequest;
-import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 import com.krissytosi.KrissyTosiApplication;
 import com.krissytosi.OnSwipeTouchListener;
 import com.krissytosi.R;
+import com.krissytosi.StoreDetailView;
 import com.krissytosi.fragments.adapters.StoreAdapter;
 import com.krissytosi.utils.ApiConstants;
 import com.krissytosi.utils.KrissyTosiConstants;
-import com.krissytosi.utils.KrissyTosiUtils;
-import com.krissytosi.utils.KrissyTosiUtils.ImageSize;
 
 import org.apache.http.HttpStatus;
 
@@ -78,6 +72,11 @@ public class StoreFragment extends BaseListFragment {
      * Adapter which backs this view.
      */
     private StoreAdapter adapter;
+
+    /**
+     * View for handling events related to the detail store view.
+     */
+    private StoreDetailView storeDetailView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -225,30 +224,13 @@ public class StoreFragment extends BaseListFragment {
      */
     private void populateStoreListing(Listing listing) {
         // perhaps pop these into member variables
-        ImageView detailImageView = (ImageView) getView().findViewById(R.id.detail_view_image);
-        TextView detailViewTitle = (TextView) getView().findViewById(R.id.detail_view_title);
-        TextView detailViewDescription = (TextView) getView().findViewById(
-                R.id.detail_view_description);
-        TextView detailViewCreated = (TextView) getView().findViewById(R.id.detail_view_created);
-        TextView detailViewPrice = (TextView) getView().findViewById(R.id.detail_view_price);
-        TextView detailViewQuantity = (TextView) getView().findViewById(R.id.detail_view_quantity);
-        TextView detailViewWhenMade = (TextView) getView().findViewById(R.id.detail_view_when_made);
-        TextView detailViewNumFavourers = (TextView) getView().findViewById(
-                R.id.detail_view_num_favorers);
-        ListingImage[] images = listing.getImages();
-        if (images.length > 0) {
-            UrlImageViewHelper.setUrlDrawable(detailImageView,
-                    KrissyTosiUtils.determineImageUrl(listing.getImages()[0], ImageSize.LARGE));
-        } else {
-            // TODO is it feasible for this to even happen
+        if (storeDetailView == null) {
+            storeDetailView = new StoreDetailView();
         }
-        detailViewTitle.setText(listing.getTitle());
-        detailViewDescription.setText(Html.fromHtml(listing.getDescription()));
-        detailViewCreated.setText(String.valueOf(listing.getCreationTsz()));
-        detailViewPrice.setText(listing.getPrice());
-        detailViewQuantity.setText(String.valueOf(listing.getQuantity()));
-        detailViewWhenMade.setText(listing.getWhenMade());
-        detailViewNumFavourers.setText(String.valueOf(listing.getNumFavorers()));
+        storeDetailView.setBaseView(getView());
+        storeDetailView.setListing(listing);
+        storeDetailView.setContext(getActivity());
+        storeDetailView.buildPage();
     }
 
     /**
