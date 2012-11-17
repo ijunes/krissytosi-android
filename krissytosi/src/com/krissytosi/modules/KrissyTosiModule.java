@@ -16,13 +16,12 @@
 
 package com.krissytosi.modules;
 
-import com.etsy.etsyCore.EtsyRequestManager;
-import com.etsy.etsyCore.RequestManager;
 import com.krissytosi.api.ApiClient;
 import com.krissytosi.api.NetworkedApiClient;
+import com.krissytosi.api.store.EtsyStoreApiClient;
+import com.krissytosi.api.store.StoreApiClient;
 import com.krissytosi.tracking.Tracking;
 import com.krissytosi.tracking.ga.GoogleAnalyticsTracking;
-import com.krissytosi.utils.ApiConstants;
 
 import dagger.Module;
 import dagger.Provides;
@@ -30,7 +29,7 @@ import dagger.Provides;
 import javax.inject.Singleton;
 
 @Module(entryPoints = {
-        ApiClient.class, Tracking.class, RequestManager.class
+        ApiClient.class, StoreApiClient.class, Tracking.class
 })
 public class KrissyTosiModule {
 
@@ -42,15 +41,13 @@ public class KrissyTosiModule {
 
     @Provides
     @Singleton
-    Tracking provideTracker() {
-        return new GoogleAnalyticsTracking();
+    StoreApiClient provideStoreApiClient() {
+        return new EtsyStoreApiClient();
     }
 
     @Provides
     @Singleton
-    RequestManager provideRequestManager() {
-        return new EtsyRequestManager(ApiConstants.ETSY_API_KEY,
-                ApiConstants.ETSY_API_SECRET, ApiConstants.ETSY_CALLBACK,
-                ApiConstants.ETSY_SCOPE);
+    Tracking provideTracker() {
+        return new GoogleAnalyticsTracking();
     }
 }

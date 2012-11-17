@@ -28,12 +28,12 @@ import android.widget.ScrollView;
 import android.widget.ViewFlipper;
 
 import com.etsy.etsyCore.EtsyResult;
-import com.etsy.etsyCore.RequestManager;
 import com.etsy.etsyModels.BaseModel;
 import com.etsy.etsyModels.Listing;
 import com.etsy.etsyRequests.ListingsRequest;
 import com.krissytosi.KrissyTosiApplication;
 import com.krissytosi.R;
+import com.krissytosi.api.store.StoreApiClient;
 import com.krissytosi.fragments.adapters.StoreAdapter;
 import com.krissytosi.fragments.views.StoreDetailView;
 import com.krissytosi.utils.ApiConstants;
@@ -104,7 +104,7 @@ public class StoreFragment extends BaseListFragment {
             toggleLoading(true, getActivity().findViewById(R.id.store_flipper));
             getListingsTask = new GetListingsTask();
             getListingsTask.execute(((KrissyTosiApplication)
-                    getActivity().getApplication()).getRequestManager());
+                    getActivity().getApplication()).getStoreApiClient());
         } else if (adapter != null && adapter.getCount() > 0) {
             toggleLoading(false, getActivity().findViewById(R.id.store_flipper));
         }
@@ -226,14 +226,14 @@ public class StoreFragment extends BaseListFragment {
      * Simple AsynTask to retrieve the listings for an Etsy shop.
      */
     private class GetListingsTask extends
-            AsyncTask<RequestManager, Void, EtsyResult> {
+            AsyncTask<StoreApiClient, Void, EtsyResult> {
 
         @Override
-        protected EtsyResult doInBackground(RequestManager... params) {
-            RequestManager requestManager = params[0];
+        protected EtsyResult doInBackground(StoreApiClient... params) {
+            StoreApiClient storeApiClient = params[0];
             ListingsRequest request = ListingsRequest
                     .findAllShopListingsActive(ApiConstants.ETSY_STORE_ID, true);
-            return requestManager.runRequest(request);
+            return storeApiClient.runRequest(request);
         }
 
         @Override

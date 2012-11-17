@@ -26,8 +26,8 @@ import android.os.Build;
 import android.os.StrictMode;
 import android.util.Log;
 
-import com.etsy.etsyCore.RequestManager;
 import com.krissytosi.api.ApiClient;
+import com.krissytosi.api.store.StoreApiClient;
 import com.krissytosi.modules.KrissyTosiModule;
 import com.krissytosi.tracking.Tracking;
 import com.krissytosi.utils.ApiConstants;
@@ -60,14 +60,14 @@ public class KrissyTosiApplication extends Application {
     private ApiClient apiClient;
 
     /**
+     * Used to make API requests to the store API server.
+     */
+    private StoreApiClient storeApiClient;
+
+    /**
      * Used to send user interaction details off to an analytics back end.
      */
     private Tracking tracking;
-
-    /**
-     * Used to make API requests to the Etsy API server.
-     */
-    private RequestManager requestManager;
 
     /**
      * Used to understand the device's network state.
@@ -136,11 +136,11 @@ public class KrissyTosiApplication extends Application {
         // API first
         apiClient = objectGraph.get(ApiClient.class);
         apiClient.setBaseUrl(ApiConstants.TEST_API_URL);
-        // then the tracker implementation
+        // then the etsy API implementation
+        storeApiClient = objectGraph.get(StoreApiClient.class);
+        // finally, the tracker implementation
         tracking = objectGraph.get(Tracking.class);
         tracking.initialize(this, KrissyTosiConstants.TRACKING_KEY);
-        // finally, the etsy API implementation
-        requestManager = objectGraph.get(RequestManager.class);
     }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
@@ -177,20 +177,20 @@ public class KrissyTosiApplication extends Application {
         this.apiClient = apiClient;
     }
 
+    public StoreApiClient getStoreApiClient() {
+        return storeApiClient;
+    }
+
+    public void setStoreApiClient(StoreApiClient storeApiClient) {
+        this.storeApiClient = storeApiClient;
+    }
+
     public Tracking getTracking() {
         return tracking;
     }
 
     public void setTracking(Tracking tracking) {
         this.tracking = tracking;
-    }
-
-    public RequestManager getRequestManager() {
-        return requestManager;
-    }
-
-    public void setRequestManager(RequestManager requestManager) {
-        this.requestManager = requestManager;
     }
 
     public ApplicationMode getApplicationMode() {
