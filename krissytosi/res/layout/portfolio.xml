@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <ImageView
+        android:id="@+id/portfolio_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/portfolio_title"
+        style="@style/KTParagraphText" />
+
+    <TextView
+        android:id="@+id/portfolio_sub_title"
+        style="@style/KTParagraphText" />
+
+</RelativeLayout>

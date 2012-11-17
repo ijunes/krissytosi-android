@@ -14,10 +14,9 @@
    limitations under the License.
  */
 
-package com.krissytosi.fragments;
+package com.krissytosi.fragments.views;
 
 import android.app.Activity;
-import android.content.Context;
 import android.support.v4.view.ViewPager;
 import android.text.Html;
 import android.text.format.DateFormat;
@@ -40,13 +39,11 @@ import java.util.Date;
 /**
  * Includes logic on how to deal with interactions on a store detail view.
  */
-public class StoreDetailView implements OnClickListener {
+public class StoreDetailView extends BaseDetailView implements OnClickListener {
 
     private static final String LOG_TAG = "StoreDetailView";
 
-    private View baseView;
     private Listing listing;
-    private Context context;
 
     private ViewPager detailViewPager;
     private Button detailViewBuyButton;
@@ -66,16 +63,16 @@ public class StoreDetailView implements OnClickListener {
     }
 
     public void buildPage() {
-        detailViewPager = (ViewPager) baseView.findViewById(R.id.detail_view_pager);
-        detailViewBuyButton = (Button) baseView.findViewById(R.id.detail_view_buy_button);
-        detailViewTitle = (TextView) baseView.findViewById(R.id.detail_view_title);
-        detailViewDescription = (TextView) baseView.findViewById(
+        detailViewPager = (ViewPager) getBaseView().findViewById(R.id.detail_view_pager);
+        detailViewBuyButton = (Button) getBaseView().findViewById(R.id.detail_view_buy_button);
+        detailViewTitle = (TextView) getBaseView().findViewById(R.id.detail_view_title);
+        detailViewDescription = (TextView) getBaseView().findViewById(
                 R.id.detail_view_description);
-        detailViewCreated = (TextView) baseView.findViewById(R.id.detail_view_created);
-        detailViewPrice = (TextView) baseView.findViewById(R.id.detail_view_price);
-        detailViewQuantity = (TextView) baseView.findViewById(R.id.detail_view_quantity);
-        detailViewWhenMade = (TextView) baseView.findViewById(R.id.detail_view_when_made);
-        addImagesToFlipper(listing, context);
+        detailViewCreated = (TextView) getBaseView().findViewById(R.id.detail_view_created);
+        detailViewPrice = (TextView) getBaseView().findViewById(R.id.detail_view_price);
+        detailViewQuantity = (TextView) getBaseView().findViewById(R.id.detail_view_quantity);
+        detailViewWhenMade = (TextView) getBaseView().findViewById(R.id.detail_view_when_made);
+        addImagesToFlipper(listing);
         detailViewBuyButton.setOnClickListener(this);
         detailViewTitle.setText(listing.getTitle());
         // descriptions can include \n's which should be translated into <br />s
@@ -83,13 +80,13 @@ public class StoreDetailView implements OnClickListener {
         detailDescription = detailDescription.replaceAll("\n", "<br />");
         detailViewDescription.setText(Html.fromHtml(detailDescription));
         Date listingCreated = new Date((long) listing.getCreationTsz() * 1000);
-        detailViewCreated.setText(DateFormat.getDateFormat(context).format(listingCreated));
+        detailViewCreated.setText(DateFormat.getDateFormat(getContext()).format(listingCreated));
         detailViewPrice.setText(listing.getPrice());
         detailViewQuantity.setText(String.valueOf(listing.getQuantity()));
         detailViewWhenMade.setText(listing.getWhenMade());
     }
 
-    private void addImagesToFlipper(Listing listing, Context context) {
+    private void addImagesToFlipper(Listing listing) {
         String[] images = new String[listing.getImages().length];
         int counter = 0;
         int maxHeight = 0;
@@ -101,7 +98,7 @@ public class StoreDetailView implements OnClickListener {
             images[counter] = KrissyTosiUtils.determineImageUrl(listingImage, ImageSize.LARGE);
             counter++;
         }
-        detailViewPager.setAdapter(new ImagePagerAdapter(images, (Activity) context));
+        detailViewPager.setAdapter(new ImagePagerAdapter(images, (Activity) getContext()));
         detailViewPager.setCurrentItem(0);
         RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) detailViewPager
                 .getLayoutParams();
@@ -111,27 +108,11 @@ public class StoreDetailView implements OnClickListener {
 
     // Getters/Setters
 
-    public View getBaseView() {
-        return baseView;
-    }
-
-    public void setBaseView(View baseView) {
-        this.baseView = baseView;
-    }
-
     public Listing getListing() {
         return listing;
     }
 
     public void setListing(Listing listing) {
         this.listing = listing;
-    }
-
-    public Context getContext() {
-        return context;
-    }
-
-    public void setContext(Context context) {
-        this.context = context;
     }
 }

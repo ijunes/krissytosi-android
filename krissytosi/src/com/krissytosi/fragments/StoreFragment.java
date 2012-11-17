@@ -35,6 +35,7 @@ import com.etsy.etsyRequests.ListingsRequest;
 import com.krissytosi.KrissyTosiApplication;
 import com.krissytosi.R;
 import com.krissytosi.fragments.adapters.StoreAdapter;
+import com.krissytosi.fragments.views.StoreDetailView;
 import com.krissytosi.utils.ApiConstants;
 import com.krissytosi.utils.KrissyTosiConstants;
 import com.krissytosi.utils.OnSwipeTouchListener;

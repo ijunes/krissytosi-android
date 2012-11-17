@@ -18,29 +18,35 @@ package com.krissytosi.fragments;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridView;
 
 import com.krissytosi.KrissyTosiApplication;
 import com.krissytosi.R;
 import com.krissytosi.api.ApiClient;
 import com.krissytosi.api.domain.Portfolio;
-import com.krissytosi.fragments.adapters.ImagePagerAdapter;
+import com.krissytosi.fragments.adapters.PortfoliosAdapter;
+import com.krissytosi.fragments.views.PortfolioDetailView;
 import com.krissytosi.utils.ApiConstants;
 import com.krissytosi.utils.KrissyTosiConstants;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Just display *a* portfolio for now. Ideally, this should support multiple
- * portfolios.
+ * Displays a grid of portfolio summaries.
  */
 public class PortfoliosFragment extends BaseFragment {
 
     private static final String LOG_TAG = "PortfolioFragment";
+
+    /**
+     * Used to display a summary of porfolios to the user.
+     */
+    private GridView portfoliosGrid;
 
     /**
      * Task used to retrieve the portfolios from the API server.
@@ -48,14 +54,19 @@ public class PortfoliosFragment extends BaseFragment {
     private GetPortfoliosTask getPortfoliosTask;
 
     /**
-     * Used for flipping through images for the portfolio.
+     * Adapter which backs this view.
      */
-    private ViewPager pager;
+    private PortfoliosAdapter adapter;
+
+    /**
+     * View for handling events related to a particular portfolio.
+     */
+    private PortfolioDetailView portfolioDetailView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.portfolios, container, false);
-        pager = (ViewPager) v.findViewById(R.id.pager);
+        portfoliosGrid = (GridView) v.findViewById(R.id.portfolios_grid);
         return v;
     }
 
@@ -75,11 +86,21 @@ public class PortfoliosFragment extends BaseFragment {
     @Override
     public void onTabSelected() {
         if (getActivity() != null && getPortfoliosTask == null) {
-            toggleLoading(true, pager);
+            toggleLoading(true, portfoliosGrid);
             getPortfoliosTask = new GetPortfoliosTask();
             getPortfoliosTask.execute(((KrissyTosiApplication) getActivity().getApplication())
                     .getApiClient());
         }
+    }
+
+    protected void buildView(List<Portfolio> portfolios) {
+        if (adapter == null) {
+            adapter = new PortfoliosAdapter(getActivity(), R.layout.portfolio_detail_view,
+                    (ArrayList<Portfolio>) portfolios);
+            portfoliosGrid.setAdapter(adapter);
+        }
+        adapter.notifyDataSetChanged();
+        toggleLoading(false, portfoliosGrid);
     }
 
     /**
@@ -95,15 +116,9 @@ public class PortfoliosFragment extends BaseFragment {
             // check to see that the first portfolio isn't an error (is there a
             // better way to communicate these errors?)
             Portfolio portfolio = portfolios.get(0);
-            if (portfolio.getErrorCode() != -1 && portfolio.getErrorDescription() == null) {
+            if (portfolio.getErrorCode() == -1 && portfolio.getErrorDescription() == null) {
                 Log.d(LOG_TAG, "Retrieved at least one portfolio from the server");
-                String[] images = {
-                        "http://tabletpcssource.com/wp-content/uploads/2011/05/android-logo.png",
-                        "http://simpozia.com/pages/images/stories/windows-icon.png",
-                        "https://si0.twimg.com/profile_images/1135218951/gmail_profile_icon3_normal.png"
-                };
-                pager.setAdapter(new ImagePagerAdapter(images, getActivity()));
-                pager.setCurrentItem(0);
+                buildView(portfolios);
             } else {
                 handlePortfolioApiError(portfolio);
             }
@@ -122,7 +137,7 @@ public class PortfoliosFragment extends BaseFragment {
      */
     protected void handlePortfolioApiError(Portfolio errorPortfolio) {
         Log.d(LOG_TAG, "Portfolio Failure: " + errorPortfolio.getErrorDescription());
-        toggleNoNetwork(true, pager);
+        toggleNoNetwork(true, portfoliosGrid);
     }
 
     /**

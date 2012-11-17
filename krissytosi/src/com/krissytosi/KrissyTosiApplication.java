@@ -135,7 +135,7 @@ public class KrissyTosiApplication extends Application {
         ObjectGraph objectGraph = ObjectGraph.create(new KrissyTosiModule());
         // API first
         apiClient = objectGraph.get(ApiClient.class);
-        apiClient.setBaseUrl(ApiConstants.LOCAL_API_URL);
+        apiClient.setBaseUrl(ApiConstants.TEST_API_URL);
         // then the tracker implementation
         tracking = objectGraph.get(Tracking.class);
         tracking.initialize(this, KrissyTosiConstants.TRACKING_KEY);
