@@ -19,10 +19,8 @@ package com.krissytosi.fragments;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnKeyListener;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.widget.ListView;
@@ -81,18 +79,6 @@ public class StoreFragment extends BaseListFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.store, container, false);
-        v.setOnKeyListener(new OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if (keyCode == KeyEvent.KEYCODE_BACK) {
-                    if (!isListViewShowing()) {
-                        toggleListView(true);
-                        return true;
-                    }
-                }
-                return false;
-            }
-        });
         View storeDetailView = v.findViewById(R.id.store_detail_view);
         storeDetailView.setOnTouchListener(new OnSwipeTouchListener() {
 

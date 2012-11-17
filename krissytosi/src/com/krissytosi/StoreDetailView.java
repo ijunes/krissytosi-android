@@ -18,6 +18,7 @@ package com.krissytosi;
 
 import android.content.Context;
 import android.text.Html;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -33,6 +34,8 @@ import com.etsy.etsyModels.ListingImage;
 import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 import com.krissytosi.utils.KrissyTosiUtils;
 import com.krissytosi.utils.KrissyTosiUtils.ImageSize;
+
+import java.util.Date;
 
 /**
  * Includes logic on how to deal with interactions on a store detail view.
@@ -79,7 +82,8 @@ public class StoreDetailView implements OnClickListener {
         String detailDescription = listing.getDescription();
         detailDescription = detailDescription.replaceAll("\n", "<br />");
         detailViewDescription.setText(Html.fromHtml(detailDescription));
-        detailViewCreated.setText(String.valueOf(listing.getCreationTsz()));
+        Date listingCreated = new Date((long) listing.getCreationTsz() * 1000);
+        detailViewCreated.setText(DateFormat.getDateFormat(context).format(listingCreated));
         detailViewPrice.setText(listing.getPrice());
         detailViewQuantity.setText(String.valueOf(listing.getQuantity()));
         detailViewWhenMade.setText(listing.getWhenMade());
