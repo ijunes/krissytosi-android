@@ -24,6 +24,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.widget.ListView;
+import android.widget.ScrollView;
 import android.widget.ViewFlipper;
 
 import com.etsy.etsyCore.EtsyResult;
@@ -78,7 +79,8 @@ public class StoreFragment extends BaseListFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.store, container, false);
-        View storeDetailView = v.findViewById(R.id.store_detail_view);
+        ScrollView storeDetailView = (ScrollView) v.findViewById(R.id.store_detail_view);
+        storeDetailView.setSmoothScrollingEnabled(true);
         storeDetailView.setOnTouchListener(new OnSwipeTouchListener() {
 
             @Override
@@ -199,6 +201,7 @@ public class StoreFragment extends BaseListFragment {
             flipper.setOutAnimation(AnimationUtils.loadAnimation(getActivity(),
                     R.anim.slide_out_left));
             flipper.showNext();
+            getView().findViewById(R.id.store_detail_view).scrollTo(0, 0);
         }
     }
 

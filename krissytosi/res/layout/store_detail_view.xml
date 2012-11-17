@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.krissytosi.utils.CustomScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/store_detail_view"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent" >
+    android:layout_height="fill_parent"
+    android:fillViewport="true" >
 
     <RelativeLayout
         android:layout_width="fill_parent"
@@ -16,9 +17,7 @@
         <android.support.v4.view.ViewPager
             android:id="@+id/detail_view_pager"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/detail_view_title"
-            android:layout_centerHorizontal="true" />
+            android:layout_height="wrap_content" />
 
         <RelativeLayout
             android:id="@+id/store_detail_view_container"
@@ -64,4 +63,4 @@
         </RelativeLayout>
     </RelativeLayout>
 
-</ScrollView>
+</com.krissytosi.utils.CustomScrollView>

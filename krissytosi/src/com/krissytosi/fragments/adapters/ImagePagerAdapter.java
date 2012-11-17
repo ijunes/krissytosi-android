@@ -34,9 +34,13 @@ import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.assist.ImageLoadingListener;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 
+/**
+ * Used to show a list of swipe-able images.
+ */
 public class ImagePagerAdapter extends PagerAdapter {
 
     private static final String LOG_TAG = "ImagePagerAdapter";
+
     private final Activity activity;
     private final String[] urls;
     private final DisplayImageOptions options;

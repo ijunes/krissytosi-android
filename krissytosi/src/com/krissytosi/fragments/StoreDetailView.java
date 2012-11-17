@@ -31,7 +31,6 @@ import android.widget.TextView;
 import com.etsy.etsyModels.Listing;
 import com.etsy.etsyModels.ListingImage;
 import com.krissytosi.R;
-import com.krissytosi.R.id;
 import com.krissytosi.fragments.adapters.ImagePagerAdapter;
 import com.krissytosi.utils.KrissyTosiUtils;
 import com.krissytosi.utils.KrissyTosiUtils.ImageSize;
@@ -93,11 +92,11 @@ public class StoreDetailView implements OnClickListener {
     private void addImagesToFlipper(Listing listing, Context context) {
         String[] images = new String[listing.getImages().length];
         int counter = 0;
-        int fullHeight = 0;
+        int maxHeight = 0;
         for (ListingImage listingImage : listing.getImages()) {
             int listingHeight = listingImage.getFullHeight();
-            if (listingHeight > fullHeight) {
-                fullHeight = listingHeight;
+            if (listingHeight > maxHeight) {
+                maxHeight = listingHeight;
             }
             images[counter] = KrissyTosiUtils.determineImageUrl(listingImage, ImageSize.LARGE);
             counter++;
@@ -106,8 +105,8 @@ public class StoreDetailView implements OnClickListener {
         detailViewPager.setCurrentItem(0);
         RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) detailViewPager
                 .getLayoutParams();
-        params.height = fullHeight;
-        detailViewPager.setLayoutParams(params);
+        // TODO - max height vs height?
+        params.height = 500;
     }
 
     // Getters/Setters
