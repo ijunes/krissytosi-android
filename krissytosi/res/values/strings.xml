@@ -12,11 +12,18 @@
     <string name="no_api">There was an error. Please try again later.</string>
     <string name="try_again">Try Again.</string>
     <string name="number_of_images">%1$d images</string>
+    <string name="detail_view_num_images">Image %1$d of %2$d</string>
     <string name="buy_now">Buy Now!</string>
+    <string name="detail_view_created">Listing Created: %1$s</string>
+    <string name="detail_view_quantity">Quantity: %1$s</string>
+    <string name="detail_view_quantity_one">Only one available.</string>
+    <string name="detail_view_quantity_n">%1$d available.</string>
+    <string name="detail_view_made">Made: %1$s</string>
     <!-- Settings -->
     <string name="settings">Settings</string>
     <string name="tracking_preference">Tracking</string>
     <string name="tracking_preference_summary">Allow tracking of interactions with the application to gain a better understanding of what sections of the application are most popular.</string>
     <!-- Application Update -->
     <string name="app_update_received">Thanks for updating!</string>
+
 </resources>

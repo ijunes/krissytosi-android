@@ -17,7 +17,9 @@
 package com.krissytosi.fragments.views;
 
 import android.app.Activity;
+import android.content.res.Resources;
 import android.support.v4.view.ViewPager;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.text.Html;
 import android.text.format.DateFormat;
 import android.util.Log;
@@ -39,18 +41,20 @@ import java.util.Date;
 /**
  * Includes logic on how to deal with interactions on a store detail view.
  */
-public class StoreDetailView extends BaseDetailView implements OnClickListener {
+public class StoreDetailView extends BaseDetailView implements OnClickListener,
+        OnPageChangeListener {
 
     private static final String LOG_TAG = "StoreDetailView";
 
     private Listing listing;
 
     private ViewPager detailViewPager;
+    private TextView detailViewPagerIndicator;
+    private TextView detailViewPrice;
     private Button detailViewBuyButton;
     private TextView detailViewDescription;
     private TextView detailViewTitle;
     private TextView detailViewCreated;
-    private TextView detailViewPrice;
     private TextView detailViewQuantity;
     private TextView detailViewWhenMade;
 
@@ -63,30 +67,70 @@ public class StoreDetailView extends BaseDetailView implements OnClickListener {
     }
 
     public void buildPage() {
+        // first get all the views back from the base view
         detailViewPager = (ViewPager) getBaseView().findViewById(R.id.detail_view_pager);
+        detailViewPagerIndicator = (TextView) getBaseView().findViewById(
+                R.id.detail_view_pager_indicator);
+        detailViewPrice = (TextView) getBaseView().findViewById(R.id.detail_view_price);
         detailViewBuyButton = (Button) getBaseView().findViewById(R.id.detail_view_buy_button);
         detailViewTitle = (TextView) getBaseView().findViewById(R.id.detail_view_title);
         detailViewDescription = (TextView) getBaseView().findViewById(
                 R.id.detail_view_description);
         detailViewCreated = (TextView) getBaseView().findViewById(R.id.detail_view_created);
-        detailViewPrice = (TextView) getBaseView().findViewById(R.id.detail_view_price);
         detailViewQuantity = (TextView) getBaseView().findViewById(R.id.detail_view_quantity);
         detailViewWhenMade = (TextView) getBaseView().findViewById(R.id.detail_view_when_made);
-        addImagesToFlipper(listing);
-        detailViewBuyButton.setOnClickListener(this);
+        // then assign values & text to each view.
+        Resources resources = getContext().getResources();
         detailViewTitle.setText(listing.getTitle());
+        initializeViewPager();
         // descriptions can include \n's which should be translated into <br />s
         String detailDescription = listing.getDescription();
         detailDescription = detailDescription.replaceAll("\n", "<br />");
         detailViewDescription.setText(Html.fromHtml(detailDescription));
+        detailViewPagerIndicator.setText(String.format(
+                resources.getString(R.string.detail_view_num_images), 1,
+                listing.getImages().length));
+        // TODO - i18n & placement of currency symbols
+        detailViewPrice.setText(String.format("%s %s", listing.getCurrencyCode(),
+                listing.getPrice()));
+        detailViewBuyButton.setOnClickListener(this);
         Date listingCreated = new Date((long) listing.getCreationTsz() * 1000);
-        detailViewCreated.setText(DateFormat.getDateFormat(getContext()).format(listingCreated));
-        detailViewPrice.setText(listing.getPrice());
-        detailViewQuantity.setText(String.valueOf(listing.getQuantity()));
-        detailViewWhenMade.setText(listing.getWhenMade());
+        detailViewCreated.setText(String.format(resources.getString(R.string.detail_view_created),
+                DateFormat.getDateFormat(getContext()).format(listingCreated)));
+        String quantity = "";
+        String quantityResource = resources.getString(R.string.detail_view_quantity);
+        int listingQuantity = listing.getQuantity();
+        if (listingQuantity == 1) {
+            quantity = String.format(quantityResource,
+                    resources.getString(R.string.detail_view_quantity_one));
+        } else {
+            quantity = String.format(quantityResource, String.format(
+                    resources.getString(R.string.detail_view_quantity_n), listingQuantity));
+        }
+        detailViewQuantity.setText(quantity);
+        detailViewWhenMade.setText(String.format(resources.getString(R.string.detail_view_made),
+                listing.getWhenMade()));
     }
 
-    private void addImagesToFlipper(Listing listing) {
+    @Override
+    public void onPageScrollStateChanged(int state) {
+
+    }
+
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+        detailViewPagerIndicator.setText(String.format(
+                getContext().getResources().getString(R.string.detail_view_num_images),
+                position + 1,
+                listing.getImages().length));
+    }
+
+    private void initializeViewPager() {
         String[] images = new String[listing.getImages().length];
         int counter = 0;
         int maxHeight = 0;
@@ -100,6 +144,7 @@ public class StoreDetailView extends BaseDetailView implements OnClickListener {
         }
         detailViewPager.setAdapter(new ImagePagerAdapter(images, (Activity) getContext()));
         detailViewPager.setCurrentItem(0);
+        detailViewPager.setOnPageChangeListener(this);
         RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) detailViewPager
                 .getLayoutParams();
         // TODO - max height vs height?

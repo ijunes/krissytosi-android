@@ -3,7 +3,8 @@
     android:id="@+id/store_detail_view"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:fillViewport="true" >
+    android:fillViewport="true"
+    android:padding="@dimen/single" >
 
     <RelativeLayout
         android:layout_width="fill_parent"
@@ -11,7 +12,7 @@
 
         <TextView
             android:id="@+id/detail_view_title"
-            style="@style/KTParagraphText"
+            style="@style/KTPrimaryHeaderText"
             android:layout_centerHorizontal="true" />
 
         <android.support.v4.view.ViewPager
@@ -26,40 +27,40 @@
             android:layout_below="@+id/detail_view_pager" >
 
             <TextView
-                android:id="@+id/detail_view_description"
+                android:id="@+id/detail_view_pager_indicator"
+                style="@style/KTParagraphText" />
+
+            <TextView
+                android:id="@+id/detail_view_price"
                 style="@style/KTParagraphText"
-                android:layout_centerHorizontal="true" />
+                android:layout_toLeftOf="@+id/detail_view_buy_button" />
 
             <Button
                 android:id="@+id/detail_view_buy_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/detail_view_description"
+                android:layout_alignParentRight="true"
                 android:text="@string/buy_now" />
+
+            <TextView
+                android:id="@+id/detail_view_description"
+                style="@style/KTParagraphText"
+                android:layout_below="@+id/detail_view_pager_indicator" />
 
             <TextView
                 android:id="@+id/detail_view_created"
                 style="@style/KTParagraphText"
-                android:layout_below="@+id/detail_view_buy_button"
-                android:layout_centerHorizontal="true" />
-
-            <TextView
-                android:id="@+id/detail_view_price"
-                style="@style/KTParagraphText"
-                android:layout_below="@+id/detail_view_created"
-                android:layout_centerHorizontal="true" />
+                android:layout_below="@+id/detail_view_description" />
 
             <TextView
                 android:id="@+id/detail_view_quantity"
                 style="@style/KTParagraphText"
-                android:layout_below="@+id/detail_view_price"
-                android:layout_centerHorizontal="true" />
+                android:layout_below="@+id/detail_view_created" />
 
             <TextView
                 android:id="@+id/detail_view_when_made"
                 style="@style/KTParagraphText"
-                android:layout_below="@+id/detail_view_quantity"
-                android:layout_centerHorizontal="true" />
+                android:layout_below="@+id/detail_view_quantity" />
         </RelativeLayout>
     </RelativeLayout>
 
