@@ -5,10 +5,22 @@
         <item name="android:textColor">@color/kt_dark_grey</item>
     </style>
 
-    <style name="KTParagraphText">
+    <style name="KTText">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="KTParagraphText" parent="KTText">
         <item name="android:textSize">@dimen/kt_text</item>
+    </style>
+
+    <style name="KTPrimaryHeaderText" parent="KTText">
+        <item name="android:textSize">@dimen/kt_text_large</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="KTSecondaryHeaderText" parent="KTText">
+        <item name="android:textSize">@dimen/kt_text_large</item>
     </style>
 
 </resources>

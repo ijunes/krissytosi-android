@@ -4,7 +4,9 @@
     <dimen name="kt_text_small">12sp</dimen>
     <dimen name="kt_text">16sp</dimen>
     <dimen name="kt_text_large">20sp</dimen>
-    <dimen name="header_height">18dip</dimen>
+    <dimen name="kt_divider">0.5dip</dimen>
+    <dimen name="zero">0dip</dimen>
+    <dimen name="image_view_border_padding">4dip</dimen>
     <dimen name="single">5dip</dimen>
     <dimen name="dbl">10dip</dimen>
     <dimen name="triple">15dip</dimen>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <solid android:color="@color/kt_white" />
+
+    <stroke
+        android:width="@dimen/kt_divider"
+        android:color="@color/kt_very_light_grey" />
+
+    <padding
+        android:bottom="@dimen/image_view_border_padding"
+        android:left="@dimen/image_view_border_padding"
+        android:right="@dimen/image_view_border_padding"
+        android:top="@dimen/image_view_border_padding" />
+
+</shape>
