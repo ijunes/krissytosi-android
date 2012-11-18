@@ -45,15 +45,13 @@ public class FragmentHelper {
      * 
      * @param fragment the fragment which was just started.
      * @param baseView the view associated with the fragment.
-     * @param noNetworkButton button which allows the user to reinitiate API
-     *            calls should their network be initially down.
      */
-    public static void onStart(TabbedFragment fragment, View baseView, Button noNetworkButton) {
+    public static void onStart(TabbedFragment fragment, View baseView) {
         if (baseView != null) {
             View button = baseView.findViewById(R.id.no_network_button);
             if (button != null) {
-                noNetworkButton = (Button) button;
-                noNetworkButton.setOnClickListener(fragment);
+                fragment.setNoNetworkButton((Button) button);
+                fragment.getNoNetworkButton().setOnClickListener(fragment);
             }
         }
     }
@@ -161,13 +159,15 @@ public class FragmentHelper {
     public static void toggleLoading(boolean show, View view, View baseView) {
         if (baseView != null) {
             View baseFragment = baseView.findViewById(R.id.base_fragment);
-            if (baseFragment != null && view != null) {
+            if (baseFragment != null) {
                 View loadingMessage = baseView.findViewById(R.id.loading_message);
                 View loadingProgressBar = baseView.findViewById(R.id.loading_progress_bar);
                 loadingMessage.setVisibility(show ? View.VISIBLE : View.GONE);
                 loadingProgressBar.setVisibility(show ? View.VISIBLE : View.GONE);
                 baseFragment.setVisibility(show ? View.VISIBLE : View.GONE);
-                view.setVisibility(show ? View.GONE : View.VISIBLE);
+                if (view != null) {
+                    view.setVisibility(show ? View.GONE : View.VISIBLE);
+                }
             }
         }
     }

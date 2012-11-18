@@ -155,6 +155,7 @@ public class PortfoliosFragment extends BaseFragment {
         @Override
         protected void onPostExecute(List<Portfolio> result) {
             onGetPortfolios(result);
+            getPortfoliosTask = null;
         }
     }
 }

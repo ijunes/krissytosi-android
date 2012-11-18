@@ -51,7 +51,7 @@ public abstract class BaseFragment extends Fragment implements TabbedFragment {
     @Override
     public void onStart() {
         super.onStart();
-        FragmentHelper.onStart(this, getView(), noNetworkButton);
+        FragmentHelper.onStart(this, getView());
     }
 
     @Override
@@ -82,5 +82,17 @@ public abstract class BaseFragment extends Fragment implements TabbedFragment {
     @Override
     public void toggleNoNetwork(boolean show, View view) {
         FragmentHelper.toggleNoNetwork(show, view, getView());
+    }
+
+    // Getters/Setters
+
+    @Override
+    public Button getNoNetworkButton() {
+        return noNetworkButton;
+    }
+
+    @Override
+    public void setNoNetworkButton(Button noNetworkButton) {
+        this.noNetworkButton = noNetworkButton;
     }
 }

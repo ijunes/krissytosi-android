@@ -18,6 +18,7 @@ package com.krissytosi.fragments;
 
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.Button;
 
 /**
  * Interface defining additional methods which must be implemented by any
@@ -54,4 +55,18 @@ public interface TabbedFragment extends OnClickListener {
      *            shown.
      */
     void toggleNoNetwork(boolean show, View view);
+
+    /**
+     * Gets the 'No Network' button which is associated with each fragment.
+     * 
+     * @return
+     */
+    public Button getNoNetworkButton();
+
+    /**
+     * Setter for a 'No Network' button which is common across all fragments.
+     * 
+     * @param noNetworkButton
+     */
+    public void setNoNetworkButton(Button noNetworkButton);
 }

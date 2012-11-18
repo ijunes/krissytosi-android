@@ -44,18 +44,29 @@ public class JsonPortfolioParser implements PortfolioParser {
             // make sure it wasn't just a HTTP status code
             if (response.length() != ApiConstants.HTTP_RESPONSE_CODE_LENGTH) {
                 try {
-                    // parse the response into an array and iterate
-                    JSONArray rootJson = new JSONArray(response);
-                    for (int i = 0, l = rootJson.length(); i < l; i++) {
-                        // digest one portfolio
-                        JSONObject portfolioJson = rootJson.getJSONObject(i);
-                        Portfolio portfolio = digestPortfolio(portfolioJson);
-                        portfolios.add(portfolio);
-                        // check to see if its an error
-                        if (portfolio.getErrorCode() != -1
-                                || portfolio.getErrorDescription() != null) {
-                            break;
+                    // is there a better way to understand whether a response is
+                    // an array or not?
+                    if (response.charAt(0) == '[') {
+                        // parse the response into an array and iterate
+                        JSONArray rootJson = new JSONArray(response);
+                        for (int i = 0, l = rootJson.length(); i < l; i++) {
+                            // digest one portfolio
+                            JSONObject portfolioJson = rootJson.getJSONObject(i);
+                            Portfolio portfolio = digestPortfolio(portfolioJson);
+                            portfolios.add(portfolio);
+                            // check to see if its an error
+                            if (portfolio.getErrorCode() != -1
+                                    || portfolio.getErrorDescription() != null) {
+                                break;
+                            }
                         }
+                    } else {
+                        // make an assumption that a straight string response
+                        // should be construed as an error.
+                        Log.d(LOG_TAG,
+                                "Api server did not response with a viable array response. Instead it returned "
+                                        + response);
+                        portfolios.add(createErrorPortfolio(ApiConstants.NO_PORTFOLIOS));
                     }
                 } catch (JSONException e) {
                     portfolios.add(createErrorPortfolio(ApiConstants.NO_PORTFOLIOS));
