@@ -22,7 +22,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
+import android.widget.ViewFlipper;
 
 import com.krissytosi.KrissyTosiApplication;
 import com.krissytosi.R;
@@ -39,7 +42,7 @@ import java.util.List;
 /**
  * Displays a grid of portfolio summaries.
  */
-public class PortfoliosFragment extends BaseFragment {
+public class PortfoliosFragment extends BaseFragment implements OnItemClickListener {
 
     private static final String LOG_TAG = "PortfolioFragment";
 
@@ -52,6 +55,12 @@ public class PortfoliosFragment extends BaseFragment {
      * Task used to retrieve the portfolios from the API server.
      */
     private GetPortfoliosTask getPortfoliosTask;
+
+    /**
+     * Used to flip between the main grid view of portfolios & a particular
+     * portfolio view.
+     */
+    private ViewFlipper flipper;
 
     /**
      * Adapter which backs this view.
@@ -67,12 +76,25 @@ public class PortfoliosFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.portfolios, container, false);
         portfoliosGrid = (GridView) v.findViewById(R.id.portfolios_grid);
+        portfoliosGrid.setOnItemClickListener(this);
         return v;
     }
 
     @Override
     public String getFragmentIdentifier() {
         return KrissyTosiConstants.FRAGMENT_PORTFOLIO_ID;
+    }
+
+    @Override
+    public void onTabSelected() {
+        if (getActivity() != null && getPortfoliosTask == null) {
+            toggleLoading(true, portfoliosGrid);
+            getPortfoliosTask = new GetPortfoliosTask();
+            getPortfoliosTask.execute(((KrissyTosiApplication) getActivity().getApplication())
+                    .getApiClient());
+        } else if (adapter != null && adapter.getCount() > 0) {
+            toggleLoading(false, getActivity().findViewById(R.id.portfolio_flipper));
+        }
     }
 
     @Override
@@ -84,16 +106,25 @@ public class PortfoliosFragment extends BaseFragment {
     }
 
     @Override
-    public void onTabSelected() {
-        if (getActivity() != null && getPortfoliosTask == null) {
-            toggleLoading(true, portfoliosGrid);
-            getPortfoliosTask = new GetPortfoliosTask();
-            getPortfoliosTask.execute(((KrissyTosiApplication) getActivity().getApplication())
-                    .getApiClient());
+    public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+        FragmentHelper.toggleFlipper(false, flipper, getActivity());
+        Portfolio portfolio = adapter.getItem(position);
+        populatePortfolio(portfolio);
+    }
+
+    private void populatePortfolio(Portfolio portfolio) {
+        // perhaps pop these into member variables
+        if (portfolioDetailView == null) {
+            portfolioDetailView = new PortfolioDetailView();
         }
+        portfolioDetailView.setBaseView(getView());
+        portfolioDetailView.setPortfolio(portfolio);
+        portfolioDetailView.setContext(getActivity());
+        portfolioDetailView.buildPage();
     }
 
     protected void buildView(List<Portfolio> portfolios) {
+        flipper = (ViewFlipper) getActivity().findViewById(R.id.portfolio_flipper);
         if (adapter == null) {
             adapter = new PortfoliosAdapter(getActivity(), R.layout.portfolio_detail_view,
                     (ArrayList<Portfolio>) portfolios);

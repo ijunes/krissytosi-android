@@ -19,12 +19,37 @@ package com.krissytosi.fragments.views;
 import android.support.v4.view.ViewPager;
 
 import com.krissytosi.R;
+import com.krissytosi.api.domain.Portfolio;
 
+/**
+ * View for a particular portfolio. Allows a user to swipe through the photos in
+ * a portfolio.
+ */
 public class PortfolioDetailView extends BaseDetailView {
 
-    private ViewPager pager;
+    private static final String LOG_TAG = "PortfolioDetailView";
+
+    /**
+     * Portfolio which backs this view.
+     */
+    private Portfolio portfolio;
+
+    private ViewPager portfolioViewPager;
 
     public void buildPage() {
-        pager = (ViewPager) getBaseView().findViewById(R.id.pager);
+        portfolioViewPager = (ViewPager) getBaseView().findViewById(R.id.pager);
+        // portfolioViewPager.setAdapter(new ImagePagerAdapter(images,
+        // (Activity) getContext()));
+        // portfolioViewPager.setCurrentItem(0);
+    }
+
+    // Getters/Setters
+
+    public Portfolio getPortfolio() {
+        return portfolio;
+    }
+
+    public void setPortfolio(Portfolio portfolio) {
+        this.portfolio = portfolio;
     }
 }

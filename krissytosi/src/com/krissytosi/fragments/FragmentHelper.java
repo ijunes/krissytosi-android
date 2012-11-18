@@ -16,6 +16,7 @@
 
 package com.krissytosi.fragments;
 
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -23,9 +24,11 @@ import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.ViewFlipper;
 
 import com.krissytosi.R;
 import com.krissytosi.utils.KrissyTosiConstants;
@@ -183,5 +186,30 @@ public class FragmentHelper {
         toggleNoNetwork(false, null, baseView);
         toggleLoading(true, null, baseView);
         fragment.onTabSelected();
+    }
+
+    /**
+     * Hides/shows elements in a {@link ViewFlipper} with an animation based on
+     * the parameters.
+     * 
+     * @param show whether or not to show or hide the left most view in the
+     *            {@link ViewFlipper}.
+     * @param flipper the {@link ViewFlipper} to hide/show.
+     * @param activity the activity associated with the {@link ViewFlipper}.
+     */
+    public static void toggleFlipper(boolean show, ViewFlipper flipper, Activity activity) {
+        if (show) {
+            flipper.setInAnimation(AnimationUtils.loadAnimation(activity,
+                    android.R.anim.slide_in_left));
+            flipper.setOutAnimation(AnimationUtils.loadAnimation(activity,
+                    android.R.anim.slide_out_right));
+            flipper.showPrevious();
+        } else {
+            flipper.setInAnimation(AnimationUtils.loadAnimation(activity,
+                    R.anim.slide_in_right));
+            flipper.setOutAnimation(AnimationUtils.loadAnimation(activity,
+                    R.anim.slide_out_left));
+            flipper.showNext();
+        }
     }
 }

@@ -22,7 +22,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AnimationUtils;
 import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.ViewFlipper;
@@ -190,18 +189,8 @@ public class StoreFragment extends BaseListFragment {
      * @param show boolean indicating that the list should be visible.
      */
     private void toggleListView(boolean show) {
-        if (show) {
-            flipper.setInAnimation(AnimationUtils.loadAnimation(getActivity(),
-                    android.R.anim.slide_in_left));
-            flipper.setOutAnimation(AnimationUtils.loadAnimation(getActivity(),
-                    android.R.anim.slide_out_right));
-            flipper.showPrevious();
-        } else {
-            flipper.setInAnimation(AnimationUtils.loadAnimation(getActivity(),
-                    R.anim.slide_in_right));
-            flipper.setOutAnimation(AnimationUtils.loadAnimation(getActivity(),
-                    R.anim.slide_out_left));
-            flipper.showNext();
+        FragmentHelper.toggleFlipper(show, flipper, getActivity());
+        if (!show) {
             getView().findViewById(R.id.store_detail_view).scrollTo(0, 0);
         }
     }
