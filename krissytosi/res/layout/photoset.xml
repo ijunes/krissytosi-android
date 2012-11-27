@@ -5,16 +5,16 @@
     android:clickable="true" >
 
     <ImageView
-        android:id="@+id/portfolio_image"
+        android:id="@+id/photoset_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
     <TextView
-        android:id="@+id/portfolio_title"
+        android:id="@+id/photoset_title"
         style="@style/KTParagraphText" />
 
     <TextView
-        android:id="@+id/portfolio_sub_title"
+        android:id="@+id/photoset_sub_title"
         style="@style/KTParagraphText" />
 
 </RelativeLayout>

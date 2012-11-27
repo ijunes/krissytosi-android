@@ -26,8 +26,8 @@ import com.google.code.tempusfugit.temporal.Condition;
 import com.google.code.tempusfugit.temporal.WaitFor;
 import com.krissytosi.api.ApiClient;
 import com.krissytosi.api.NetworkedApiClient;
-import com.krissytosi.api.domain.Portfolio;
-import com.krissytosi.utils.KrissyTosiConstants;
+import com.krissytosi.api.domain.PhotoSet;
+import com.krissytosi.utils.ApiConstants;
 
 import java.util.List;
 import java.util.concurrent.TimeoutException;
@@ -36,13 +36,13 @@ public class NetworkTest extends AndroidTestCase {
 
     private static final String LOG_TAG = "NetworkTest";
 
-    private List<Portfolio> portfolioList;
+    private List<PhotoSet> photoSets;
 
-    public void testGetPortfolios() {
+    public void testGetPhotoSets() {
         try {
             ApiClient apiClient = new NetworkedApiClient();
-            apiClient.setBaseUrl(KrissyTosiConstants.PROD_API_URL);
-            portfolioList = apiClient.getPortfolioService().getPortfolios();
+            apiClient.setBaseUrl(ApiConstants.PROD_API_URL);
+            photoSets = apiClient.getPhotoSetService().getPhotoSets();
             WaitFor.waitOrTimeout(new MarketConditionCheck(),
                     timeout(millis(10000)));
         } catch (InterruptedException e) {
@@ -61,7 +61,7 @@ public class NetworkTest extends AndroidTestCase {
 
         @Override
         public boolean isSatisfied() {
-            return portfolioList != null && portfolioList.size() != 0;
+            return photoSets != null && photoSets.size() != 0;
         }
     }
 }

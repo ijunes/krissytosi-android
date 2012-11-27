@@ -99,7 +99,7 @@ public class ImagePagerAdapter extends PagerAdapter {
                                 message = "Unknown error";
                                 break;
                         }
-                        Log.e(LOG_TAG, "Failed to load portfolio image " + message);
+                        Log.e(LOG_TAG, "Failed to load photo set image " + message);
                     }
 
                     @Override

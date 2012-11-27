@@ -61,20 +61,20 @@ public class GoogleAnalyticsTracking implements Tracking {
     }
 
     @Override
-    public void trackPortfolioChange(String portfolioIdentifier) {
+    public void trackPhotoSetChange(String photoSetIdentifier) {
         if (enabled) {
             tracker.trackEvent(TrackingConstants.CATEGORY_IDENTIFIER_UI_ACTION,
-                    TrackingConstants.ACTION_IDENTIFIER_PORTFOLIO_CHANGE,
-                    portfolioIdentifier, (long) 0);
+                    TrackingConstants.ACTION_IDENTIFIER_PHOTOSET_CHANGE,
+                    photoSetIdentifier, (long) 0);
         }
     }
 
     @Override
-    public void mediaShared(String portfolioIdentifier, long mode) {
+    public void mediaShared(String photoSetIdentifier, long mode) {
         if (enabled) {
             tracker.trackEvent(TrackingConstants.CATEGORY_IDENTIFIER_UI_ACTION,
                     TrackingConstants.ACTION_IDENTIFIER_MEDIA_SHARE,
-                    portfolioIdentifier, mode);
+                    photoSetIdentifier, mode);
         }
     }
 

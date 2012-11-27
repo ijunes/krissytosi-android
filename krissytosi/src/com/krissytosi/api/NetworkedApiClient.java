@@ -16,8 +16,8 @@
 
 package com.krissytosi.api;
 
-import com.krissytosi.api.services.PortfolioService;
-import com.krissytosi.api.services.http.PortfolioServiceImpl;
+import com.krissytosi.api.services.PhotoSetService;
+import com.krissytosi.api.services.http.PhotoSetServiceImpl;
 
 /**
  * Uses a HttpClient to interact with the API server.
@@ -25,9 +25,9 @@ import com.krissytosi.api.services.http.PortfolioServiceImpl;
 public class NetworkedApiClient implements ApiClient {
 
     /**
-     * Member variable for the portfolio service.
+     * Member variable for the photo set service.
      */
-    private PortfolioService portfolioService;
+    private PhotoSetService photoSetService;
 
     /**
      * Base url to target in this API client.
@@ -35,13 +35,13 @@ public class NetworkedApiClient implements ApiClient {
     private String baseUrl;
 
     @Override
-    public PortfolioService getPortfolioService() {
+    public PhotoSetService getPhotoSetService() {
         // lazy instantiation is lazy
-        if (portfolioService == null) {
-            portfolioService = new PortfolioServiceImpl();
-            portfolioService.setBaseUrl(baseUrl);
+        if (photoSetService == null) {
+            photoSetService = new PhotoSetServiceImpl();
+            photoSetService.setBaseUrl(baseUrl);
         }
-        return portfolioService;
+        return photoSetService;
     }
 
     @Override

@@ -14,24 +14,29 @@
    limitations under the License.
  */
 
-package com.krissytosi.api.parse;
+package com.krissytosi.api.services;
 
-import com.krissytosi.api.domain.Portfolio;
+import com.krissytosi.api.domain.PhotoSet;
 
 import java.util.List;
 
 /**
- * Defines the API parsing methods associated with generating {@link Portfolio}
- * objects.
+ * Defines methods which should be implemented by any object proposing to be a
+ * photo set service.
  */
-public interface PortfolioParser {
+public interface PhotoSetService {
 
     /**
-     * Parses a list of {@link Portfolio}s from a String representation of an
-     * API response.
+     * Sets the base url which this photo set service should target.
      * 
-     * @param response an API response.
-     * @return a list of {@link Portfolio} objects.
+     * @param baseUrl the base url.
      */
-    List<Portfolio> parsePortfolios(String response);
+    void setBaseUrl(String baseUrl);
+
+    /**
+     * Retrieves a list of {@link PhotoSet} objects.
+     * 
+     * @return a list of {@link PhotoSet} objects
+     */
+    List<PhotoSet> getPhotoSets();
 }

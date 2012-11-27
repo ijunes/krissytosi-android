@@ -8,14 +8,14 @@
         android:layout_height="fill_parent" >
 
         <TextView
-            android:id="@+id/portfolio_title"
+            android:id="@+id/photoset_title"
             style="@style/KTParagraphText" />
 
         <android.support.v4.view.ViewPager
             android:id="@+id/pager"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:layout_below="@+id/portfolio_title" />
+            android:layout_below="@+id/photoset_title" />
     </RelativeLayout>
 
 </com.krissytosi.utils.CustomScrollView>

@@ -19,37 +19,34 @@ package com.krissytosi.fragments.views;
 import android.support.v4.view.ViewPager;
 
 import com.krissytosi.R;
-import com.krissytosi.api.domain.Portfolio;
+import com.krissytosi.api.domain.PhotoSet;
 
 /**
- * View for a particular portfolio. Allows a user to swipe through the photos in
- * a portfolio.
+ * View for a particular photo set. Allows a user to swipe through the photos in
+ * a photo set.
  */
-public class PortfolioDetailView extends BaseDetailView {
+public class PhotoSetDetailView extends BaseDetailView {
 
-    private static final String LOG_TAG = "PortfolioDetailView";
+    private static final String LOG_TAG = "PhotoSetDetailView";
 
     /**
-     * Portfolio which backs this view.
+     * PhotoSet which backs this view.
      */
-    private Portfolio portfolio;
+    private PhotoSet photoSet;
 
-    private ViewPager portfolioViewPager;
+    private ViewPager photoSetViewPager;
 
     public void buildPage() {
-        portfolioViewPager = (ViewPager) getBaseView().findViewById(R.id.pager);
-        // portfolioViewPager.setAdapter(new ImagePagerAdapter(images,
-        // (Activity) getContext()));
-        // portfolioViewPager.setCurrentItem(0);
+        photoSetViewPager = (ViewPager) getBaseView().findViewById(R.id.pager);
     }
 
     // Getters/Setters
 
-    public Portfolio getPortfolio() {
-        return portfolio;
+    public PhotoSet getPhotoSet() {
+        return photoSet;
     }
 
-    public void setPortfolio(Portfolio portfolio) {
-        this.portfolio = portfolio;
+    public void setPhotoSet(PhotoSet photoSet) {
+        this.photoSet = photoSet;
     }
 }

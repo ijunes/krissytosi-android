@@ -25,23 +25,23 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.krissytosi.R;
-import com.krissytosi.api.domain.Portfolio;
+import com.krissytosi.api.domain.PhotoSet;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Used to back the grid of images which allows the user focus in on one
- * particular portfolio.
+ * particular photo set.
  */
-public class PortfoliosAdapter extends ArrayAdapter<Portfolio> {
+public class PhotoSetsAdapter extends ArrayAdapter<PhotoSet> {
 
-    private final List<Portfolio> portfolios;
+    private final List<PhotoSet> photoSets;
 
-    public PortfoliosAdapter(Context context, int textViewResourceId,
-            ArrayList<Portfolio> portfolios) {
-        super(context, textViewResourceId, portfolios);
-        this.portfolios = portfolios;
+    public PhotoSetsAdapter(Context context, int textViewResourceId,
+            ArrayList<PhotoSet> photoSets) {
+        super(context, textViewResourceId, photoSets);
+        this.photoSets = photoSets;
     }
 
     @Override
@@ -50,26 +50,26 @@ public class PortfoliosAdapter extends ArrayAdapter<Portfolio> {
         if (v == null) {
             LayoutInflater vi = (LayoutInflater) getContext().getSystemService(
                     Context.LAYOUT_INFLATER_SERVICE);
-            v = vi.inflate(R.layout.portfolio, parent, false);
+            v = vi.inflate(R.layout.photoset, parent, false);
             ViewHolder viewHolder = new ViewHolder();
-            viewHolder.portfolioImageView = (ImageView) v.findViewById(R.id.portfolio_image);
-            viewHolder.portfolioTitle = (TextView) v.findViewById(R.id.portfolio_title);
-            viewHolder.portfolioSubTitle = (TextView) v.findViewById(R.id.portfolio_sub_title);
+            viewHolder.photoSetImageView = (ImageView) v.findViewById(R.id.photoset_image);
+            viewHolder.photoSetTitle = (TextView) v.findViewById(R.id.photoset_title);
+            viewHolder.photoSetSubTitle = (TextView) v.findViewById(R.id.photoset_sub_title);
             v.setTag(viewHolder);
         }
         return populate(v, position);
     }
 
     private View populate(View v, int position) {
-        if (position < portfolios.size()) {
-            final Portfolio portfolio = portfolios.get(position);
-            if (portfolio != null) {
+        if (position < photoSets.size()) {
+            final PhotoSet photoSet = photoSets.get(position);
+            if (photoSet != null) {
                 final ViewHolder holder = (ViewHolder) v.getTag();
                 if (holder != null) {
-                    holder.portfolioTitle.setText(portfolio.getName());
-                    holder.portfolioSubTitle.setText(String.format(
+                    holder.photoSetTitle.setText(photoSet.getTitle());
+                    holder.photoSetSubTitle.setText(String.format(
                             v.getResources().getString(R.string.number_of_images),
-                            portfolio.getNumberOfImages()));
+                            photoSet.getPhotos()));
                 }
             }
         }
@@ -79,15 +79,15 @@ public class PortfoliosAdapter extends ArrayAdapter<Portfolio> {
     @Override
     public int getCount() {
         int count = 0;
-        if (portfolios != null) {
-            count = portfolios.size();
+        if (photoSets != null) {
+            count = photoSets.size();
         }
         return count;
     }
 
     public static class ViewHolder {
-        public ImageView portfolioImageView;
-        public TextView portfolioTitle;
-        public TextView portfolioSubTitle;
+        public ImageView photoSetImageView;
+        public TextView photoSetTitle;
+        public TextView photoSetSubTitle;
     }
 }

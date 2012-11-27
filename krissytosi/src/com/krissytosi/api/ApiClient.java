@@ -16,7 +16,7 @@
 
 package com.krissytosi.api;
 
-import com.krissytosi.api.services.PortfolioService;
+import com.krissytosi.api.services.PhotoSetService;
 import com.krissytosi.utils.KrissyTosiConstants;
 
 /**
@@ -33,9 +33,9 @@ public interface ApiClient {
     void setBaseUrl(String baseUrl);
 
     /**
-     * Accessor for the portfolio service.
+     * Accessor for the photo set service.
      * 
-     * @return an instance of a {@link PortfolioService}.
+     * @return an instance of a {@link PhotoSetService}.
      */
-    PortfolioService getPortfolioService();
+    PhotoSetService getPhotoSetService();
 }

@@ -18,9 +18,9 @@ package com.krissytosi;
 
 import android.test.AndroidTestCase;
 
-import com.krissytosi.api.domain.Portfolio;
+import com.krissytosi.api.domain.PhotoSet;
 import com.krissytosi.api.modules.ApiModule;
-import com.krissytosi.api.parse.PortfolioParser;
+import com.krissytosi.api.parse.PhotoSetParser;
 
 import dagger.ObjectGraph;
 
@@ -31,37 +31,34 @@ import java.util.List;
 
 public class ParseTest extends AndroidTestCase {
 
-    private static final String FILE_NAME = "portfolios.json";
-    private static final String ERROR_FILE_NAME = "portfolios_error.json";
+    private static final String FILE_NAME = "photosets.json";
+    private static final String ERROR_FILE_NAME = "photosets_error.json";
 
-    private PortfolioParser parser;
+    private PhotoSetParser parser;
 
     public void testSuccessfulParserImplementation() {
         String fileContents = readFile("/assets/responses/json/" + FILE_NAME);
-        List<Portfolio> portfolios = getPortfolioParser().parsePortfolios(fileContents);
+        List<PhotoSet> portfolios = getPortfolioParser().parsePhotoSets(fileContents);
         assertTrue(portfolios.size() == 3);
-        Portfolio firstPortfolio = portfolios.get(0);
+        PhotoSet firstPortfolio = portfolios.get(0);
         assertTrue(firstPortfolio.getName().equalsIgnoreCase("portfolioOne"));
         assertTrue(firstPortfolio.getErrorCode() == -1);
         assertTrue(firstPortfolio.getErrorDescription() == null);
-        assertTrue(firstPortfolio.getNumberOfImages() == 1);
-        assertTrue(firstPortfolio.getOrderIndex() == 0);
-        assertTrue(firstPortfolio.getStartIndex() == 0);
     }
 
     public void testErrorParserImplementation() {
         String fileContents = readFile("/assets/responses/json/" + ERROR_FILE_NAME);
-        List<Portfolio> portfolios = getPortfolioParser().parsePortfolios(fileContents);
+        List<PhotoSet> portfolios = getPortfolioParser().parsePhotoSets(fileContents);
         assertTrue(portfolios.size() == 1);
-        Portfolio firstPortfolio = portfolios.get(0);
+        PhotoSet firstPortfolio = portfolios.get(0);
         assertTrue(firstPortfolio.getErrorCode() == 1);
         assertTrue(firstPortfolio.getErrorDescription().equalsIgnoreCase("There was an error"));
     }
 
     public void testNullParserImplementation() {
-        List<Portfolio> portfolios = getPortfolioParser().parsePortfolios(null);
+        List<PhotoSet> portfolios = getPortfolioParser().parsePhotoSets(null);
         assertTrue(portfolios.size() == 1);
-        Portfolio firstPortfolio = portfolios.get(0);
+        PhotoSet firstPortfolio = portfolios.get(0);
         assertTrue(firstPortfolio.getErrorCode() == 3);
         assertTrue(firstPortfolio.getErrorDescription().equalsIgnoreCase("There are no portfolios"));
     }
@@ -76,10 +73,10 @@ public class ParseTest extends AndroidTestCase {
         return new String(bytes);
     }
 
-    private PortfolioParser getPortfolioParser() {
+    private PhotoSetParser getPortfolioParser() {
         if (parser == null) {
             ObjectGraph objectGraph = ObjectGraph.create(new ApiModule());
-            parser = objectGraph.get(PortfolioParser.class);
+            parser = objectGraph.get(PhotoSetParser.class);
         }
         return parser;
     }

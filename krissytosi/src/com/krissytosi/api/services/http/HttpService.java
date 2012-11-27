@@ -46,7 +46,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Map;
+import java.util.TreeSet;
 import java.util.zip.GZIPInputStream;
 
 /**
@@ -107,6 +110,9 @@ public class HttpService {
      * @return a fully qualified URL with all parameters accounted for.
      */
     public String createUrl(String baseUrl, Map<String, String> options) {
+        // before we do anything, add the default key value pairs which are
+        // common for each and every API request.
+        addDefaultQueryStringParameters(options);
         // the url is appended to for each key/value pair in the options
         // parameter.
         StringBuffer url = new StringBuffer();
@@ -239,7 +245,8 @@ public class HttpService {
     }
 
     /**
-     * Checks the response to ensure that we've definitely hit our API server.
+     * Checks the response to ensure that we've definitely hit the API server &
+     * not some Wi-Fi splash screen or some proxy.
      * 
      * @param response the HTTP response from the wire.
      * @return boolean indicating that a specific header is available in the
@@ -247,18 +254,8 @@ public class HttpService {
      *         header key value pair.
      */
     private boolean checkResponseForCustomHeader(HttpResponse response) {
-        // TODO - custom headers and python responses?
+        // TODO - custom headers and Flickr
         boolean hasValidHeader = true;
-        Header headers[] = response.getHeaders(ApiConstants.RESPONSE_HEADER_NAME);
-        if (headers != null) {
-            for (Header header : headers) {
-                if (header.getValue().equalsIgnoreCase(
-                        ApiConstants.RESPONSE_HEADER_VALUE)) {
-                    hasValidHeader = true;
-                    break;
-                }
-            }
-        }
         return hasValidHeader;
     }
 
@@ -281,5 +278,38 @@ public class HttpService {
             Log.e(LOG_TAG, "parseString", e);
         }
         return str;
+    }
+
+    private void addDefaultQueryStringParameters(Map<String, String> options) {
+        // we always need an API key
+        options.put(ApiConstants.FLICKR_API_KEY_PARAM, ApiConstants.FLICKR_API_KEY);
+        options.put(ApiConstants.FLICKR_FORMAT_PARAM, ApiConstants.FLICKR_FORMAT_VALUE);
+        options.put(ApiConstants.FLICKR_NO_JSON_CALLBACK_PARAM,
+                ApiConstants.FLICKR_NO_JSON_CALLBACK_VALUE);
+        options.put(ApiConstants.FLICKR_API_SIGNATURE_PARAM, calculateApiSignature(options));
+    }
+
+    private String calculateApiSignature(Map<String, String> options) {
+        StringBuffer sb = new StringBuffer();
+        TreeSet<String> sortedKeys = new TreeSet<String>(options.keySet());
+        for (String key : sortedKeys) {
+            if (key.equalsIgnoreCase(ApiConstants.FLICKR_API_SIGNATURE_PARAM)) {
+                continue;
+            }
+            sb.append(key);
+            sb.append(options.get(key));
+        }
+        return md5Hex(sb.toString().getBytes());
+    }
+
+    private String md5Hex(byte[] bytes) {
+        MessageDigest digest = null;
+        try {
+            digest = MessageDigest.getInstance(ApiConstants.DIGEST_ALGORITHM);
+        } catch (NoSuchAlgorithmException e) {
+            Log.d(LOG_TAG, "md5Hex", e);
+            return "";
+        }
+        return new String(digest.digest(bytes));
     }
 }

@@ -23,7 +23,7 @@ public final class KrissyTosiConstants {
 
     public static final String PACKAGE_IDENTIFIER = "com.krissytosi";
 
-    public static final String FRAGMENT_PORTFOLIO_ID = "portfolio";
+    public static final String FRAGMENT_PHOTOSETS_ID = "photosets";
     public static final String FRAGMENT_STORE_ID = "store";
     public static final String FRAGMENT_BLOG_ID = "blog";
     public static final String FRAGMENT_NEWS_ID = "news";

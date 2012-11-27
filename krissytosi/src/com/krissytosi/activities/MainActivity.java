@@ -36,7 +36,7 @@ import com.krissytosi.R;
 import com.krissytosi.fragments.BlogFragment;
 import com.krissytosi.fragments.ContactFragment;
 import com.krissytosi.fragments.NewsFragment;
-import com.krissytosi.fragments.PortfoliosFragment;
+import com.krissytosi.fragments.PhotoSetsFragment;
 import com.krissytosi.fragments.StoreFragment;
 import com.krissytosi.utils.KrissyTosiConstants;
 import com.krissytosi.utils.KrissyTosiUtils;
@@ -45,8 +45,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Main activity in the application. Gives the user the choice to browse
- * portfolios, view news or contact.
+ * Main activity in the application. Gives the user the choice to browse photo
+ * sets, view news or contact.
  */
 public class MainActivity extends SherlockFragmentActivity {
 
@@ -104,9 +104,9 @@ public class MainActivity extends SherlockFragmentActivity {
 
     private void initializeTabs(Resources resources) {
         tabManager.addTab(
-                tabHost.newTabSpec(KrissyTosiConstants.FRAGMENT_PORTFOLIO_ID).setIndicator(
-                        resources.getString(R.string.portfolios)),
-                PortfoliosFragment.class, null);
+                tabHost.newTabSpec(KrissyTosiConstants.FRAGMENT_PHOTOSETS_ID).setIndicator(
+                        resources.getString(R.string.photosets)),
+                PhotoSetsFragment.class, null);
         tabManager.addTab(
                 tabHost.newTabSpec(KrissyTosiConstants.FRAGMENT_STORE_ID).setIndicator(
                         resources.getString(R.string.store)),

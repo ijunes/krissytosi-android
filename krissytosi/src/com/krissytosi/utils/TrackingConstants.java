@@ -29,7 +29,7 @@ public class TrackingConstants {
 
     public static final String CATEGORY_IDENTIFIER_UI_ACTION = "ui_action";
     public static final String ACTION_IDENTIFIER_TAB_PRESS = "tab_press";
-    public static final String ACTION_IDENTIFIER_PORTFOLIO_CHANGE = "portfolio_change";
+    public static final String ACTION_IDENTIFIER_PHOTOSET_CHANGE = "photoset_change";
     public static final String ACTION_IDENTIFIER_MEDIA_SHARE = "media_share";
 
 }

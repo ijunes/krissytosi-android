@@ -42,21 +42,21 @@ public interface Tracking {
     void trackTabChange(String tabIdentifier);
 
     /**
-     * Executed when a user changes to a different portfolio.
+     * Executed when a user changes to a different photo set.
      * 
-     * @param portfolioIdentifier unique identifier for a portfolio.
+     * @param photoSetIdentifier unique identifier for a photo set.
      */
-    void trackPortfolioChange(String portfolioIdentifier);
+    void trackPhotoSetChange(String photoSetIdentifier);
 
     /**
      * Executed when a user decides that they want to share one of the images in
-     * a particular portfolio.
+     * a particular photo set.
      * 
-     * @param portfolioIdentifier unique identifier for a portfolio.
+     * @param photoSetIdentifier unique identifier for a photo set.
      * @param mode the way in which the media was shared (Twitter, Facebook,
      *            etc)
      */
-    void mediaShared(String portfolioIdentifier, long mode);
+    void mediaShared(String photoSetIdentifier, long mode);
 
     /**
      * Disables tracking.

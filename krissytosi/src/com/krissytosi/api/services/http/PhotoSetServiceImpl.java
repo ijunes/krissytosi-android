@@ -16,10 +16,11 @@
 
 package com.krissytosi.api.services.http;
 
-import com.krissytosi.api.domain.Portfolio;
+import com.krissytosi.api.domain.PhotoSet;
 import com.krissytosi.api.modules.ApiModule;
-import com.krissytosi.api.parse.PortfolioParser;
-import com.krissytosi.api.services.PortfolioService;
+import com.krissytosi.api.parse.PhotoSetParser;
+import com.krissytosi.api.services.PhotoSetService;
+import com.krissytosi.utils.ApiConstants;
 
 import dagger.ObjectGraph;
 
@@ -28,12 +29,12 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * HTTP specific implementation of a {@link PortfolioService}.
+ * HTTP specific implementation of a {@link PhotoSetService}.
  */
-public class PortfolioServiceImpl extends HttpService implements
-        PortfolioService {
+public class PhotoSetServiceImpl extends HttpService implements
+        PhotoSetService {
 
-    private PortfolioParser parser;
+    private PhotoSetParser parser;
 
     /**
      * The base url which this service is targeting.
@@ -41,24 +42,24 @@ public class PortfolioServiceImpl extends HttpService implements
     private String baseUrl;
 
     @Override
-    public List<Portfolio> getPortfolios() {
+    public List<PhotoSet> getPhotoSets() {
         // prepare the options.
         Map<String, String> options = new HashMap<String, String>();
-        options.put("q", "portfolios");
+        options.put(ApiConstants.FLICKR_USER_ID_PARAM, ApiConstants.FLICKR_USER_ID);
         // prepare the url
-        String portfolioUrl = createUrl(baseUrl, options);
+        String photoSetUrl = createUrl(baseUrl, options);
         // execute the request
-        String response = doGet(portfolioUrl);
+        String response = doGet(photoSetUrl);
         // parse & return the response
-        return getPortfolioParser().parsePortfolios(response);
+        return getPhotoSetParser().parsePhotoSets(response);
     }
 
     // Getters/Setters
 
-    private PortfolioParser getPortfolioParser() {
+    private PhotoSetParser getPhotoSetParser() {
         if (parser == null) {
             ObjectGraph objectGraph = ObjectGraph.create(new ApiModule());
-            parser = objectGraph.get(PortfolioParser.class);
+            parser = objectGraph.get(PhotoSetParser.class);
         }
         return parser;
     }

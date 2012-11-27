@@ -16,10 +16,10 @@
 
 package com.krissytosi.api.modules;
 
-import com.krissytosi.api.parse.PortfolioParser;
-import com.krissytosi.api.parse.json.JsonPortfolioParser;
-import com.krissytosi.api.services.PortfolioService;
-import com.krissytosi.api.services.http.PortfolioServiceImpl;
+import com.krissytosi.api.parse.PhotoSetParser;
+import com.krissytosi.api.parse.json.JsonPhotoSetParser;
+import com.krissytosi.api.services.PhotoSetService;
+import com.krissytosi.api.services.http.PhotoSetServiceImpl;
 
 import dagger.Module;
 import dagger.Provides;
@@ -27,20 +27,20 @@ import dagger.Provides;
 import javax.inject.Singleton;
 
 @Module(entryPoints = {
-        PortfolioService.class, PortfolioParser.class
+        PhotoSetService.class, PhotoSetParser.class
 })
 public class ApiModule {
 
     @Provides
     @Singleton
-    PortfolioService providePortfolioService() {
-        return new PortfolioServiceImpl();
+    PhotoSetService providePhotoSetService() {
+        return new PhotoSetServiceImpl();
     }
 
     @Provides
     @Singleton
-    PortfolioParser providePortfolioParser() {
-        return new JsonPortfolioParser();
+    PhotoSetParser providePhotoSetParser() {
+        return new JsonPhotoSetParser();
     }
 
 }
