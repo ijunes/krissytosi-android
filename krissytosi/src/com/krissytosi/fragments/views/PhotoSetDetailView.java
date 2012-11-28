@@ -16,10 +16,19 @@
 
 package com.krissytosi.fragments.views;
 
+import android.app.Activity;
+import android.os.AsyncTask;
 import android.support.v4.view.ViewPager;
+import android.widget.RelativeLayout;
 
+import com.krissytosi.KrissyTosiApplication;
 import com.krissytosi.R;
+import com.krissytosi.api.ApiClient;
+import com.krissytosi.api.domain.Photo;
 import com.krissytosi.api.domain.PhotoSet;
+import com.krissytosi.fragments.adapters.ImagePagerAdapter;
+
+import java.util.List;
 
 /**
  * View for a particular photo set. Allows a user to swipe through the photos in
@@ -34,10 +43,58 @@ public class PhotoSetDetailView extends BaseDetailView {
      */
     private PhotoSet photoSet;
 
+    /**
+     * The pager which is the primary component in this view.
+     */
     private ViewPager photoSetViewPager;
+
+    private GetPhotosTask getPhotosTask;
 
     public void buildPage() {
         photoSetViewPager = (ViewPager) getBaseView().findViewById(R.id.pager);
+        getPhotosTask = new GetPhotosTask();
+        getPhotosTask.execute(((KrissyTosiApplication) ((Activity) getContext()).getApplication())
+                .getApiClient(), photoSet.getId());
+    }
+
+    /**
+     * Callback executed when we get the list of photos back from the API
+     * server.
+     * 
+     * @param photos a list of {@link Photo} objects corresponding to the
+     *            photoSet member variable.
+     */
+    protected void onGetPhotos(List<Photo> photos) {
+        String[] images = new String[photos.size()];
+        int counter = 0;
+        for (Photo photo : photos) {
+            images[counter] = photo.getUrlMedium();
+            counter++;
+        }
+        photoSetViewPager.setAdapter(new ImagePagerAdapter(images, (Activity) getContext()));
+        photoSetViewPager.setCurrentItem(0);
+        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) photoSetViewPager
+                .getLayoutParams();
+        params.height = 1000;
+    }
+
+    /**
+     * Simple AsynTask to retrieve the listings for an Etsy shop.
+     */
+    private class GetPhotosTask extends
+            AsyncTask<Object, Void, List<Photo>> {
+
+        @Override
+        protected List<Photo> doInBackground(Object... params) {
+            ApiClient apiClient = (ApiClient) params[0];
+            String photoSetId = (String) params[1];
+            return apiClient.getPhotoSetService().getPhotos(photoSetId);
+        }
+
+        @Override
+        protected void onPostExecute(List<Photo> photos) {
+            onGetPhotos(photos);
+        }
     }
 
     // Getters/Setters

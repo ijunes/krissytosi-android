@@ -46,10 +46,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.Map;
-import java.util.TreeSet;
 import java.util.zip.GZIPInputStream;
 
 /**
@@ -283,33 +280,10 @@ public class HttpService {
     private void addDefaultQueryStringParameters(Map<String, String> options) {
         // we always need an API key
         options.put(ApiConstants.FLICKR_API_KEY_PARAM, ApiConstants.FLICKR_API_KEY);
+        // and the format we expect for the response
         options.put(ApiConstants.FLICKR_FORMAT_PARAM, ApiConstants.FLICKR_FORMAT_VALUE);
+        // make sure that the API understands that we're not a JS client.
         options.put(ApiConstants.FLICKR_NO_JSON_CALLBACK_PARAM,
                 ApiConstants.FLICKR_NO_JSON_CALLBACK_VALUE);
-        options.put(ApiConstants.FLICKR_API_SIGNATURE_PARAM, calculateApiSignature(options));
-    }
-
-    private String calculateApiSignature(Map<String, String> options) {
-        StringBuffer sb = new StringBuffer();
-        TreeSet<String> sortedKeys = new TreeSet<String>(options.keySet());
-        for (String key : sortedKeys) {
-            if (key.equalsIgnoreCase(ApiConstants.FLICKR_API_SIGNATURE_PARAM)) {
-                continue;
-            }
-            sb.append(key);
-            sb.append(options.get(key));
-        }
-        return md5Hex(sb.toString().getBytes());
-    }
-
-    private String md5Hex(byte[] bytes) {
-        MessageDigest digest = null;
-        try {
-            digest = MessageDigest.getInstance(ApiConstants.DIGEST_ALGORITHM);
-        } catch (NoSuchAlgorithmException e) {
-            Log.d(LOG_TAG, "md5Hex", e);
-            return "";
-        }
-        return new String(digest.digest(bytes));
     }
 }

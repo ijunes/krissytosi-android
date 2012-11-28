@@ -16,6 +16,7 @@
 
 package com.krissytosi.api.services;
 
+import com.krissytosi.api.domain.Photo;
 import com.krissytosi.api.domain.PhotoSet;
 
 import java.util.List;
@@ -39,4 +40,12 @@ public interface PhotoSetService {
      * @return a list of {@link PhotoSet} objects
      */
     List<PhotoSet> getPhotoSets();
+
+    /**
+     * Retrieves a list of {@link Photo}s for a given photo set.
+     * 
+     * @param photoSetId the id which identifies the photo set.
+     * @return a list of {@link Photo} objects.
+     */
+    List<Photo> getPhotos(String photoSetId);
 }

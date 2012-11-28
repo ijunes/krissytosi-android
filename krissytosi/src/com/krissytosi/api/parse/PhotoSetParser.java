@@ -16,6 +16,7 @@
 
 package com.krissytosi.api.parse;
 
+import com.krissytosi.api.domain.Photo;
 import com.krissytosi.api.domain.PhotoSet;
 
 import java.util.List;
@@ -34,4 +35,13 @@ public interface PhotoSetParser {
      * @return a list of {@link PhotoSet} objects.
      */
     List<PhotoSet> parsePhotoSets(String response);
+
+    /**
+     * Parses a list of {@link Photo}s from a String representation of an API
+     * response.
+     * 
+     * @param response an API response.
+     * @return a list of {@link Photo} objects.
+     */
+    List<Photo> parsePhotos(String response);
 }

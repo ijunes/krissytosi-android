@@ -113,7 +113,6 @@ public class PhotoSetsFragment extends BaseFragment implements OnItemClickListen
     }
 
     private void populatePhotoSet(PhotoSet photoSet) {
-        // perhaps pop these into member variables
         if (photoSetDetailView == null) {
             photoSetDetailView = new PhotoSetDetailView();
         }

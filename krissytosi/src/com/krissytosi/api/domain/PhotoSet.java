@@ -24,7 +24,7 @@ public class PhotoSet extends ApiResponse {
     /**
      * Unique identifier for the photo set.
      */
-    private long id;
+    private String id;
 
     /**
      * The photo set's title.
@@ -48,11 +48,11 @@ public class PhotoSet extends ApiResponse {
 
     // Getters/Setters
 
-    public long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(String id) {
         this.id = id;
     }
 

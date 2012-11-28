@@ -16,6 +16,7 @@
 
 package com.krissytosi.api.services.http;
 
+import com.krissytosi.api.domain.Photo;
 import com.krissytosi.api.domain.PhotoSet;
 import com.krissytosi.api.modules.ApiModule;
 import com.krissytosi.api.parse.PhotoSetParser;
@@ -45,6 +46,7 @@ public class PhotoSetServiceImpl extends HttpService implements
     public List<PhotoSet> getPhotoSets() {
         // prepare the options.
         Map<String, String> options = new HashMap<String, String>();
+        options.put(ApiConstants.FLICKR_METHOD_PARAM, ApiConstants.FLICKR_PHOTOSETS_LIST_VALUE);
         options.put(ApiConstants.FLICKR_USER_ID_PARAM, ApiConstants.FLICKR_USER_ID);
         // prepare the url
         String photoSetUrl = createUrl(baseUrl, options);
@@ -52,6 +54,21 @@ public class PhotoSetServiceImpl extends HttpService implements
         String response = doGet(photoSetUrl);
         // parse & return the response
         return getPhotoSetParser().parsePhotoSets(response);
+    }
+
+    @Override
+    public List<Photo> getPhotos(String photoSetId) {
+        // prepare the options.
+        Map<String, String> options = new HashMap<String, String>();
+        options.put(ApiConstants.FLICKR_METHOD_PARAM, ApiConstants.FLICKR_PHOTOSETS_PHOTOS_VALUE);
+        options.put(ApiConstants.FLICKR_PHOTOSET_ID_PARAM, photoSetId);
+        options.put("extras", "url_sq,url_s,url_m,url_o");
+        // prepare the url
+        String photoSetUrl = createUrl(baseUrl, options);
+        // execute the request
+        String response = doGet(photoSetUrl);
+        // parse & return the response
+        return getPhotoSetParser().parsePhotos(response);
     }
 
     // Getters/Setters
