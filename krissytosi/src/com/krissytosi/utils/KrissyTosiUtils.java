@@ -22,6 +22,7 @@ import android.net.NetworkInfo;
 import android.os.Build;
 
 import com.etsy.etsyModels.ListingImage;
+import com.krissytosi.api.domain.Photo;
 
 /**
  * Just some utilities used throughout the application.
@@ -72,6 +73,16 @@ public class KrissyTosiUtils {
             imageUrl = listingImage.getUrl170x135();
         } else {
             imageUrl = listingImage.getUrlFullxfull();
+        }
+        return imageUrl;
+    }
+
+    public static String determineImageUrl(Photo photo, ImageSize imageSize) {
+        String imageUrl = "";
+        if (imageSize == ImageSize.MEDIUM) {
+            imageUrl = photo.getUrlSmall();
+        } else {
+            imageUrl = photo.getUrlMedium();
         }
         return imageUrl;
     }

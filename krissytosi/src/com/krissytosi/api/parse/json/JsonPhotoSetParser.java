@@ -221,8 +221,8 @@ public class JsonPhotoSetParser implements PhotoSetParser {
         photo.setWidthSquare(photoJson.getInt(ApiConstants.WIDTH_SQUARE_ID));
         photo.setHeightSmall(photoJson.getInt(ApiConstants.HEIGHT_SMALL_ID));
         photo.setWidthSmall(photoJson.getInt(ApiConstants.WIDTH_SMALL_ID));
-        photo.setHeightSmall(photoJson.getInt(ApiConstants.HEIGHT_MEDIUM_ID));
-        photo.setWidthSmall(photoJson.getInt(ApiConstants.WIDTH_MEDIUM_ID));
+        photo.setHeightMedium(photoJson.getInt(ApiConstants.HEIGHT_MEDIUM_ID));
+        photo.setWidthMedium(photoJson.getInt(ApiConstants.WIDTH_MEDIUM_ID));
         return photo;
     }
 

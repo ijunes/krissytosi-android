@@ -20,6 +20,7 @@ import android.app.Activity;
 import android.os.AsyncTask;
 import android.support.v4.view.ViewPager;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.krissytosi.KrissyTosiApplication;
 import com.krissytosi.R;
@@ -27,6 +28,8 @@ import com.krissytosi.api.ApiClient;
 import com.krissytosi.api.domain.Photo;
 import com.krissytosi.api.domain.PhotoSet;
 import com.krissytosi.fragments.adapters.ImagePagerAdapter;
+import com.krissytosi.utils.KrissyTosiUtils;
+import com.krissytosi.utils.KrissyTosiUtils.ImageSize;
 
 import java.util.List;
 
@@ -43,18 +46,31 @@ public class PhotoSetDetailView extends BaseDetailView {
      */
     private PhotoSet photoSet;
 
+    private TextView photoSetTitle;
+
     /**
      * The pager which is the primary component in this view.
      */
     private ViewPager photoSetViewPager;
 
+    /**
+     * Simple AsyncTask used to retrieve the list of {@link Photo}s from the API
+     * server.
+     */
     private GetPhotosTask getPhotosTask;
 
+    /**
+     * Builds the page and kicks off the request to find all the images for this
+     * photo set.
+     */
     public void buildPage() {
+        photoSetTitle = (TextView) getBaseView().findViewById(R.id.photoset_title);
         photoSetViewPager = (ViewPager) getBaseView().findViewById(R.id.pager);
         getPhotosTask = new GetPhotosTask();
         getPhotosTask.execute(((KrissyTosiApplication) ((Activity) getContext()).getApplication())
                 .getApiClient(), photoSet.getId());
+
+        photoSetTitle.setText(photoSet.getTitle());
     }
 
     /**
@@ -67,15 +83,19 @@ public class PhotoSetDetailView extends BaseDetailView {
     protected void onGetPhotos(List<Photo> photos) {
         String[] images = new String[photos.size()];
         int counter = 0;
+        int maximumHeight = 0;
         for (Photo photo : photos) {
-            images[counter] = photo.getUrlMedium();
+            images[counter] = KrissyTosiUtils.determineImageUrl(photo, ImageSize.LARGE);
+            if (photo.getHeightMedium() > maximumHeight) {
+                maximumHeight = photo.getHeightMedium();
+            }
             counter++;
         }
         photoSetViewPager.setAdapter(new ImagePagerAdapter(images, (Activity) getContext()));
         photoSetViewPager.setCurrentItem(0);
         RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) photoSetViewPager
                 .getLayoutParams();
-        params.height = 1000;
+        params.height = maximumHeight;
     }
 
     /**
