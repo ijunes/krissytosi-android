@@ -1,0 +1,6 @@
+[submodule "ActionBarSherlock"]
+	path = ActionBarSherlock
+	url = https://github.com/JakeWharton/ActionBarSherlock.git
+[submodule "EtsyAndroidSDK"]
+	path = EtsyAndroidSDK
+	url = https://github.com/etsy/EtsyAndroidSDK.git
