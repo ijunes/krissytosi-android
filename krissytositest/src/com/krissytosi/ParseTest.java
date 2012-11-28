@@ -38,10 +38,9 @@ public class ParseTest extends AndroidTestCase {
 
     public void testSuccessfulParserImplementation() {
         String fileContents = readFile("/assets/responses/json/" + FILE_NAME);
-        List<PhotoSet> portfolios = getPortfolioParser().parsePhotoSets(fileContents);
-        assertTrue(portfolios.size() == 3);
-        PhotoSet firstPortfolio = portfolios.get(0);
-        assertTrue(firstPortfolio.getName().equalsIgnoreCase("portfolioOne"));
+        List<PhotoSet> photoSets = getPortfolioParser().parsePhotoSets(fileContents);
+        assertTrue(photoSets.size() == 3);
+        PhotoSet firstPortfolio = photoSets.get(0);
         assertTrue(firstPortfolio.getErrorCode() == -1);
         assertTrue(firstPortfolio.getErrorDescription() == null);
     }
