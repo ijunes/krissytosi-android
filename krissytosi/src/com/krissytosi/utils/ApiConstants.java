@@ -41,12 +41,14 @@ public class ApiConstants {
     public static final String FLICKR_NO_JSON_CALLBACK_PARAM = "nojsoncallback";
     public static final String FLICKR_FORMAT_PARAM = "format";
     public static final String FLICKR_METHOD_PARAM = "method";
+    public static final String FLICKR_EXTRAS_ID_PARAM = "extras";
     public static final String FLICKR_API_SIGNATURE_PARAM = "api_sig";
 
     public static final String FLICKR_FORMAT_VALUE = "json";
     public static final String FLICKR_NO_JSON_CALLBACK_VALUE = "1";
     public static final String FLICKR_PHOTOSETS_LIST_VALUE = "flickr.photosets.getList";
     public static final String FLICKR_PHOTOSETS_PHOTOS_VALUE = "flickr.photosets.getPhotos";
+    public static final String FLICKR_PHOTOSETS_EXTRAS_VALUE = "url_sq,url_s,url_m,url_o";
 
     public static final int HTTP_RESPONSE_CODE_LENGTH = 3;
     public static final String PHOTOSETS_ID = "photosets";

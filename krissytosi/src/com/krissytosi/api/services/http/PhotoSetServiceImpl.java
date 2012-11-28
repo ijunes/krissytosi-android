@@ -62,7 +62,7 @@ public class PhotoSetServiceImpl extends HttpService implements
         Map<String, String> options = new HashMap<String, String>();
         options.put(ApiConstants.FLICKR_METHOD_PARAM, ApiConstants.FLICKR_PHOTOSETS_PHOTOS_VALUE);
         options.put(ApiConstants.FLICKR_PHOTOSET_ID_PARAM, photoSetId);
-        options.put("extras", "url_sq,url_s,url_m,url_o");
+        options.put(ApiConstants.FLICKR_EXTRAS_ID_PARAM, ApiConstants.FLICKR_PHOTOSETS_EXTRAS_VALUE);
         // prepare the url
         String photoSetUrl = createUrl(baseUrl, options);
         // execute the request
