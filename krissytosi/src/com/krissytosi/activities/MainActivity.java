@@ -137,7 +137,7 @@ public class MainActivity extends SherlockFragmentActivity {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             if (!"".equalsIgnoreCase(fragmentIdentifierInDetailView)) {
                 Intent intent = new Intent(KrissyTosiConstants.KT_NOTIFY_DETAIL_VIEW_KEY);
-                intent.putExtra(KrissyTosiConstants.KT_NOTIFY_DETAIL_VIEW,
+                intent.putExtra(KrissyTosiConstants.KT_FRAGMENT_IDENTIFIER_KEY,
                         fragmentIdentifierInDetailView);
                 sendBroadcast(intent);
                 fragmentIdentifierInDetailView = "";
@@ -258,7 +258,7 @@ public class MainActivity extends SherlockFragmentActivity {
                 ft.commit();
                 activity.getSupportFragmentManager().executePendingTransactions();
                 Intent intent = new Intent(KrissyTosiConstants.KT_TAB_SELECTED);
-                intent.putExtra(KrissyTosiConstants.KT_TAB_SELECTED_KEY, newTab.tag);
+                intent.putExtra(KrissyTosiConstants.KT_FRAGMENT_IDENTIFIER_KEY, newTab.tag);
                 activity.sendBroadcast(intent);
                 ((KrissyTosiApplication) activity.getApplication()).getTracking().trackTabChange(
                         newTab.tag);

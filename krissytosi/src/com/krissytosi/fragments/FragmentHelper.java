@@ -106,10 +106,7 @@ public class FragmentHelper {
         String action = intent.getAction();
         if (!action.equals(ConnectivityManager.CONNECTIVITY_ACTION)) {
             if (fragmentIdentifier.equalsIgnoreCase(intent
-                    .getStringExtra(KrissyTosiConstants.KT_TAB_SELECTED_KEY))
-                    ||
-                    fragmentIdentifier.equalsIgnoreCase(intent
-                            .getStringExtra(KrissyTosiConstants.KT_NOTIFY_DETAIL_VIEW))) {
+                    .getStringExtra(KrissyTosiConstants.KT_FRAGMENT_IDENTIFIER_KEY))) {
                 isIntendedForThisFragment = true;
             }
         }
