@@ -189,7 +189,7 @@ public class StoreFragment extends BaseListFragment {
      * @param show boolean indicating that the list should be visible.
      */
     private void toggleListView(boolean show) {
-        FragmentHelper.toggleFlipper(show, flipper, getActivity());
+        FragmentHelper.toggleFlipper(show, flipper, getActivity(), getFragmentIdentifier());
         if (!show) {
             getView().findViewById(R.id.store_detail_view).scrollTo(0, 0);
         }

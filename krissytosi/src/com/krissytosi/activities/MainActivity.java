@@ -16,14 +16,17 @@
 
 package com.krissytosi.activities;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.TabHost;
 
@@ -50,10 +53,31 @@ import java.util.Map;
  */
 public class MainActivity extends SherlockFragmentActivity {
 
-    private static final String CURRENT_TAB_IDENTIFIER = "com.krissytosi.activities.CURRENT_TAB_IDENTIFIER";
+    private static final String MAIN_ACTIVITY_STATE = "com.krissytosi.activities.MainActivity.MAIN_ACTIVITY_STATE";
 
     private TabHost tabHost;
     private TabManager tabManager;
+
+    // State
+    private String fragmentIdentifierInDetailView;
+
+    /**
+     * Used to understand which fragment is currently selected in the tab
+     * container.
+     */
+    private final BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (KrissyTosiConstants.KT_FRAGMENT_IN_DETAIL_VIEW_KEY.equalsIgnoreCase(intent
+                    .getAction())) {
+                String fragmentIdentifier = intent
+                        .getStringExtra(KrissyTosiConstants.KT_FRAGMENT_IN_DETAIL_VIEW);
+                if (fragmentIdentifier != null) {
+                    fragmentIdentifierInDetailView = fragmentIdentifier;
+                }
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,14 +89,26 @@ public class MainActivity extends SherlockFragmentActivity {
         initializeTabs(getApplicationContext().getResources());
 
         if (savedInstanceState != null) {
-            tabHost.setCurrentTabByTag(savedInstanceState.getString(CURRENT_TAB_IDENTIFIER));
+            MainActivityState state = savedInstanceState.getParcelable(MAIN_ACTIVITY_STATE);
+            tabHost.setCurrentTabByTag(state.getCurrentTabIdentifier());
+            fragmentIdentifierInDetailView = state.getFragmentIdentifierInDetailView();
         }
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString(CURRENT_TAB_IDENTIFIER, tabHost.getCurrentTabTag());
+        MainActivityState state = new MainActivityState();
+        state.setCurrentTabIdentifier(tabHost.getCurrentTabTag());
+        state.setFragmentIdentifierInDetailView(fragmentIdentifierInDetailView);
+        outState.putParcelable(MAIN_ACTIVITY_STATE, state);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        IntentFilter filter = new IntentFilter(KrissyTosiConstants.KT_FRAGMENT_IN_DETAIL_VIEW_KEY);
+        registerReceiver(broadcastReceiver, filter);
     }
 
     @Override
@@ -94,6 +130,24 @@ public class MainActivity extends SherlockFragmentActivity {
             startActivity(intent);
         }
         return true;
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            if (!"".equalsIgnoreCase(fragmentIdentifierInDetailView)) {
+                Intent intent = new Intent(KrissyTosiConstants.KT_NOTIFY_DETAIL_VIEW_KEY);
+                intent.putExtra(KrissyTosiConstants.KT_NOTIFY_DETAIL_VIEW,
+                        fragmentIdentifierInDetailView);
+                sendBroadcast(intent);
+                fragmentIdentifierInDetailView = "";
+                return true;
+            } else {
+                return super.onKeyDown(keyCode, event);
+            }
+        } else {
+            return super.onKeyDown(keyCode, event);
+        }
     }
 
     private void initializeViewElements() {

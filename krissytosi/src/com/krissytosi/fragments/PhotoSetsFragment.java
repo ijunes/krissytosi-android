@@ -107,7 +107,7 @@ public class PhotoSetsFragment extends BaseFragment implements OnItemClickListen
 
     @Override
     public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-        FragmentHelper.toggleFlipper(false, flipper, getActivity());
+        FragmentHelper.toggleFlipper(false, flipper, getActivity(), getFragmentIdentifier());
         PhotoSet photoSet = adapter.getItem(position);
         populatePhotoSet(photoSet);
     }

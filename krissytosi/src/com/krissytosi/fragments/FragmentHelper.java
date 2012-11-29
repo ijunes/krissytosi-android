@@ -62,7 +62,7 @@ public class FragmentHelper {
     /**
      * Common lifecycle functionality for a Fragment's onResume method.
      * 
-     * @param fragment the fragment which was just resumned.
+     * @param fragment the fragment which was just resumed.
      * @param activity the activity associated with the fragment.
      * @param broadcastReceiver common broadcast receiver which needs to be
      *            registered to the activity when the fragment is resumed.
@@ -71,6 +71,7 @@ public class FragmentHelper {
             BroadcastReceiver broadcastReceiver) {
         if (activity != null) {
             IntentFilter filter = new IntentFilter(KrissyTosiConstants.KT_TAB_SELECTED);
+            filter.addAction(KrissyTosiConstants.KT_NOTIFY_DETAIL_VIEW_KEY);
             filter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
             activity.registerReceiver(broadcastReceiver, filter);
         }
@@ -92,10 +93,9 @@ public class FragmentHelper {
     }
 
     /**
-     * Executed when a fragment receives a broadcast indicating that a tab has
-     * been selected.
+     * Executed when a fragment receives a broadcast.
      * 
-     * @param context the context in which the tab was selected.
+     * @param context the context in which the broadcast was received.
      * @param intent the intent which was broadcast.
      * @param fragmentIdentifier identifying this fragment.
      * @return boolean indicating that this broadcast was intended for *this*
@@ -111,6 +111,11 @@ public class FragmentHelper {
             }
         } else if (action.equals(ConnectivityManager.CONNECTIVITY_ACTION)) {
             // TODO
+        } else if (action.equals(KrissyTosiConstants.KT_NOTIFY_DETAIL_VIEW_KEY)) {
+            if (fragmentIdentifier.equalsIgnoreCase(intent
+                    .getStringExtra(KrissyTosiConstants.KT_NOTIFY_DETAIL_VIEW))) {
+                // TODO
+            }
         }
         return shouldSelectTab;
     }
@@ -197,7 +202,8 @@ public class FragmentHelper {
      * @param flipper the {@link ViewFlipper} to hide/show.
      * @param activity the activity associated with the {@link ViewFlipper}.
      */
-    public static void toggleFlipper(boolean show, ViewFlipper flipper, Activity activity) {
+    public static void toggleFlipper(boolean show, ViewFlipper flipper, Activity activity,
+            String fragmentIdentifier) {
         if (show) {
             flipper.setInAnimation(AnimationUtils.loadAnimation(activity,
                     android.R.anim.slide_in_left));
@@ -210,6 +216,16 @@ public class FragmentHelper {
             flipper.setOutAnimation(AnimationUtils.loadAnimation(activity,
                     R.anim.slide_out_left));
             flipper.showNext();
+        }
+        toggleDetailViewNotification(activity, fragmentIdentifier, show);
+    }
+
+    public static void toggleDetailViewNotification(Activity activity, String fragmentIdentifier,
+            boolean inDetailView) {
+        if (activity != null) {
+            Intent intent = new Intent(KrissyTosiConstants.KT_FRAGMENT_IN_DETAIL_VIEW_KEY);
+            intent.putExtra(KrissyTosiConstants.KT_FRAGMENT_IN_DETAIL_VIEW, fragmentIdentifier);
+            activity.sendBroadcast(intent);
         }
     }
 }

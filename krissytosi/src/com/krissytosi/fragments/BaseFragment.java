@@ -23,6 +23,8 @@ import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.Button;
 
+import com.krissytosi.activities.MainActivity;
+
 /**
  * Includes some common functionality which is shared across all regular
  * fragments.
@@ -82,6 +84,16 @@ public abstract class BaseFragment extends Fragment implements TabbedFragment {
     @Override
     public void toggleNoNetwork(boolean show, View view) {
         FragmentHelper.toggleNoNetwork(show, view, getView());
+    }
+
+    /**
+     * Notifies the {@link MainActivity} that a fragment is in it's detail view.
+     */
+    public void toggleDetailViewNotification(boolean inDetailView) {
+        if (getActivity() != null) {
+            FragmentHelper.toggleDetailViewNotification(getActivity(), getFragmentIdentifier(),
+                    inDetailView);
+        }
     }
 
     // Getters/Setters

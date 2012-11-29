@@ -39,8 +39,7 @@ import dagger.ObjectGraph;
 
 /**
  * Extensions to the {@link Application} class to include specifics for this
- * app. Responsible for setting up the API client and initiating the call to
- * retrieve the list of photo sets from the API server.
+ * app. Sets up the API clients & tracker.
  */
 public class KrissyTosiApplication extends Application {
 
