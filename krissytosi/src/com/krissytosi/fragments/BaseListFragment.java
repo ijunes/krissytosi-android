@@ -16,6 +16,7 @@
 
 package com.krissytosi.fragments;
 
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -24,6 +25,9 @@ import android.support.v4.app.ListFragment;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.ViewFlipper;
+
+import com.krissytosi.utils.KrissyTosiConstants;
 
 /**
  * Base class for {@link Fragment}s which need a {@link ListView}.
@@ -37,6 +41,11 @@ public abstract class BaseListFragment extends ListFragment implements TabbedFra
     private Button noNetworkButton;
 
     /**
+     * Used to flip between the main store & a detailed store item view.
+     */
+    protected ViewFlipper flipper;
+
+    /**
      * Used to understand which fragment is currently selected in the tab
      * container.
      */
@@ -44,7 +53,13 @@ public abstract class BaseListFragment extends ListFragment implements TabbedFra
         @Override
         public void onReceive(Context context, Intent intent) {
             if (FragmentHelper.onReceive(context, intent, getFragmentIdentifier())) {
-                onTabSelected();
+                String action = intent.getAction();
+                if (action.equalsIgnoreCase(KrissyTosiConstants.KT_TAB_SELECTED)) {
+                    onTabSelected();
+                } else if (action.equals(KrissyTosiConstants.KT_NOTIFY_DETAIL_VIEW_KEY)) {
+                    FragmentHelper.toggleFlipper(false, flipper, (Activity) context,
+                            getFragmentIdentifier());
+                }
             }
         }
     };

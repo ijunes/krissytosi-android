@@ -57,12 +57,6 @@ public class PhotoSetsFragment extends BaseFragment implements OnItemClickListen
     private GetPhotoSetsTask getPhotoSetsTask;
 
     /**
-     * Used to flip between the main grid view of photo sets & a particular
-     * photo set view.
-     */
-    private ViewFlipper flipper;
-
-    /**
      * Adapter which backs this view.
      */
     private PhotoSetsAdapter adapter;

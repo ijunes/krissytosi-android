@@ -16,14 +16,17 @@
 
 package com.krissytosi.fragments;
 
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ViewFlipper;
 
 import com.krissytosi.activities.MainActivity;
+import com.krissytosi.utils.KrissyTosiConstants;
 
 /**
  * Includes some common functionality which is shared across all regular
@@ -38,6 +41,12 @@ public abstract class BaseFragment extends Fragment implements TabbedFragment {
     private Button noNetworkButton;
 
     /**
+     * Used to flip between the main grid view of photo sets & a particular
+     * photo set view.
+     */
+    protected ViewFlipper flipper;
+
+    /**
      * Used to understand which fragment is currently selected in the tab
      * container.
      */
@@ -45,7 +54,13 @@ public abstract class BaseFragment extends Fragment implements TabbedFragment {
         @Override
         public void onReceive(Context context, Intent intent) {
             if (FragmentHelper.onReceive(context, intent, getFragmentIdentifier())) {
-                onTabSelected();
+                String action = intent.getAction();
+                if (action.equalsIgnoreCase(KrissyTosiConstants.KT_TAB_SELECTED)) {
+                    onTabSelected();
+                } else if (action.equals(KrissyTosiConstants.KT_NOTIFY_DETAIL_VIEW_KEY)) {
+                    FragmentHelper.toggleFlipper(false, flipper, (Activity) context,
+                            getFragmentIdentifier());
+                }
             }
         }
     };

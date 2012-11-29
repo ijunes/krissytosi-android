@@ -102,22 +102,18 @@ public class FragmentHelper {
      *         fragment.
      */
     public static boolean onReceive(Context context, Intent intent, String fragmentIdentifier) {
-        boolean shouldSelectTab = false;
+        boolean isIntendedForThisFragment = false;
         String action = intent.getAction();
-        if (action.equals(KrissyTosiConstants.KT_TAB_SELECTED)) {
-            String tabIdentifier = intent.getStringExtra(KrissyTosiConstants.KT_TAB_SELECTED_KEY);
-            if (fragmentIdentifier.equals(tabIdentifier)) {
-                shouldSelectTab = true;
-            }
-        } else if (action.equals(ConnectivityManager.CONNECTIVITY_ACTION)) {
-            // TODO
-        } else if (action.equals(KrissyTosiConstants.KT_NOTIFY_DETAIL_VIEW_KEY)) {
+        if (!action.equals(ConnectivityManager.CONNECTIVITY_ACTION)) {
             if (fragmentIdentifier.equalsIgnoreCase(intent
-                    .getStringExtra(KrissyTosiConstants.KT_NOTIFY_DETAIL_VIEW))) {
-                // TODO
+                    .getStringExtra(KrissyTosiConstants.KT_TAB_SELECTED_KEY))
+                    ||
+                    fragmentIdentifier.equalsIgnoreCase(intent
+                            .getStringExtra(KrissyTosiConstants.KT_NOTIFY_DETAIL_VIEW))) {
+                isIntendedForThisFragment = true;
             }
         }
-        return shouldSelectTab;
+        return isIntendedForThisFragment;
     }
 
     /**

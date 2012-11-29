@@ -57,11 +57,6 @@ public class StoreFragment extends BaseListFragment {
     private GetListingsTask getListingsTask;
 
     /**
-     * Used to flip between the main store & a detailed store item view.
-     */
-    private ViewFlipper flipper;
-
-    /**
      * ListView which is responsible for rendering the store.
      */
     private ListView listView;
