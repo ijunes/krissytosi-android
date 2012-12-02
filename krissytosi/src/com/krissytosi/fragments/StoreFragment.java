@@ -114,10 +114,15 @@ public class StoreFragment extends BaseListFragment {
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
+        Log.d(LOG_TAG, "Clicked on item in the list");
         super.onListItemClick(l, v, position, id);
+        Log.d(LOG_TAG, "ONE");
         toggleListView(false);
+        Log.d(LOG_TAG, "TWO");
         Listing listing = adapter.getItem(position);
+        Log.d(LOG_TAG, "THREE " + listing);
         populateStoreListing(listing);
+        getView().findViewById(R.id.store_detail_view).setVisibility(View.VISIBLE);
     }
 
     /**
@@ -136,7 +141,7 @@ public class StoreFragment extends BaseListFragment {
      * @param listings the listings retrieved from the API server.
      */
     protected void buildView(List<Listing> listings) {
-        flipper = (ViewFlipper) getActivity().findViewById(R.id.store_flipper);
+        flipperId = R.id.store_flipper;
         listView = (ListView) getActivity().findViewById(android.R.id.list);
         if (adapter == null) {
             adapter = new StoreAdapter(getActivity(), R.layout.store_listing,
@@ -184,7 +189,9 @@ public class StoreFragment extends BaseListFragment {
      * @param show boolean indicating that the list should be visible.
      */
     private void toggleListView(boolean show) {
-        FragmentHelper.toggleFlipper(show, flipper, getActivity(), getFragmentIdentifier());
+        FragmentHelper.toggleFlipper(show,
+                (ViewFlipper) getView().findViewById(R.id.store_flipper),
+                getActivity(), getFragmentIdentifier());
         if (!show) {
             getView().findViewById(R.id.store_detail_view).scrollTo(0, 0);
         }

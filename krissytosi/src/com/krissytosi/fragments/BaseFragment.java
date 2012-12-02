@@ -40,11 +40,7 @@ public abstract class BaseFragment extends Fragment implements TabbedFragment {
      */
     private Button noNetworkButton;
 
-    /**
-     * Used to flip between the main grid view of photo sets & a particular
-     * photo set view.
-     */
-    protected ViewFlipper flipper;
+    int flipperId;
 
     /**
      * Used to understand which fragment is currently selected in the tab
@@ -58,7 +54,8 @@ public abstract class BaseFragment extends Fragment implements TabbedFragment {
                 if (action.equalsIgnoreCase(KrissyTosiConstants.KT_TAB_SELECTED)) {
                     onTabSelected();
                 } else if (action.equals(KrissyTosiConstants.KT_NOTIFY_DETAIL_VIEW_KEY)) {
-                    FragmentHelper.toggleFlipper(false, flipper, (Activity) context,
+                    FragmentHelper.toggleFlipper(false,
+                            (ViewFlipper) getView().findViewById(flipperId), (Activity) context,
                             getFragmentIdentifier());
                 }
             }

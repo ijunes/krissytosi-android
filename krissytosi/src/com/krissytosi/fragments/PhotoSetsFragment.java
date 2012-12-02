@@ -82,12 +82,12 @@ public class PhotoSetsFragment extends BaseFragment implements OnItemClickListen
     @Override
     public void onTabSelected() {
         if (getActivity() != null && getPhotoSetsTask == null) {
-            toggleLoading(true, photoSetsGrid);
+            toggleLoading(true, getView().findViewById(R.id.photosets_grid));
             getPhotoSetsTask = new GetPhotoSetsTask();
             getPhotoSetsTask.execute(((KrissyTosiApplication) getActivity().getApplication())
                     .getApiClient());
         } else if (adapter != null && adapter.getCount() > 0) {
-            toggleLoading(false, getActivity().findViewById(R.id.photoset_flipper));
+            toggleLoading(false, getView().findViewById(R.id.photoset_flipper));
         }
     }
 
@@ -101,7 +101,9 @@ public class PhotoSetsFragment extends BaseFragment implements OnItemClickListen
 
     @Override
     public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-        FragmentHelper.toggleFlipper(false, flipper, getActivity(), getFragmentIdentifier());
+        FragmentHelper.toggleFlipper(false,
+                (ViewFlipper) getView().findViewById(R.id.photoset_flipper), getActivity(),
+                getFragmentIdentifier());
         PhotoSet photoSet = adapter.getItem(position);
         populatePhotoSet(photoSet);
     }
@@ -117,7 +119,7 @@ public class PhotoSetsFragment extends BaseFragment implements OnItemClickListen
     }
 
     protected void buildView(List<PhotoSet> photoSets) {
-        flipper = (ViewFlipper) getActivity().findViewById(R.id.photoset_flipper);
+        flipperId = R.id.photoset_flipper;
         if (adapter == null) {
             adapter = new PhotoSetsAdapter(getActivity(), R.layout.photoset_detail_view,
                     (ArrayList<PhotoSet>) photoSets);
