@@ -23,4 +23,8 @@
         <item name="android:textSize">@dimen/kt_text</item>
     </style>
 
+    <style name="KTRunnerText" parent="KTParagraphText">
+        <item name="android:textColor">@color/kt_light_grey</item>
+    </style>
+
 </resources>

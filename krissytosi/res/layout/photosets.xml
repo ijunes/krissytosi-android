@@ -17,13 +17,12 @@
             android:id="@+id/photosets_grid"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:columnWidth="60dp"
             android:gravity="center"
-            android:horizontalSpacing="10dp"
+            android:horizontalSpacing="@dimen/dbl"
             android:numColumns="auto_fit"
-            android:padding="10dp"
+            android:padding="@dimen/dbl"
             android:stretchMode="columnWidth"
-            android:verticalSpacing="10dp" />
+            android:verticalSpacing="@dimen/dbl" />
 
         <include
             android:id="@+id/photoset_detail_view"

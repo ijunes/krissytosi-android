@@ -1,19 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent" >
+    android:layout_height="fill_parent"
+    android:background="@drawable/image_view_background" >
 
     <ImageView
         android:id="@+id/photoset_image"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/image_view_background" />
 
     <TextView
         android:id="@+id/photoset_title"
-        style="@style/KTParagraphText" />
+        style="@style/KTParagraphText"
+        android:layout_below="@+id/photoset_image"
+        android:textAlignment="center" />
 
     <TextView
         android:id="@+id/photoset_sub_title"
-        style="@style/KTParagraphText" />
+        style="@style/KTRunnerText"
+        android:layout_below="@+id/photoset_title" />
 
 </RelativeLayout>
