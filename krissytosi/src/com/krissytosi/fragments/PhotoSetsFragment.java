@@ -198,6 +198,15 @@ public class PhotoSetsFragment extends BaseFragment implements OnItemClickListen
         for (PhotoSet photoSet : photoSets) {
             if (photoSet.getId() != null && photoSet.getId().equalsIgnoreCase(photoSetId)) {
                 photoSet.setPhotos(photos);
+                // see if there's a primary photo id
+                int primaryPhotoIndex = 0;
+                for (int i = 0, l = photos.size(); i < l; i++) {
+                    if (photos.get(i).getIsPrimary() == 1) {
+                        primaryPhotoIndex = i;
+                        break;
+                    }
+                }
+                photoSet.setIndexOfPrimaryPhoto(primaryPhotoIndex);
             }
         }
         if (getPhotosTasks.size() == 0) {
