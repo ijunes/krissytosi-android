@@ -189,8 +189,6 @@ public class JsonPhotoSetParser implements PhotoSetParser {
         if (!photoSetJson.has(ApiConstants.ERROR_IDENTIFIER)) {
             // id, photos & videos hang off the main photoSetJson object.
             photoSet.setId(photoSetJson.getString(ApiConstants.ID_ID));
-            photoSet.setPhotos(photoSetJson.getInt(ApiConstants.PHOTOS_ID));
-            photoSet.setVideos(photoSetJson.getInt(ApiConstants.VIDEOS_ID));
             // getting the title is a little tricker
             String title = digestDeeplyNestedString(photoSetJson, ApiConstants.TITLE_ID);
             photoSet.setTitle(title);

@@ -30,7 +30,7 @@ import com.krissytosi.api.domain.Photo;
 public class KrissyTosiUtils {
 
     public enum ImageSize {
-        SMALL, MEDIUM, LARGE
+        SMALL, MEDIUM, LARGE, SQUARE
     }
 
     /**
@@ -77,10 +77,19 @@ public class KrissyTosiUtils {
         return imageUrl;
     }
 
+    /**
+     * Gets the most appropriate url from a {@link Photo} object.
+     * 
+     * @param photo the photo object which contains the image url.
+     * @param imageSize the image size requested by the client.
+     * @return a usable url which points to a resource on a server.
+     */
     public static String determineImageUrl(Photo photo, ImageSize imageSize) {
         String imageUrl = "";
         if (imageSize == ImageSize.MEDIUM) {
             imageUrl = photo.getUrlSmall();
+        } else if (imageSize == ImageSize.SQUARE) {
+            imageUrl = photo.getUrlSquare();
         } else {
             imageUrl = photo.getUrlMedium();
         }

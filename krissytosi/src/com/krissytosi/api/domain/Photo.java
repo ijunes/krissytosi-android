@@ -21,6 +21,7 @@ package com.krissytosi.api.domain;
  */
 public class Photo extends ApiResponse {
 
+    private String photoSetId;
     private String urlSquare;
     private String urlSmall;
     private String urlMedium;
@@ -31,6 +32,7 @@ public class Photo extends ApiResponse {
     private int widthSmall;
     private int heightMedium;
     private int widthMedium;
+    private int isPrimary;
 
     // Getters/Setters
 
@@ -112,5 +114,21 @@ public class Photo extends ApiResponse {
 
     public void setWidthMedium(int widthMedium) {
         this.widthMedium = widthMedium;
+    }
+
+    public String getPhotoSetId() {
+        return photoSetId;
+    }
+
+    public void setPhotoSetId(String photoSetId) {
+        this.photoSetId = photoSetId;
+    }
+
+    public int getIsPrimary() {
+        return isPrimary;
+    }
+
+    public void setIsPrimary(int isPrimary) {
+        this.isPrimary = isPrimary;
     }
 }

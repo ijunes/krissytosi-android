@@ -200,10 +200,10 @@ public class MainActivity extends SherlockFragmentActivity {
             }
         }
 
-        static class DummyTabFactory implements TabHost.TabContentFactory {
+        static class TabFactory implements TabHost.TabContentFactory {
             private final Context mContext;
 
-            public DummyTabFactory(Context context) {
+            public TabFactory(Context context) {
                 mContext = context;
             }
 
@@ -224,7 +224,7 @@ public class MainActivity extends SherlockFragmentActivity {
         }
 
         public void addTab(TabHost.TabSpec tabSpec, Class<?> clss, Bundle args) {
-            tabSpec.setContent(new DummyTabFactory(activity));
+            tabSpec.setContent(new TabFactory(activity));
             String tag = tabSpec.getTag();
             TabInfo info = new TabInfo(tag, clss, args);
             info.fragment = activity.getSupportFragmentManager().findFragmentByTag(tag);

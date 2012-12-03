@@ -24,8 +24,11 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 import com.krissytosi.R;
 import com.krissytosi.api.domain.PhotoSet;
+import com.krissytosi.utils.KrissyTosiUtils;
+import com.krissytosi.utils.KrissyTosiUtils.ImageSize;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,10 +69,13 @@ public class PhotoSetsAdapter extends ArrayAdapter<PhotoSet> {
             if (photoSet != null) {
                 final ViewHolder holder = (ViewHolder) v.getTag();
                 if (holder != null) {
+                    UrlImageViewHelper.setUrlDrawable(holder.photoSetImageView,
+                            KrissyTosiUtils.determineImageUrl(photoSet.getPhotos().get(0),
+                                    ImageSize.SQUARE));
                     holder.photoSetTitle.setText(photoSet.getTitle());
                     holder.photoSetSubTitle.setText(String.format(
                             v.getResources().getString(R.string.number_of_images),
-                            photoSet.getPhotos()));
+                            photoSet.getPhotos().size()));
                 }
             }
         }

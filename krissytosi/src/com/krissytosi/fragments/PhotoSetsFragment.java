@@ -30,6 +30,7 @@ import android.widget.ViewFlipper;
 import com.krissytosi.KrissyTosiApplication;
 import com.krissytosi.R;
 import com.krissytosi.api.ApiClient;
+import com.krissytosi.api.domain.Photo;
 import com.krissytosi.api.domain.PhotoSet;
 import com.krissytosi.fragments.adapters.PhotoSetsAdapter;
 import com.krissytosi.fragments.views.PhotoSetDetailView;
@@ -37,6 +38,7 @@ import com.krissytosi.utils.ApiConstants;
 import com.krissytosi.utils.KrissyTosiConstants;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -57,6 +59,11 @@ public class PhotoSetsFragment extends BaseFragment implements OnItemClickListen
     private GetPhotoSetsTask getPhotoSetsTask;
 
     /**
+     * Data structure of tasks for retrieving photos for a particular photo set.
+     */
+    private final List<GetPhotosTask> getPhotosTasks = new ArrayList<GetPhotosTask>();
+
+    /**
      * Adapter which backs this view.
      */
     private PhotoSetsAdapter adapter;
@@ -65,6 +72,8 @@ public class PhotoSetsFragment extends BaseFragment implements OnItemClickListen
      * View for handling events related to a particular photo set.
      */
     private PhotoSetDetailView photoSetDetailView;
+
+    private List<PhotoSet> photoSets;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -94,9 +103,7 @@ public class PhotoSetsFragment extends BaseFragment implements OnItemClickListen
     @Override
     public void onStop() {
         super.onStop();
-        if (getPhotoSetsTask != null) {
-            getPhotoSetsTask.cancel(true);
-        }
+        cleanupPhotoTasks();
     }
 
     @Override
@@ -118,7 +125,19 @@ public class PhotoSetsFragment extends BaseFragment implements OnItemClickListen
         photoSetDetailView.buildPage();
     }
 
-    protected void buildView(List<PhotoSet> photoSets) {
+    protected void buildPhotoSets(List<PhotoSet> photoSets) {
+        this.photoSets = photoSets;
+        cleanupPhotoTasks();
+        // populate a new batch of GetPhotosTask objects & execute 'em all
+        for (PhotoSet photoSet : photoSets) {
+            GetPhotosTask task = new GetPhotosTask();
+            task.execute(((KrissyTosiApplication) getActivity().getApplication()).getApiClient(),
+                    photoSet.getId());
+            getPhotosTasks.add(task);
+        }
+    }
+
+    protected void buildView() {
         flipperId = R.id.photoset_flipper;
         if (adapter == null) {
             adapter = new PhotoSetsAdapter(getActivity(), R.layout.photoset_detail_view,
@@ -144,7 +163,7 @@ public class PhotoSetsFragment extends BaseFragment implements OnItemClickListen
             PhotoSet photoSet = photoSets.get(0);
             if (photoSet.getErrorCode() == -1 && photoSet.getErrorDescription() == null) {
                 Log.d(LOG_TAG, "Retrieved at least one photo set from the server");
-                buildView(photoSets);
+                buildPhotoSets(photoSets);
             } else {
                 handlePhotoSetsApiError(photoSet);
             }
@@ -157,6 +176,36 @@ public class PhotoSetsFragment extends BaseFragment implements OnItemClickListen
     }
 
     /**
+     * Callback executed when we get the list of photos back from the API
+     * server.
+     * 
+     * @param photos a list of {@link Photo} objects corresponding to the
+     *            photoSet member variable.
+     */
+    protected void onGetPhotos(List<Photo> photos) {
+        String photoSetId = "";
+        if (photos.size() != 0) {
+            photoSetId = photos.get(0).getPhotoSetId();
+        }
+        // check to see whether we can go ahead and build the view.
+        Iterator<GetPhotosTask> iterator = getPhotosTasks.iterator();
+        while (iterator.hasNext()) {
+            GetPhotosTask task = iterator.next();
+            if (photoSetId.equalsIgnoreCase(task.getPhotoSetId())) {
+                iterator.remove();
+            }
+        }
+        for (PhotoSet photoSet : photoSets) {
+            if (photoSet.getId() != null && photoSet.getId().equalsIgnoreCase(photoSetId)) {
+                photoSet.setPhotos(photos);
+            }
+        }
+        if (getPhotosTasks.size() == 0) {
+            buildView();
+        }
+    }
+
+    /**
      * Callback executed when we fail to retrieve the photo sets from the API.
      * 
      * @param errorPhotoSet
@@ -164,6 +213,19 @@ public class PhotoSetsFragment extends BaseFragment implements OnItemClickListen
     protected void handlePhotoSetsApiError(PhotoSet errorPhotoSet) {
         Log.d(LOG_TAG, "Photo Set Failure: " + errorPhotoSet.getErrorDescription());
         toggleNoNetwork(true, photoSetsGrid);
+    }
+
+    private void cleanupPhotoTasks() {
+        if (getPhotoSetsTask != null) {
+            getPhotoSetsTask.cancel(true);
+        }
+        // make sure we're starting with a clean slate.
+        if (getPhotosTasks.size() > 0) {
+            for (GetPhotosTask task : getPhotosTasks) {
+                task.cancel(true);
+            }
+            getPhotosTasks.clear();
+        }
     }
 
     /**
@@ -182,6 +244,33 @@ public class PhotoSetsFragment extends BaseFragment implements OnItemClickListen
         protected void onPostExecute(List<PhotoSet> result) {
             onGetPhotoSets(result);
             getPhotoSetsTask = null;
+        }
+    }
+
+    /**
+     * Simple AsynTask to retrieve the photo urls for a photo set.
+     */
+    private class GetPhotosTask extends
+            AsyncTask<Object, Void, List<Photo>> {
+
+        private String photoSetId;
+
+        @Override
+        protected List<Photo> doInBackground(Object... params) {
+            ApiClient apiClient = (ApiClient) params[0];
+            photoSetId = (String) params[1];
+            return apiClient.getPhotoSetService().getPhotos(photoSetId);
+        }
+
+        @Override
+        protected void onPostExecute(List<Photo> photos) {
+            onGetPhotos(photos);
+        }
+
+        // Getters/Setters
+
+        public String getPhotoSetId() {
+            return photoSetId;
         }
     }
 }

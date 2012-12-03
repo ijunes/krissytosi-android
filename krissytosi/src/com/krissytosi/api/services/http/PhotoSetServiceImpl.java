@@ -68,7 +68,11 @@ public class PhotoSetServiceImpl extends HttpService implements
         // execute the request
         String response = doGet(photoSetUrl);
         // parse & return the response
-        return getPhotoSetParser().parsePhotos(response);
+        List<Photo> photos = getPhotoSetParser().parsePhotos(response);
+        for (Photo photo : photos) {
+            photo.setPhotoSetId(photoSetId);
+        }
+        return photos;
     }
 
     // Getters/Setters

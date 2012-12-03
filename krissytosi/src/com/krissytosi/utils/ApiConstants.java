@@ -69,6 +69,7 @@ public class ApiConstants {
     public static final String WIDTH_SMALL_ID = "width_s";
     public static final String HEIGHT_MEDIUM_ID = "height_m";
     public static final String WIDTH_MEDIUM_ID = "width_m";
+    public static final String PHOTO_SET_ID = "photo_set_id";
     public static final String ERROR_IDENTIFIER = "error";
     public static final String ERROR_DESCRIPTION = "description";
     public static final String ERROR_CODE = "code";

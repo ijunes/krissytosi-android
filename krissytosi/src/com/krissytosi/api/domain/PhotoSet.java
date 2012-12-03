@@ -16,6 +16,8 @@
 
 package com.krissytosi.api.domain;
 
+import java.util.List;
+
 /**
  * Defines what makes up a photo set.
  */
@@ -37,14 +39,15 @@ public class PhotoSet extends ApiResponse {
     private String description;
 
     /**
-     * Number of videos associated with this photo set.
+     * List of photos associated with the photo set.
      */
-    private int photos;
+    private List<Photo> photos;
 
     /**
-     * Number of videos associated with this photo set.
+     * Index in the photos member variable of the photo which represents the
+     * primary photo in this set.
      */
-    private int videos;
+    private int indexOfPrimaryPhoto;
 
     // Getters/Setters
 
@@ -72,19 +75,19 @@ public class PhotoSet extends ApiResponse {
         this.description = description;
     }
 
-    public int getPhotos() {
+    public List<Photo> getPhotos() {
         return photos;
     }
 
-    public void setPhotos(int photos) {
+    public void setPhotos(List<Photo> photos) {
         this.photos = photos;
     }
 
-    public int getVideos() {
-        return videos;
+    public int getIndexOfPrimaryPhoto() {
+        return indexOfPrimaryPhoto;
     }
 
-    public void setVideos(int videos) {
-        this.videos = videos;
+    public void setIndexOfPrimaryPhoto(int indexOfPrimaryPhoto) {
+        this.indexOfPrimaryPhoto = indexOfPrimaryPhoto;
     }
 }
