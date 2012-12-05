@@ -1,5 +1,5 @@
 To run the tests:
 
-emulator -avd Android16Emulator
+emulator -avd Android17Emulator
 
 ant emma debug install test from the root of the krissytositest directory.

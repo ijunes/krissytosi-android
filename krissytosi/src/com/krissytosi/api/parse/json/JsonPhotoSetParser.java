@@ -98,10 +98,10 @@ public class JsonPhotoSetParser implements PhotoSetParser {
                         Log.d(LOG_TAG,
                                 "Api server did not response with a viable json object response. Instead it returned "
                                         + response);
-                        photoSets.add(createErrorPhotoSet(ApiConstants.NO_PHOTOSETS));
+                        photoSets.add(createErrorPhotoSet(ApiConstants.API_ERROR));
                     }
                 } catch (JSONException e) {
-                    photoSets.add(createErrorPhotoSet(ApiConstants.NO_PHOTOSETS));
+                    photoSets.add(createErrorPhotoSet(ApiConstants.API_ERROR));
                     Log.e(LOG_TAG, "parsePhotoSets", e);
                 }
             } else {

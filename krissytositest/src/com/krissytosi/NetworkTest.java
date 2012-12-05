@@ -43,19 +43,19 @@ public class NetworkTest extends AndroidTestCase {
             ApiClient apiClient = new NetworkedApiClient();
             apiClient.setBaseUrl(ApiConstants.PROD_API_URL);
             photoSets = apiClient.getPhotoSetService().getPhotoSets();
-            WaitFor.waitOrTimeout(new MarketConditionCheck(),
+            WaitFor.waitOrTimeout(new PhotoSetsConditionCheck(),
                     timeout(millis(10000)));
         } catch (InterruptedException e) {
-            Log.e(LOG_TAG, "testGetPortfolios", e);
+            Log.e(LOG_TAG, "testGetPhotoSets", e);
         } catch (TimeoutException e) {
             fail();
-            Log.e(LOG_TAG, "testGetPortfolios", e);
+            Log.e(LOG_TAG, "testGetPhotoSets", e);
         }
     }
 
-    private class MarketConditionCheck implements Condition {
+    private class PhotoSetsConditionCheck implements Condition {
 
-        public MarketConditionCheck() {
+        public PhotoSetsConditionCheck() {
 
         }
 
