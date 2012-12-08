@@ -63,6 +63,12 @@ public class BlogFragment extends BaseFragment {
         getWebView().loadUrl(KrissyTosiConstants.BLOG_URL);
     }
 
+    @Override
+    public void onCurrentTabClicked() {
+        super.onCurrentTabClicked();
+        onTabSelected();
+    }
+
     public class MyWebViewClient extends WebViewClient {
 
         @Override

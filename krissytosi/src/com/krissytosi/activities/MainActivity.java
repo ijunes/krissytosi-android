@@ -43,6 +43,8 @@ import com.krissytosi.fragments.PhotoSetsFragment;
 import com.krissytosi.fragments.StoreFragment;
 import com.krissytosi.utils.KrissyTosiConstants;
 import com.krissytosi.utils.KrissyTosiUtils;
+import com.krissytosi.utils.ReClickableTabHost;
+import com.krissytosi.utils.ReClickableTabHostListener;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -55,7 +57,7 @@ public class MainActivity extends SherlockFragmentActivity {
 
     private static final String MAIN_ACTIVITY_STATE = "com.krissytosi.activities.MainActivity.MAIN_ACTIVITY_STATE";
 
-    private TabHost tabHost;
+    private ReClickableTabHost tabHost;
     private TabManager tabManager;
 
     // State
@@ -151,9 +153,10 @@ public class MainActivity extends SherlockFragmentActivity {
     }
 
     private void initializeViewElements() {
-        tabHost = (TabHost) findViewById(android.R.id.tabhost);
+        tabHost = (ReClickableTabHost) findViewById(android.R.id.tabhost);
         tabHost.setup();
         tabManager = new TabManager(this, tabHost, R.id.realtabcontent);
+        tabHost.setReClickableTabHostListener(tabManager);
     }
 
     private void initializeTabs(Resources resources) {
@@ -193,13 +196,18 @@ public class MainActivity extends SherlockFragmentActivity {
         return fragmentIdentifierInDetailView;
     }
 
+    public void setFragmentIdentifierInDetailView(String fragmentIdentifierInDetailView) {
+        this.fragmentIdentifierInDetailView = fragmentIdentifierInDetailView;
+    }
+
     public BroadcastReceiver getBroadcastReceiver() {
         return broadcastReceiver;
     }
 
     // Tab Manager Class
 
-    public static class TabManager implements TabHost.OnTabChangeListener {
+    public static class TabManager implements TabHost.OnTabChangeListener,
+            ReClickableTabHostListener {
 
         private final FragmentActivity activity;
         private final TabHost tabHost;
@@ -283,6 +291,13 @@ public class MainActivity extends SherlockFragmentActivity {
                 ((KrissyTosiApplication) activity.getApplication()).getTracking().trackTabChange(
                         newTab.tag);
             }
+        }
+
+        @Override
+        public void onCurrentTabClicked(String tabId) {
+            Intent intent = new Intent(KrissyTosiConstants.KT_CURRENT_TAB_SELECTED);
+            intent.putExtra(KrissyTosiConstants.KT_FRAGMENT_IDENTIFIER_KEY, tabId);
+            activity.sendBroadcast(intent);
         }
     }
 }

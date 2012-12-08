@@ -16,16 +16,41 @@
 
 package com.krissytosi;
 
+import android.app.Instrumentation;
 import android.content.Intent;
 import android.test.ActivityInstrumentationTestCase2;
+import android.test.UiThreadTest;
 
 import com.krissytosi.activities.MainActivity;
+import com.krissytosi.api.ApiClient;
+import com.krissytosi.api.store.StoreApiClient;
+import com.krissytosi.tracking.Tracking;
+import com.krissytosi.utils.ApiConstants;
 import com.krissytosi.utils.KrissyTosiConstants;
+import com.krissytosi.utils.KrissyTosiTestModule;
+
+import dagger.ObjectGraph;
 
 public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActivity> {
 
     public MainActivityTest() {
         super(MainActivity.class);
+    }
+
+    @Override
+    protected void setUp() throws Exception {
+        super.setUp();
+        setActivityInitialTouchMode(false);
+        KrissyTosiApplication application = (KrissyTosiApplication) getActivity().getApplication();
+        ObjectGraph objectGraph = ObjectGraph.create(new KrissyTosiTestModule());
+        ApiClient apiClient = objectGraph.get(ApiClient.class);
+        apiClient.setBaseUrl(ApiConstants.TEST_API_URL);
+        StoreApiClient storeApiClient = objectGraph.get(StoreApiClient.class);
+        Tracking tracking = objectGraph.get(Tracking.class);
+        tracking.initialize(getActivity(), KrissyTosiConstants.TRACKING_KEY);
+        application.setApiClient(apiClient);
+        application.setStoreApiClient(storeApiClient);
+        application.setTracking(tracking);
     }
 
     public void testSanityChecks() throws Exception {
@@ -43,5 +68,30 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
         String fragmentIdentifier = getActivity().getFragmentIdentifierInDetailView();
         assertNotNull("fragmentIdentifier should not be null", fragmentIdentifier);
         assertTrue("key".equalsIgnoreCase(fragmentIdentifier));
+    }
+
+    @UiThreadTest
+    public void testStatePause() throws Exception {
+        String fragmentIdentifier = "fragmentIdentifier";
+        MainActivity activity = getActivity();
+        Instrumentation instr = getInstrumentation();
+        activity.setFragmentIdentifierInDetailView(fragmentIdentifier);
+        instr.callActivityOnPause(activity);
+        instr.callActivityOnResume(activity);
+        assertTrue(fragmentIdentifier.equalsIgnoreCase(activity
+                .getFragmentIdentifierInDetailView()));
+    }
+
+    @UiThreadTest
+    public void testStoreFragment() throws Exception {
+        MainActivity activity = getActivity();
+        activity.runOnUiThread(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        getActivity().getTabHost().setCurrentTab(0);
+                        getActivity().getTabHost().setCurrentTab(1);
+                    }
+                });
     }
 }

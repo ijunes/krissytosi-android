@@ -32,6 +32,11 @@ public interface TabbedFragment extends OnClickListener {
     void onTabSelected();
 
     /**
+     * Callback executed when the user clicks on the currently selected tab.
+     */
+    void onCurrentTabClicked();
+
+    /**
      * Uniquely identifies this fragment. Any child fragment should override
      * this method and provide it's own distinct implementation.
      * 

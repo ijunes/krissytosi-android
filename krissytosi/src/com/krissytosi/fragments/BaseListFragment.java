@@ -53,6 +53,8 @@ public abstract class BaseListFragment extends ListFragment implements TabbedFra
                 String action = intent.getAction();
                 if (action.equalsIgnoreCase(KrissyTosiConstants.KT_TAB_SELECTED)) {
                     onTabSelected();
+                } else if (action.equals(KrissyTosiConstants.KT_CURRENT_TAB_SELECTED)) {
+                    onCurrentTabClicked();
                 } else if (action.equals(KrissyTosiConstants.KT_NOTIFY_DETAIL_VIEW_KEY)) {
                     FragmentHelper.toggleFlipper(false,
                             (ViewFlipper) getView().findViewById(flipperId), (Activity) context,
@@ -109,6 +111,11 @@ public abstract class BaseListFragment extends ListFragment implements TabbedFra
      * @param width the width of the loaded image.
      */
     public void onPhotoLoaded(int height, int width) {
+
+    }
+
+    @Override
+    public void onCurrentTabClicked() {
 
     }
 

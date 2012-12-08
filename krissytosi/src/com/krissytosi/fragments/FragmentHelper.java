@@ -71,6 +71,7 @@ public class FragmentHelper {
             BroadcastReceiver broadcastReceiver) {
         if (activity != null) {
             IntentFilter filter = new IntentFilter(KrissyTosiConstants.KT_TAB_SELECTED);
+            filter.addAction(KrissyTosiConstants.KT_CURRENT_TAB_SELECTED);
             filter.addAction(KrissyTosiConstants.KT_NOTIFY_DETAIL_VIEW_KEY);
             filter.addAction(KrissyTosiConstants.KT_PHOTO_LOADED);
             filter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);

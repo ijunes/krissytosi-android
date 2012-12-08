@@ -36,6 +36,7 @@ public final class KrissyTosiConstants {
     // broadcast receiver constants
 
     public static final String KT_TAB_SELECTED = "com.krissytosi.utils.Constants.KT_TAB_SELECTED";
+    public static final String KT_CURRENT_TAB_SELECTED = "com.krissytosi.utils.Constants.KT_CURRENT_TAB_SELECTED";
     public static final String KT_FRAGMENT_IDENTIFIER_KEY = "com.krissytosi.utils.Constants.KT_FRAGMENT_IDENTIFIER_KEY";
     public static final String KT_FRAGMENT_IN_DETAIL_VIEW_KEY = "com.krissytosi.utils.Constants.KT_FRAGMENT_IN_DETAIL_VIEW_KEY";
     public static final String KT_FRAGMENT_IN_DETAIL_VIEW = "com.krissytosi.utils.Constants.KT_FRAGMENT_IN_DETAIL_VIEW";

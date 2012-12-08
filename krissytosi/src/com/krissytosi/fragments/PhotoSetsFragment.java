@@ -101,6 +101,11 @@ public class PhotoSetsFragment extends BaseFragment implements OnItemClickListen
     }
 
     @Override
+    public void onCurrentTabClicked() {
+        super.onCurrentTabClicked();
+    }
+
+    @Override
     public void onStop() {
         super.onStop();
         cleanupPhotoTasks();

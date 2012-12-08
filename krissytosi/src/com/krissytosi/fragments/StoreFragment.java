@@ -105,6 +105,14 @@ public class StoreFragment extends BaseListFragment {
     }
 
     @Override
+    public void onCurrentTabClicked() {
+        super.onCurrentTabClicked();
+        if (!isListViewShowing()) {
+            toggleListView(true);
+        }
+    }
+
+    @Override
     public void onStop() {
         super.onStop();
         if (getListingsTask != null) {
@@ -114,7 +122,6 @@ public class StoreFragment extends BaseListFragment {
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-        Log.d(LOG_TAG, "Clicked on item in the list");
         super.onListItemClick(l, v, position, id);
         toggleListView(false);
         Listing listing = adapter.getItem(position);

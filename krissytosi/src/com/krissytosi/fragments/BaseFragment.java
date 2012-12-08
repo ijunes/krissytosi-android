@@ -53,6 +53,8 @@ public abstract class BaseFragment extends Fragment implements TabbedFragment {
                 String action = intent.getAction();
                 if (action.equalsIgnoreCase(KrissyTosiConstants.KT_TAB_SELECTED)) {
                     onTabSelected();
+                } else if (action.equals(KrissyTosiConstants.KT_CURRENT_TAB_SELECTED)) {
+                    onCurrentTabClicked();
                 } else if (action.equals(KrissyTosiConstants.KT_NOTIFY_DETAIL_VIEW_KEY)) {
                     FragmentHelper.toggleFlipper(false,
                             (ViewFlipper) getView().findViewById(flipperId), (Activity) context,
@@ -106,6 +108,11 @@ public abstract class BaseFragment extends Fragment implements TabbedFragment {
             FragmentHelper.toggleDetailViewNotification(getActivity(), getFragmentIdentifier(),
                     inDetailView);
         }
+    }
+
+    @Override
+    public void onCurrentTabClicked() {
+
     }
 
     // Getters/Setters
