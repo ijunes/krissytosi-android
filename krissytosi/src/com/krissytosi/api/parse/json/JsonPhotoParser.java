@@ -20,7 +20,7 @@ import android.util.Log;
 
 import com.krissytosi.api.domain.Photo;
 import com.krissytosi.api.domain.PhotoSet;
-import com.krissytosi.api.parse.PhotoSetParser;
+import com.krissytosi.api.parse.PhotoParser;
 import com.krissytosi.utils.ApiConstants;
 
 import org.json.JSONArray;
@@ -31,9 +31,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * JSON-specific implementation of a {@link PhotoSetParser}
+ * JSON-specific implementation of a {@link PhotoParser}
  */
-public class JsonPhotoSetParser implements PhotoSetParser {
+public class JsonPhotoParser implements PhotoParser {
 
     private static final String LOG_TAG = "JsonPhotoSetParser";
 

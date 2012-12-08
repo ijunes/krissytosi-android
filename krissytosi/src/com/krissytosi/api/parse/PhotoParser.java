@@ -14,7 +14,7 @@
    limitations under the License.
  */
 
-package com.krissytosi.api.services;
+package com.krissytosi.api.parse;
 
 import com.krissytosi.api.domain.Photo;
 import com.krissytosi.api.domain.PhotoSet;
@@ -22,30 +22,26 @@ import com.krissytosi.api.domain.PhotoSet;
 import java.util.List;
 
 /**
- * Defines methods which should be implemented by any object proposing to be a
- * photo set service.
+ * Defines the API parsing methods associated with generating {@link PhotoSet}
+ * objects.
  */
-public interface PhotoSetService {
+public interface PhotoParser {
 
     /**
-     * Sets the base url which this photo set service should target.
+     * Parses a list of {@link PhotoSet}s from a String representation of an API
+     * response.
      * 
-     * @param baseUrl the base url.
+     * @param response an API response.
+     * @return a list of {@link PhotoSet} objects.
      */
-    void setBaseUrl(String baseUrl);
+    List<PhotoSet> parsePhotoSets(String response);
 
     /**
-     * Retrieves a list of {@link PhotoSet} objects.
+     * Parses a list of {@link Photo}s from a String representation of an API
+     * response.
      * 
-     * @return a list of {@link PhotoSet} objects
-     */
-    List<PhotoSet> getPhotoSets();
-
-    /**
-     * Retrieves a list of {@link Photo}s for a given photo set.
-     * 
-     * @param photoSetId the id which identifies the photo set.
+     * @param response an API response.
      * @return a list of {@link Photo} objects.
      */
-    List<Photo> getPhotos(String photoSetId);
+    List<Photo> parsePhotos(String response);
 }

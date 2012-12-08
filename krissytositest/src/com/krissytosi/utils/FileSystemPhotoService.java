@@ -14,34 +14,32 @@
    limitations under the License.
  */
 
-package com.krissytosi.api.parse;
+package com.krissytosi.utils;
 
 import com.krissytosi.api.domain.Photo;
 import com.krissytosi.api.domain.PhotoSet;
+import com.krissytosi.api.services.PhotoService;
 
 import java.util.List;
 
-/**
- * Defines the API parsing methods associated with generating {@link PhotoSet}
- * objects.
- */
-public interface PhotoSetParser {
+public class FileSystemPhotoService implements PhotoService {
 
-    /**
-     * Parses a list of {@link PhotoSet}s from a String representation of an API
-     * response.
-     * 
-     * @param response an API response.
-     * @return a list of {@link PhotoSet} objects.
-     */
-    List<PhotoSet> parsePhotoSets(String response);
+    @Override
+    public void setBaseUrl(String baseUrl) {
+        // TODO Auto-generated method stub
 
-    /**
-     * Parses a list of {@link Photo}s from a String representation of an API
-     * response.
-     * 
-     * @param response an API response.
-     * @return a list of {@link Photo} objects.
-     */
-    List<Photo> parsePhotos(String response);
+    }
+
+    @Override
+    public List<PhotoSet> getPhotoSets() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public List<Photo> getPhotos(String photoSetId) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
 }

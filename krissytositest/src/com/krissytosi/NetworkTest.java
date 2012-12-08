@@ -26,8 +26,10 @@ import com.google.code.tempusfugit.temporal.Condition;
 import com.google.code.tempusfugit.temporal.WaitFor;
 import com.krissytosi.api.ApiClient;
 import com.krissytosi.api.NetworkedApiClient;
+import com.krissytosi.api.domain.Photo;
 import com.krissytosi.api.domain.PhotoSet;
 import com.krissytosi.utils.ApiConstants;
+import com.krissytosi.utils.KrissyTosiTestConstants;
 
 import java.util.List;
 import java.util.concurrent.TimeoutException;
@@ -37,12 +39,13 @@ public class NetworkTest extends AndroidTestCase {
     private static final String LOG_TAG = "NetworkTest";
 
     private List<PhotoSet> photoSets;
+    private List<Photo> photos;
 
     public void testGetPhotoSets() {
         try {
             ApiClient apiClient = new NetworkedApiClient();
             apiClient.setBaseUrl(ApiConstants.PROD_API_URL);
-            photoSets = apiClient.getPhotoSetService().getPhotoSets();
+            photoSets = apiClient.getPhotoService().getPhotoSets();
             WaitFor.waitOrTimeout(new PhotoSetsConditionCheck(),
                     timeout(millis(10000)));
         } catch (InterruptedException e) {
@@ -50,6 +53,21 @@ public class NetworkTest extends AndroidTestCase {
         } catch (TimeoutException e) {
             fail();
             Log.e(LOG_TAG, "testGetPhotoSets", e);
+        }
+    }
+
+    public void testGetPhotos() {
+        try {
+            ApiClient apiClient = new NetworkedApiClient();
+            apiClient.setBaseUrl(ApiConstants.PROD_API_URL);
+            photos = apiClient.getPhotoService().getPhotos(KrissyTosiTestConstants.PHOTO_SET_ID);
+            WaitFor.waitOrTimeout(new PhotosConditionCheck(),
+                    timeout(millis(10000)));
+        } catch (InterruptedException e) {
+            Log.e(LOG_TAG, "testGetPhotos", e);
+        } catch (TimeoutException e) {
+            fail();
+            Log.e(LOG_TAG, "testGetPhotos", e);
         }
     }
 
@@ -62,6 +80,18 @@ public class NetworkTest extends AndroidTestCase {
         @Override
         public boolean isSatisfied() {
             return photoSets != null && photoSets.size() != 0;
+        }
+    }
+
+    private class PhotosConditionCheck implements Condition {
+
+        public PhotosConditionCheck() {
+
+        }
+
+        @Override
+        public boolean isSatisfied() {
+            return photos != null && photos.size() != 0;
         }
     }
 }

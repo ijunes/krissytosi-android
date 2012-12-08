@@ -179,6 +179,26 @@ public class MainActivity extends SherlockFragmentActivity {
                 ContactFragment.class, null);
     }
 
+    // Getters
+
+    public TabHost getTabHost() {
+        return tabHost;
+    }
+
+    public TabManager getTabManager() {
+        return tabManager;
+    }
+
+    public String getFragmentIdentifierInDetailView() {
+        return fragmentIdentifierInDetailView;
+    }
+
+    public BroadcastReceiver getBroadcastReceiver() {
+        return broadcastReceiver;
+    }
+
+    // Tab Manager Class
+
     public static class TabManager implements TabHost.OnTabChangeListener {
 
         private final FragmentActivity activity;

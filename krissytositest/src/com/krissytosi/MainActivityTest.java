@@ -16,17 +16,32 @@
 
 package com.krissytosi;
 
+import android.content.Intent;
 import android.test.ActivityInstrumentationTestCase2;
 
 import com.krissytosi.activities.MainActivity;
+import com.krissytosi.utils.KrissyTosiConstants;
 
 public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActivity> {
 
     public MainActivityTest() {
-        super("com.krissytosi", MainActivity.class);
+        super(MainActivity.class);
     }
 
-    public void testOneTwoThree() {
-        assertEquals(true, true);
+    public void testSanityChecks() throws Exception {
+        assertNotNull("activity should be launched successfully", getActivity());
+        MainActivity activity = getActivity();
+        assertNotNull("tab host should not be null", activity.getTabHost());
+        assertNotNull("tab manager should not be null", activity.getTabManager());
+        assertNotNull("fragment manager should not be null", activity.getSupportFragmentManager());
+    }
+
+    public void testBroadcastReceiver() throws Exception {
+        Intent intent = new Intent(KrissyTosiConstants.KT_FRAGMENT_IN_DETAIL_VIEW_KEY);
+        intent.putExtra(KrissyTosiConstants.KT_FRAGMENT_IN_DETAIL_VIEW, "key");
+        getActivity().getBroadcastReceiver().onReceive(getActivity(), intent);
+        String fragmentIdentifier = getActivity().getFragmentIdentifierInDetailView();
+        assertNotNull("fragmentIdentifier should not be null", fragmentIdentifier);
+        assertTrue("key".equalsIgnoreCase(fragmentIdentifier));
     }
 }

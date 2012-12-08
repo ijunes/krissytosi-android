@@ -246,7 +246,7 @@ public class PhotoSetsFragment extends BaseFragment implements OnItemClickListen
         @Override
         protected List<PhotoSet> doInBackground(ApiClient... params) {
             ApiClient apiClient = params[0];
-            return apiClient.getPhotoSetService().getPhotoSets();
+            return apiClient.getPhotoService().getPhotoSets();
         }
 
         @Override
@@ -268,7 +268,7 @@ public class PhotoSetsFragment extends BaseFragment implements OnItemClickListen
         protected List<Photo> doInBackground(Object... params) {
             ApiClient apiClient = (ApiClient) params[0];
             photoSetId = (String) params[1];
-            return apiClient.getPhotoSetService().getPhotos(photoSetId);
+            return apiClient.getPhotoService().getPhotos(photoSetId);
         }
 
         @Override

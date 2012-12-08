@@ -14,33 +14,23 @@
    limitations under the License.
  */
 
-package com.krissytosi.api.modules;
+package com.krissytosi.utils;
 
-import com.krissytosi.api.parse.PhotoParser;
-import com.krissytosi.api.parse.json.JsonPhotoParser;
+import com.krissytosi.api.ApiClient;
 import com.krissytosi.api.services.PhotoService;
-import com.krissytosi.api.services.http.PhotoServiceImpl;
 
-import dagger.Module;
-import dagger.Provides;
+public class FileSystemApiClient implements ApiClient {
 
-import javax.inject.Singleton;
+    @Override
+    public void setBaseUrl(String baseUrl) {
+        // TODO Auto-generated method stub
 
-@Module(entryPoints = {
-        PhotoService.class, PhotoParser.class
-})
-public class ApiModule {
-
-    @Provides
-    @Singleton
-    PhotoService providePhotoSetService() {
-        return new PhotoServiceImpl();
     }
 
-    @Provides
-    @Singleton
-    PhotoParser providePhotoSetParser() {
-        return new JsonPhotoParser();
+    @Override
+    public PhotoService getPhotoService() {
+        // TODO Auto-generated method stub
+        return null;
     }
 
 }

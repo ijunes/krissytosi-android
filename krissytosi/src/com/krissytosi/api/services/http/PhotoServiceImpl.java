@@ -19,8 +19,8 @@ package com.krissytosi.api.services.http;
 import com.krissytosi.api.domain.Photo;
 import com.krissytosi.api.domain.PhotoSet;
 import com.krissytosi.api.modules.ApiModule;
-import com.krissytosi.api.parse.PhotoSetParser;
-import com.krissytosi.api.services.PhotoSetService;
+import com.krissytosi.api.parse.PhotoParser;
+import com.krissytosi.api.services.PhotoService;
 import com.krissytosi.utils.ApiConstants;
 
 import dagger.ObjectGraph;
@@ -30,12 +30,12 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * HTTP specific implementation of a {@link PhotoSetService}.
+ * HTTP specific implementation of a {@link PhotoService}.
  */
-public class PhotoSetServiceImpl extends HttpService implements
-        PhotoSetService {
+public class PhotoServiceImpl extends HttpService implements
+        PhotoService {
 
-    private PhotoSetParser parser;
+    private PhotoParser parser;
 
     /**
      * The base url which this service is targeting.
@@ -77,10 +77,10 @@ public class PhotoSetServiceImpl extends HttpService implements
 
     // Getters/Setters
 
-    private PhotoSetParser getPhotoSetParser() {
+    private PhotoParser getPhotoSetParser() {
         if (parser == null) {
             ObjectGraph objectGraph = ObjectGraph.create(new ApiModule());
-            parser = objectGraph.get(PhotoSetParser.class);
+            parser = objectGraph.get(PhotoParser.class);
         }
         return parser;
     }

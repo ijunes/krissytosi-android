@@ -14,12 +14,11 @@
    limitations under the License.
  */
 
-package com.krissytosi.api.modules;
+package com.krissytosi.utils;
 
-import com.krissytosi.api.parse.PhotoParser;
-import com.krissytosi.api.parse.json.JsonPhotoParser;
-import com.krissytosi.api.services.PhotoService;
-import com.krissytosi.api.services.http.PhotoServiceImpl;
+import com.krissytosi.api.ApiClient;
+import com.krissytosi.api.store.StoreApiClient;
+import com.krissytosi.tracking.Tracking;
 
 import dagger.Module;
 import dagger.Provides;
@@ -27,20 +26,25 @@ import dagger.Provides;
 import javax.inject.Singleton;
 
 @Module(entryPoints = {
-        PhotoService.class, PhotoParser.class
+        ApiClient.class, StoreApiClient.class, Tracking.class
 })
-public class ApiModule {
+public class KrissyTosiTestModule {
 
     @Provides
     @Singleton
-    PhotoService providePhotoSetService() {
-        return new PhotoServiceImpl();
+    ApiClient provideApiClient() {
+        return new FileSystemApiClient();
     }
 
     @Provides
     @Singleton
-    PhotoParser providePhotoSetParser() {
-        return new JsonPhotoParser();
+    StoreApiClient provideStoreApiClient() {
+        return new FileSystemStoreApiClient();
     }
 
+    @Provides
+    @Singleton
+    Tracking provideTracker() {
+        return new LoggingTracking();
+    }
 }

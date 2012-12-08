@@ -21,7 +21,7 @@ import android.test.AndroidTestCase;
 import com.krissytosi.api.domain.Photo;
 import com.krissytosi.api.domain.PhotoSet;
 import com.krissytosi.api.modules.ApiModule;
-import com.krissytosi.api.parse.PhotoSetParser;
+import com.krissytosi.api.parse.PhotoParser;
 
 import dagger.ObjectGraph;
 
@@ -37,7 +37,7 @@ public class ParseTest extends AndroidTestCase {
     private static final String PHOTOS_FILE_NAME = "photos.json";
     private static final String MALFORMED_FILE_NAME = "malformed.json";
 
-    private PhotoSetParser parser;
+    private PhotoParser parser;
 
     public void testSuccessfulPhotoSetParserImplementation() {
         String fileContents = readFile("/assets/responses/json/" + PHOTOSETS_FILE_NAME);
@@ -119,10 +119,10 @@ public class ParseTest extends AndroidTestCase {
         return new String(bytes);
     }
 
-    private PhotoSetParser getPortfolioParser() {
+    private PhotoParser getPortfolioParser() {
         if (parser == null) {
             ObjectGraph objectGraph = ObjectGraph.create(new ApiModule());
-            parser = objectGraph.get(PhotoSetParser.class);
+            parser = objectGraph.get(PhotoParser.class);
         }
         return parser;
     }
