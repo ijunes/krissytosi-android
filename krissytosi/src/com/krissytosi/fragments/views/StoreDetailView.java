@@ -46,6 +46,7 @@ public class StoreDetailView extends BaseDetailView implements OnClickListener,
 
     private static final String LOG_TAG = "StoreDetailView";
 
+    private int maximumHeight;
     private Listing listing;
 
     private ViewPager detailViewPager;
@@ -67,6 +68,8 @@ public class StoreDetailView extends BaseDetailView implements OnClickListener,
     }
 
     public void buildPage() {
+        // reset the max height
+        maximumHeight = 0;
         // first get all the views back from the base view
         detailViewPager = (ViewPager) getBaseView().findViewById(R.id.detail_view_pager);
         detailViewPagerIndicator = (TextView) getBaseView().findViewById(
@@ -112,6 +115,21 @@ public class StoreDetailView extends BaseDetailView implements OnClickListener,
                 listing.getWhenMade()));
     }
 
+    public void onPhotoLoaded(int height, int width) {
+        if (height > maximumHeight) {
+            maximumHeight = height;
+            // TODO - animate
+            ((Activity) getContext()).runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) detailViewPager
+                            .getLayoutParams();
+                    params.height = maximumHeight;
+                }
+            });
+        }
+    }
+
     @Override
     public void onPageScrollStateChanged(int state) {
 
@@ -133,22 +151,13 @@ public class StoreDetailView extends BaseDetailView implements OnClickListener,
     private void initializeViewPager() {
         String[] images = new String[listing.getImages().length];
         int counter = 0;
-        int maxHeight = 0;
         for (ListingImage listingImage : listing.getImages()) {
-            int listingHeight = listingImage.getFullHeight();
-            if (listingHeight > maxHeight) {
-                maxHeight = listingHeight;
-            }
             images[counter] = KrissyTosiUtils.determineImageUrl(listingImage, ImageSize.LARGE);
             counter++;
         }
         detailViewPager.setAdapter(new ImagePagerAdapter(images, (Activity) getContext()));
         detailViewPager.setCurrentItem(0);
         detailViewPager.setOnPageChangeListener(this);
-        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) detailViewPager
-                .getLayoutParams();
-        // TODO - max height vs height?
-        params.height = 500;
     }
 
     // Getters/Setters

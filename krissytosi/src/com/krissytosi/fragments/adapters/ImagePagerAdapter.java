@@ -17,6 +17,7 @@
 package com.krissytosi.fragments.adapters;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -28,6 +29,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import com.krissytosi.R;
+import com.krissytosi.utils.KrissyTosiConstants;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
@@ -109,6 +111,14 @@ public class ImagePagerAdapter extends PagerAdapter {
                                 android.R.anim.fade_in);
                         imageView.setAnimation(anim);
                         anim.start();
+                        Intent intent = new Intent(KrissyTosiConstants.KT_PHOTO_LOADED);
+                        intent.putExtra(KrissyTosiConstants.KT_FRAGMENT_IDENTIFIER_KEY,
+                                KrissyTosiConstants.FRAGMENT_STORE_ID);
+                        intent.putExtra(KrissyTosiConstants.KT_PHOTO_LOADED_HEIGHT,
+                                loadedImage.getHeight());
+                        intent.putExtra(KrissyTosiConstants.KT_PHOTO_LOADED_WIDTH,
+                                loadedImage.getWidth());
+                        activity.sendBroadcast(intent);
                     }
 
                     @Override

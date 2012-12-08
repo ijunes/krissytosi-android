@@ -116,11 +116,8 @@ public class StoreFragment extends BaseListFragment {
     public void onListItemClick(ListView l, View v, int position, long id) {
         Log.d(LOG_TAG, "Clicked on item in the list");
         super.onListItemClick(l, v, position, id);
-        Log.d(LOG_TAG, "ONE");
         toggleListView(false);
-        Log.d(LOG_TAG, "TWO");
         Listing listing = adapter.getItem(position);
-        Log.d(LOG_TAG, "THREE " + listing);
         populateStoreListing(listing);
         getView().findViewById(R.id.store_detail_view).setVisibility(View.VISIBLE);
     }
@@ -132,6 +129,17 @@ public class StoreFragment extends BaseListFragment {
      */
     public boolean isListViewShowing() {
         return listView != null && listView.getVisibility() != View.GONE;
+    }
+
+    @Override
+    public void onPhotoLoaded(int height, int width) {
+        super.onPhotoLoaded(height, width);
+        // when a photo is loaded into a ImagePagerAdapter, the storeDetailView
+        // needs to be notified in order to resize itself to accommodate the
+        // image.
+        if (!isListViewShowing()) {
+            storeDetailView.onPhotoLoaded(height, width);
+        }
     }
 
     /**
@@ -162,7 +170,6 @@ public class StoreFragment extends BaseListFragment {
     protected void onGetListings(EtsyResult result) {
         List<BaseModel> results = result.getResults();
         if (HttpStatus.SC_OK == result.getCode()) {
-            Log.d(LOG_TAG, "Got some listings back from the API server");
             List<Listing> listings = new ArrayList<Listing>();
             for (BaseModel listingResult : results) {
                 listings.add((Listing) listingResult);

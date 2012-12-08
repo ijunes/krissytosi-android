@@ -45,7 +45,7 @@
             <TextView
                 android:id="@+id/detail_view_description"
                 style="@style/KTParagraphText"
-                android:layout_below="@+id/detail_view_pager_indicator" />
+                android:layout_below="@+id/detail_view_buy_button" />
 
             <TextView
                 android:id="@+id/detail_view_created"

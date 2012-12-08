@@ -57,6 +57,10 @@ public abstract class BaseListFragment extends ListFragment implements TabbedFra
                     FragmentHelper.toggleFlipper(false,
                             (ViewFlipper) getView().findViewById(flipperId), (Activity) context,
                             getFragmentIdentifier());
+                } else if (action.equals(KrissyTosiConstants.KT_PHOTO_LOADED)) {
+                    onPhotoLoaded(
+                            intent.getIntExtra(KrissyTosiConstants.KT_PHOTO_LOADED_HEIGHT, 0),
+                            intent.getIntExtra(KrissyTosiConstants.KT_PHOTO_LOADED_WIDTH, 0));
                 }
             }
         }
@@ -96,6 +100,16 @@ public abstract class BaseListFragment extends ListFragment implements TabbedFra
     @Override
     public void toggleNoNetwork(boolean show, View view) {
         FragmentHelper.toggleNoNetwork(show, view, getView());
+    }
+
+    /**
+     * Callback executed when a ImagePagerAdapter loads an image.
+     * 
+     * @param height the height of the loaded image.
+     * @param width the width of the loaded image.
+     */
+    public void onPhotoLoaded(int height, int width) {
+
     }
 
     // Getters/Setters

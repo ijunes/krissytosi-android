@@ -40,6 +40,9 @@ public final class KrissyTosiConstants {
     public static final String KT_FRAGMENT_IN_DETAIL_VIEW_KEY = "com.krissytosi.utils.Constants.KT_FRAGMENT_IN_DETAIL_VIEW_KEY";
     public static final String KT_FRAGMENT_IN_DETAIL_VIEW = "com.krissytosi.utils.Constants.KT_FRAGMENT_IN_DETAIL_VIEW";
     public static final String KT_NOTIFY_DETAIL_VIEW_KEY = "com.krissytosi.utils.Constants.KT_NOTIFY_DETAIL_VIEW_KEY";
+    public static final String KT_PHOTO_LOADED = "com.krissytosi.utils.Constants.KT_PHOTO_LOADED";
+    public static final String KT_PHOTO_LOADED_HEIGHT = "com.krissytosi.utils.Constants.KT_PHOTO_LOADED_HEIGHT";
+    public static final String KT_PHOTO_LOADED_WIDTH = "com.krissytosi.utils.Constants.KT_PHOTO_LOADED_WIDTH";
 
     // settings constants
 
