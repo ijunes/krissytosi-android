@@ -71,7 +71,7 @@ public class PhotoSetsAdapter extends ArrayAdapter<PhotoSet> {
                 if (holder != null) {
                     UrlImageViewHelper.setUrlDrawable(holder.photoSetImageView,
                             KrissyTosiUtils.determineImageUrl(photoSet.getPhotos().get(0),
-                                    ImageSize.SQUARE));
+                                    ImageSize.MEDIUM));
                     holder.photoSetTitle.setText(photoSet.getTitle());
                     holder.photoSetSubTitle.setText(String.format(
                             v.getResources().getString(R.string.number_of_images),

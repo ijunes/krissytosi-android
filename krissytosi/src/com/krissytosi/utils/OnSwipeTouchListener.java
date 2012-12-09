@@ -16,6 +16,7 @@
 
 package com.krissytosi.utils;
 
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.MotionEvent;
@@ -28,6 +29,8 @@ import android.view.View.OnTouchListener;
  * /android-how-to-handle-right-to-left-swipe-gestures}
  */
 public class OnSwipeTouchListener implements OnTouchListener {
+
+    private static final String LOG_TAG = "OnSwipeTouchListener";
 
     @SuppressWarnings("deprecation")
     private final GestureDetector gestureDetector = new GestureDetector(new GestureListener());
@@ -45,6 +48,12 @@ public class OnSwipeTouchListener implements OnTouchListener {
 
         private static final int SWIPE_THRESHOLD = 100;
         private static final int SWIPE_VELOCITY_THRESHOLD = 100;
+
+        @Override
+        public void onLongPress(MotionEvent motionEvent) {
+            super.onLongPress(motionEvent);
+            onLongPressDetected(motionEvent);
+        }
 
         @Override
         public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
@@ -77,7 +86,7 @@ public class OnSwipeTouchListener implements OnTouchListener {
                     }
                 }
             } catch (Exception exception) {
-                exception.printStackTrace();
+                Log.d(LOG_TAG, "onFling", exception);
             }
             return consumeEvent;
         }
@@ -93,5 +102,13 @@ public class OnSwipeTouchListener implements OnTouchListener {
     }
 
     public void onSwipeBottom() {
+    }
+
+    public void onLongPressDetected(MotionEvent motionEvent) {
+
+    }
+
+    public void setIsLongpressEnabled(boolean enabled) {
+        gestureDetector.setIsLongpressEnabled(enabled);
     }
 }

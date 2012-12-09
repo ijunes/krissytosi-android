@@ -15,11 +15,12 @@
         android:id="@+id/photoset_title"
         style="@style/KTParagraphText"
         android:layout_below="@+id/photoset_image"
-        android:textAlignment="center" />
+        android:layout_centerHorizontal="true" />
 
     <TextView
         android:id="@+id/photoset_sub_title"
         style="@style/KTRunnerText"
-        android:layout_below="@+id/photoset_title" />
+        android:layout_below="@+id/photoset_title"
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>

@@ -20,6 +20,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -85,13 +86,21 @@ public class PhotoSetsFragment extends BaseFragment implements OnItemClickListen
         View v = inflater.inflate(R.layout.photosets, container, false);
         ScrollView photoSetDetailView = (ScrollView) v.findViewById(R.id.photoset_detail_view);
         photoSetDetailView.setSmoothScrollingEnabled(true);
-        photoSetDetailView.setOnTouchListener(new OnSwipeTouchListener() {
+        OnSwipeTouchListener listener = new OnSwipeTouchListener() {
 
             @Override
             public void onSwipeRight() {
                 toggleGridView(true);
             }
-        });
+
+            @Override
+            public void onLongPressDetected(MotionEvent motionEvent) {
+                super.onLongPressDetected(motionEvent);
+                Log.d(LOG_TAG, "Long Press Detected");
+            }
+        };
+        listener.setIsLongpressEnabled(true);
+        photoSetDetailView.setOnTouchListener(listener);
         return v;
     }
 
