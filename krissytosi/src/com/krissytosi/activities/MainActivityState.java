@@ -59,8 +59,8 @@ public class MainActivityState implements Parcelable {
     }
 
     private void readFromParcel(Parcel in) {
-        setCurrentTabIdentifier(in.readString());
-        setFragmentIdentifierInDetailView(in.readString());
+        currentTabIdentifier = in.readString();
+        fragmentIdentifierInDetailView = in.readString();
     }
 
     // Getters/Setters

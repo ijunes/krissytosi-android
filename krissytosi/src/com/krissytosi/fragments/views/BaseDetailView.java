@@ -19,7 +19,7 @@ package com.krissytosi.fragments.views;
 import android.content.Context;
 import android.view.View;
 
-public abstract class BaseDetailView {
+public class BaseDetailView {
 
     private View baseView;
     private Context context;

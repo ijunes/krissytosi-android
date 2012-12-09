@@ -45,8 +45,8 @@ public class SettingsActivityHC extends Activity implements
 
     @Override
     protected void onPause() {
-        super.onPause();
         ActivityHelper.toggleRegisterOnSharedPreferenceChangeListener(this, false);
+        super.onPause();
     }
 
     @Override

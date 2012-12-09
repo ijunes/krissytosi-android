@@ -106,11 +106,10 @@ public class FragmentHelper {
     public static boolean onReceive(Context context, Intent intent, String fragmentIdentifier) {
         boolean isIntendedForThisFragment = false;
         String action = intent.getAction();
-        if (!action.equals(ConnectivityManager.CONNECTIVITY_ACTION)) {
-            if (fragmentIdentifier.equalsIgnoreCase(intent
-                    .getStringExtra(KrissyTosiConstants.KT_FRAGMENT_IDENTIFIER_KEY))) {
-                isIntendedForThisFragment = true;
-            }
+        if (!action.equals(ConnectivityManager.CONNECTIVITY_ACTION)
+                && fragmentIdentifier.equalsIgnoreCase(intent
+                        .getStringExtra(KrissyTosiConstants.KT_FRAGMENT_IDENTIFIER_KEY))) {
+            isIntendedForThisFragment = true;
         }
         return isIntendedForThisFragment;
     }

@@ -13,10 +13,12 @@
     <rule ref="rulesets/java/basic.xml"></rule>
     <rule ref="rulesets/java/codesize.xml">
         <exclude name="TooManyMethods"></exclude>
+        <exclude name="NPathComplexityRule"></exclude>
     </rule>
     <rule ref="rulesets/java/coupling.xml">
         <exclude name="LawOfDemeter"></exclude>
         <exclude name="LoosePackageCoupling"></exclude>
+        <exclude name="ExcessiveImportsRule"></exclude>
     </rule>
     <rule ref="rulesets/java/design.xml">
         <exclude name="ConfusingTernary" />
@@ -29,6 +31,7 @@
     <rule ref="rulesets/java/optimizations.xml">
         <exclude name="MethodArgumentCouldBeFinal" />
         <exclude name="LocalVariableCouldBeFinal" />
+        <exclude name="AvoidInstantiatingObjectsInLoopsRule" />
     </rule>
     <rule ref="rulesets/java/naming.xml">
         <exclude name="VariableNamingConventions"></exclude>

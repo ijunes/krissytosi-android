@@ -40,80 +40,64 @@ public class JsonPhotoParser implements PhotoParser {
     @Override
     public List<PhotoSet> parsePhotoSets(String response) {
         List<PhotoSet> photoSets = new ArrayList<PhotoSet>();
-        // make sure we got at least *something* back from the API server
-        if (response != null && !"".equalsIgnoreCase(response)) {
-            // make sure it wasn't just a HTTP status code
-            if (response.length() != ApiConstants.HTTP_RESPONSE_CODE_LENGTH) {
-                try {
-                    if (response.charAt(0) == '{') {
-                        // parse the response into an object and see if we can
-                        // find the photo sets.
-                        JSONObject rootJson = new JSONObject(response);
-                        JSONObject photoSetsJson = rootJson
-                                .optJSONObject(ApiConstants.PHOTOSETS_ID);
-                        if (photoSetsJson != null) {
-                            JSONArray photoSetJson = photoSetsJson
-                                    .optJSONArray(ApiConstants.PHOTOSET_ID);
-                            if (photoSetJson != null) {
-                                for (int i = 0, l = photoSetJson.length(); i < l; i++) {
-                                    // digest one photo set
-                                    JSONObject json = photoSetJson.optJSONObject(i);
-                                    if (json != null) {
-                                        PhotoSet photoSet = digestPhotoSet(json);
-                                        photoSets.add(photoSet);
-                                        // check to see if its an error
-                                        if (photoSet.getErrorCode() != -1
-                                                || photoSet.getErrorDescription() != null) {
-                                            break;
-                                        }
-                                    } else {
-                                        // make sure that the user is aware of
-                                        // this error.
-                                        Log.d(LOG_TAG,
-                                                "Api server returned a response with photosets, but they were not deemed valid. Api server returned "
-                                                        + response);
-                                        photoSets
-                                                .add(createErrorPhotoSet(ApiConstants.NO_PHOTOSETS));
-                                    }
+        if (baseSanityChecks(response)) {
+            try {
+                // parse the response into an object and see if we can find the
+                // photo sets.
+                JSONObject rootJson = new JSONObject(response);
+                JSONObject photoSetsJson = rootJson
+                        .optJSONObject(ApiConstants.PHOTOSETS_ID);
+                if (photoSetsJson != null) {
+                    JSONArray photoSetJson = photoSetsJson
+                            .optJSONArray(ApiConstants.PHOTOSET_ID);
+                    if (photoSetJson != null) {
+                        for (int i = 0, l = photoSetJson.length(); i < l; i++) {
+                            // digest one photo set
+                            JSONObject json = photoSetJson.optJSONObject(i);
+                            if (json != null) {
+                                PhotoSet photoSet = digestPhotoSet(json);
+                                photoSets.add(photoSet);
+                                // check to see if its an error
+                                if (photoSet.getErrorCode() != -1
+                                        || photoSet.getErrorDescription() != null) {
+                                    break;
                                 }
                             } else {
-                                // if there's no photoset element, we should
-                                // build an error.
+                                // make sure that the user is aware
+                                // of
+                                // this error.
                                 Log.d(LOG_TAG,
-                                        "Api server did not response with a photoset element in the json object response. Instead it returned "
+                                        "Api server returned a response with photosets, but they were not deemed valid. Api server returned "
                                                 + response);
-                                photoSets.add(createErrorPhotoSet(ApiConstants.NO_PHOTOSETS));
+                                photoSets
+                                        .add(createErrorPhotoSetResponse(ApiConstants.NO_PHOTOSETS));
                             }
-                        } else {
-                            // if there's no photo sets in the response, we
-                            // should build an error
-                            Log.d(LOG_TAG,
-                                    "Api server did not response with a photosets element in the json object response. Instead it returned "
-                                            + response);
-                            photoSets.add(createErrorPhotoSet(ApiConstants.NO_PHOTOSETS));
                         }
                     } else {
-                        // if we can't parse the initial json object, it should
-                        // be construed as an error.
+                        // if there's no photoset element, we should
+                        // build an error.
                         Log.d(LOG_TAG,
-                                "Api server did not response with a viable json object response. Instead it returned "
+                                "Api server did not response with a photoset element in the json object response. Instead it returned "
                                         + response);
-                        photoSets.add(createErrorPhotoSet(ApiConstants.API_ERROR));
+                        photoSets.add(createErrorPhotoSetResponse(ApiConstants.NO_PHOTOSETS));
                     }
-                } catch (JSONException e) {
-                    photoSets.add(createErrorPhotoSet(ApiConstants.API_ERROR));
-                    Log.e(LOG_TAG, "parsePhotoSets", e);
+                } else {
+                    // if there's no photo sets in the response, we
+                    // should build an error
+                    Log.d(LOG_TAG,
+                            "Api server did not response with a photosets element in the json object response. Instead it returned "
+                                    + response);
+                    photoSets.add(createErrorPhotoSetResponse(ApiConstants.NO_PHOTOSETS));
                 }
-            } else {
-                photoSets.add(createErrorPhotoSet(ApiConstants.API_ERROR));
-                Log.d(LOG_TAG,
-                        "Failed to retrieve photo sets - got a HTTP response code back from the API server instead "
-                                + response);
+            } catch (JSONException e) {
+                photoSets.add(createErrorPhotoSetResponse(ApiConstants.API_ERROR));
+                Log.e(LOG_TAG, "parsePhotoSets", e);
             }
         } else {
-            photoSets.add(createErrorPhotoSet(ApiConstants.API_ERROR));
+            photoSets.add(createErrorPhotoSetResponse(ApiConstants.API_ERROR));
             Log.d(LOG_TAG,
-                    "Failed to retrieve photo sets - got nothing back from the API server");
+                    "Failed to retrieve photo sets - got a malformed response back from the API server"
+                            + response);
         }
         return photoSets;
     }
@@ -121,57 +105,40 @@ public class JsonPhotoParser implements PhotoParser {
     @Override
     public List<Photo> parsePhotos(String response) {
         List<Photo> photos = new ArrayList<Photo>();
-        // make sure we got at least *something* back from the API server
-        if (response != null && !"".equalsIgnoreCase(response)) {
-            // make sure it wasn't just a HTTP status code
-            if (response.length() != ApiConstants.HTTP_RESPONSE_CODE_LENGTH) {
-                try {
-                    if (response.charAt(0) == '{') {
-                        // parse the response into an object and see if we can
-                        // find the photo sets.
-                        JSONObject rootJson = new JSONObject(response);
-                        JSONObject photoSetJson = rootJson.optJSONObject(ApiConstants.PHOTOSET_ID);
-                        if (photoSetJson != null) {
-                            JSONArray photoSetArray = photoSetJson
-                                    .optJSONArray(ApiConstants.PHOTO_ID);
-                            if (photoSetArray != null) {
-                                for (int i = 0, l = photoSetArray.length(); i < l; i++) {
-                                    // digest one photo set
-                                    JSONObject json = photoSetArray.optJSONObject(i);
-                                    if (json != null) {
-                                        photos.add(digestPhoto(json));
-                                    } else {
-                                        // TODO
-                                    }
-                                }
+        if (baseSanityChecks(response)) {
+            try {
+                // parse the response into an object and see if we can
+                // find the photo sets.
+                JSONObject rootJson = new JSONObject(response);
+                JSONObject photoSetJson = rootJson.optJSONObject(ApiConstants.PHOTOSET_ID);
+                if (photoSetJson != null) {
+                    JSONArray photoSetArray = photoSetJson
+                            .optJSONArray(ApiConstants.PHOTO_ID);
+                    if (photoSetArray != null) {
+                        for (int i = 0, l = photoSetArray.length(); i < l; i++) {
+                            // digest one photo set
+                            JSONObject json = photoSetArray.optJSONObject(i);
+                            if (json != null) {
+                                photos.add(digestPhoto(json));
                             } else {
                                 // TODO
                             }
-                        } else {
-                            // TODO
                         }
                     } else {
-                        // if we can't parse the initial json object, it should
-                        // be construed as an error.
-                        Log.d(LOG_TAG,
-                                "Api server did not response with a viable json object response. Instead it returned "
-                                        + response);
-                        photos.add(createErrorPhotoResponse(ApiConstants.NO_PHOTOS_IN_PHOTOSET));
+                        // TODO
                     }
-                } catch (JSONException e) {
-                    photos.add(createErrorPhotoResponse(ApiConstants.NO_PHOTOS_IN_PHOTOSET));
-                    Log.e(LOG_TAG, "parsePhotos", e);
+                } else {
+                    // TODO
                 }
-            } else {
-                photos.add(createErrorPhotoResponse(ApiConstants.API_ERROR));
-                Log.d(LOG_TAG,
-                        "Failed to retrieve photos - got a HTTP response code back from the API server instead "
-                                + response);
+            } catch (JSONException e) {
+                photos.add(createErrorPhotoResponse(ApiConstants.NO_PHOTOS_IN_PHOTOSET));
+                Log.e(LOG_TAG, "parsePhotos", e);
             }
         } else {
             photos.add(createErrorPhotoResponse(ApiConstants.API_ERROR));
             Log.d(LOG_TAG,
-                    "Failed to retrieve photos - got nothing back from the API server");
+                    "Failed to retrieve photos - got a malformed response back from the API server "
+                            + response);
         }
         return photos;
     }
@@ -259,17 +226,44 @@ public class JsonPhotoParser implements PhotoParser {
      * @param errorCode the error code to associate with the photo set.
      * @return a {@link PhotoSet} object describing the error.
      */
-    private PhotoSet createErrorPhotoSet(int errorCode) {
+    private PhotoSet createErrorPhotoSetResponse(int errorCode) {
         PhotoSet errorPhotoSet = new PhotoSet();
         errorPhotoSet.setErrorCode(errorCode);
         errorPhotoSet.setErrorDescription(ApiConstants.NO_PHOTOSETS_DESCRIPTION);
         return errorPhotoSet;
     }
 
+    /**
+     * Creates a dummy photo object response.
+     * 
+     * @param errorCode the code to associate with the photo set.
+     * @return a {@link Photo} object describing the error.
+     */
     private Photo createErrorPhotoResponse(int errorCode) {
         Photo photo = new Photo();
         photo.setErrorCode(errorCode);
         photo.setErrorDescription(ApiConstants.NO_PHOTOS_DESCRIPTION);
         return photo;
+    }
+
+    /**
+     * Quickly checks to see that an API response is well formed and includes
+     * viable json.
+     * 
+     * @param response the raw string-ified HTTP response.
+     * @return boolean indicating that the response is ok.
+     */
+    private boolean baseSanityChecks(String response) {
+        boolean isSaneResponse = false;
+        // make sure we got at least *something* back from the API server
+        if (response != null && !"".equalsIgnoreCase(response)) {
+            // make sure it wasn't just a HTTP status code
+            if (response.length() != ApiConstants.HTTP_RESPONSE_CODE_LENGTH) {
+                if (response.charAt(0) == '{') {
+                    isSaneResponse = true;
+                }
+            }
+        }
+        return isSaneResponse;
     }
 }

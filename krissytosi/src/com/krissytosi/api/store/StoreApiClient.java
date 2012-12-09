@@ -31,6 +31,6 @@ public interface StoreApiClient {
      * @param etsyRequest The EtsyRequest object to run.
      * @return The Result object with the parsed HTTP response.
      */
-    public EtsyResult runRequest(EtsyRequest etsyRequest);
+    EtsyResult runRequest(EtsyRequest etsyRequest);
 
 }

@@ -66,12 +66,12 @@ public interface TabbedFragment extends OnClickListener {
      * 
      * @return
      */
-    public Button getNoNetworkButton();
+    Button getNoNetworkButton();
 
     /**
      * Setter for a 'No Network' button which is common across all fragments.
      * 
      * @param noNetworkButton
      */
-    public void setNoNetworkButton(Button noNetworkButton);
+    void setNoNetworkButton(Button noNetworkButton);
 }

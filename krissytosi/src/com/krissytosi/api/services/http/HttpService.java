@@ -19,7 +19,6 @@ package com.krissytosi.api.services.http;
 import android.util.Log;
 
 import com.krissytosi.utils.ApiConstants;
-import com.krissytosi.utils.KrissyTosiConstants;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.http.Header;
@@ -205,55 +204,36 @@ public class HttpService {
      */
     private String parseApiResponse(HttpResponse response) {
         String result = "500";
-        // check that we're getting back a valid header - this helps when the
-        // user runs into splash screens
-        if (checkResponseForCustomHeader(response)) {
-            // see if we got a viable HTTP response back from the API server.
-            final int httpResponseCode = response.getStatusLine().getStatusCode();
-            if (httpResponseCode == HttpStatus.SC_OK) {
-                // get the entity and parse the response
-                HttpEntity entity = response.getEntity();
-                if (entity != null) {
-                    InputStream instream;
-                    try {
-                        instream = entity.getContent();
-                        // check to see if gzip is enabled ...
-                        Header contentEncoding = response
-                                .getFirstHeader(CONTENT_ENCODING_HEADER);
-                        if (contentEncoding != null
-                                && contentEncoding.getValue().equalsIgnoreCase(
-                                        GZIP_ENCODING)) {
-                            instream = new GZIPInputStream(instream);
-                        }
-                        // get the bytes and create a string
-                        byte[] bytes = IOUtils.toByteArray(instream);
-                        result = parseString(bytes);
-                    } catch (IllegalStateException e) {
-                        Log.e(LOG_TAG, "parseApiResponse", e);
-                    } catch (IOException e) {
-                        Log.e(LOG_TAG, "parseApiResponse", e);
+        // see if we got a viable HTTP response back from the API server.
+        final int httpResponseCode = response.getStatusLine().getStatusCode();
+        if (httpResponseCode == HttpStatus.SC_OK) {
+            // get the entity and parse the response
+            HttpEntity entity = response.getEntity();
+            if (entity != null) {
+                InputStream instream;
+                try {
+                    instream = entity.getContent();
+                    // check to see if gzip is enabled ...
+                    Header contentEncoding = response
+                            .getFirstHeader(CONTENT_ENCODING_HEADER);
+                    if (contentEncoding != null
+                            && contentEncoding.getValue().equalsIgnoreCase(
+                                    GZIP_ENCODING)) {
+                        instream = new GZIPInputStream(instream);
                     }
+                    // get the bytes and create a string
+                    byte[] bytes = IOUtils.toByteArray(instream);
+                    result = parseString(bytes);
+                } catch (IllegalStateException e) {
+                    Log.e(LOG_TAG, "parseApiResponse", e);
+                } catch (IOException e) {
+                    Log.e(LOG_TAG, "parseApiResponse", e);
                 }
-            } else {
-                result = String.valueOf(httpResponseCode);
             }
+        } else {
+            result = String.valueOf(httpResponseCode);
         }
         return result;
-    }
-
-    /**
-     * Checks the response to ensure that we've definitely hit the API server &
-     * not some Wi-Fi splash screen or some proxy.
-     * 
-     * @param response the HTTP response from the wire.
-     * @return boolean indicating that a specific header is available in the
-     *         response. See {@link KrissyTosiConstants} for details of the
-     *         header key value pair.
-     */
-    private boolean checkResponseForCustomHeader(HttpResponse response) {
-        // TODO - custom headers and Flickr
-        boolean hasValidHeader = true;
-        return hasValidHeader;
     }
 
     /**

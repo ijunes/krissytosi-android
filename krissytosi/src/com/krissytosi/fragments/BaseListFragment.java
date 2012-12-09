@@ -82,8 +82,8 @@ public abstract class BaseListFragment extends ListFragment implements TabbedFra
 
     @Override
     public void onStop() {
-        super.onStop();
         FragmentHelper.onStop(getActivity(), broadcastReceiver);
+        super.onStop();
     }
 
     @Override

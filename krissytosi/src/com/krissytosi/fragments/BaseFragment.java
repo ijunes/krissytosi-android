@@ -21,6 +21,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ViewFlipper;
@@ -33,6 +34,8 @@ import com.krissytosi.utils.KrissyTosiConstants;
  * fragments.
  */
 public abstract class BaseFragment extends Fragment implements TabbedFragment {
+
+    private static final String LOG_TAG = "BaseFragment";
 
     /**
      * Button which allows the user to re-initiate a request should they get the
@@ -78,8 +81,8 @@ public abstract class BaseFragment extends Fragment implements TabbedFragment {
 
     @Override
     public void onStop() {
-        super.onStop();
         FragmentHelper.onStop(getActivity(), broadcastReceiver);
+        super.onStop();
     }
 
     @Override
@@ -112,7 +115,7 @@ public abstract class BaseFragment extends Fragment implements TabbedFragment {
 
     @Override
     public void onCurrentTabClicked() {
-
+        Log.d(LOG_TAG, "Current tab clicked by user");
     }
 
     // Getters/Setters
