@@ -25,6 +25,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
+import android.widget.ScrollView;
 import android.widget.ViewFlipper;
 
 import com.krissytosi.KrissyTosiApplication;
@@ -36,6 +37,7 @@ import com.krissytosi.fragments.adapters.PhotoSetsAdapter;
 import com.krissytosi.fragments.views.PhotoSetDetailView;
 import com.krissytosi.utils.ApiConstants;
 import com.krissytosi.utils.KrissyTosiConstants;
+import com.krissytosi.utils.OnSwipeTouchListener;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -51,7 +53,7 @@ public class PhotoSetsFragment extends BaseFragment implements OnItemClickListen
     /**
      * Used to display a summary of photo sets to the user.
      */
-    private GridView photoSetsGrid;
+    private GridView gridView;
 
     /**
      * Task used to retrieve the photo sets from the API server.
@@ -73,13 +75,23 @@ public class PhotoSetsFragment extends BaseFragment implements OnItemClickListen
      */
     private PhotoSetDetailView photoSetDetailView;
 
+    /**
+     * Photo sets which back this view.
+     */
     private List<PhotoSet> photoSets;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.photosets, container, false);
-        photoSetsGrid = (GridView) v.findViewById(R.id.photosets_grid);
-        photoSetsGrid.setOnItemClickListener(this);
+        ScrollView photoSetDetailView = (ScrollView) v.findViewById(R.id.photoset_detail_view);
+        photoSetDetailView.setSmoothScrollingEnabled(true);
+        photoSetDetailView.setOnTouchListener(new OnSwipeTouchListener() {
+
+            @Override
+            public void onSwipeRight() {
+                toggleGridView(true);
+            }
+        });
         return v;
     }
 
@@ -91,7 +103,7 @@ public class PhotoSetsFragment extends BaseFragment implements OnItemClickListen
     @Override
     public void onTabSelected() {
         if (getActivity() != null && getPhotoSetsTask == null) {
-            toggleLoading(true, getView().findViewById(R.id.photosets_grid));
+            toggleLoading(true, getView().findViewById(R.id.photoset_flipper));
             getPhotoSetsTask = new GetPhotoSetsTask();
             getPhotoSetsTask.execute(((KrissyTosiApplication) getActivity().getApplication())
                     .getApiClient());
@@ -103,6 +115,9 @@ public class PhotoSetsFragment extends BaseFragment implements OnItemClickListen
     @Override
     public void onCurrentTabClicked() {
         super.onCurrentTabClicked();
+        if (!isGridViewShowing()) {
+            toggleGridView(true);
+        }
     }
 
     @Override
@@ -113,11 +128,10 @@ public class PhotoSetsFragment extends BaseFragment implements OnItemClickListen
 
     @Override
     public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-        FragmentHelper.toggleFlipper(false,
-                (ViewFlipper) getView().findViewById(R.id.photoset_flipper), getActivity(),
-                getFragmentIdentifier());
+        toggleGridView(false);
         PhotoSet photoSet = adapter.getItem(position);
         populatePhotoSet(photoSet);
+        getView().findViewById(R.id.photoset_detail_view).setVisibility(View.VISIBLE);
     }
 
     private void populatePhotoSet(PhotoSet photoSet) {
@@ -142,15 +156,32 @@ public class PhotoSetsFragment extends BaseFragment implements OnItemClickListen
         }
     }
 
+    private boolean isGridViewShowing() {
+        return gridView != null && gridView.getVisibility() == View.VISIBLE;
+    }
+
+    private void toggleGridView(boolean show) {
+        FragmentHelper.toggleFlipper(show,
+                (ViewFlipper) getView().findViewById(R.id.photoset_flipper),
+                getActivity(), getFragmentIdentifier());
+        if (!show) {
+            getView().findViewById(R.id.photoset_detail_view).scrollTo(0, 0);
+        }
+    }
+
     protected void buildView() {
         flipperId = R.id.photoset_flipper;
+        gridView = (GridView) getActivity().findViewById(R.id.photosets_grid);
+        gridView.setOnItemClickListener(this);
         if (adapter == null) {
             adapter = new PhotoSetsAdapter(getActivity(), R.layout.photoset_detail_view,
                     (ArrayList<PhotoSet>) photoSets);
-            photoSetsGrid.setAdapter(adapter);
+        }
+        if (gridView.getAdapter() == null) {
+            gridView.setAdapter(adapter);
         }
         adapter.notifyDataSetChanged();
-        toggleLoading(false, photoSetsGrid);
+        toggleLoading(false, getActivity().findViewById(R.id.photoset_flipper));
     }
 
     /**
@@ -226,7 +257,7 @@ public class PhotoSetsFragment extends BaseFragment implements OnItemClickListen
      */
     protected void handlePhotoSetsApiError(PhotoSet errorPhotoSet) {
         Log.d(LOG_TAG, "Photo Set Failure: " + errorPhotoSet.getErrorDescription());
-        toggleNoNetwork(true, photoSetsGrid);
+        toggleNoNetwork(true, gridView);
     }
 
     private void cleanupPhotoTasks() {
