@@ -24,8 +24,8 @@ public class FileSystemStoreApiClient implements StoreApiClient {
 
     @Override
     public EtsyResult runRequest(EtsyRequest etsyRequest) {
-        // TODO Auto-generated method stub
-        return null;
+        EtsyResult response = new EtsyResult();
+        return response;
     }
 
 }

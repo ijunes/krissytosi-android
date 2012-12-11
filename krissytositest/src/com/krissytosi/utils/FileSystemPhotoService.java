@@ -20,20 +20,25 @@ import com.krissytosi.api.domain.Photo;
 import com.krissytosi.api.domain.PhotoSet;
 import com.krissytosi.api.services.PhotoService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class FileSystemPhotoService implements PhotoService {
 
+    private String baseUrl;
+
     @Override
     public void setBaseUrl(String baseUrl) {
-        // TODO Auto-generated method stub
-
+        this.baseUrl = baseUrl;
     }
 
     @Override
     public List<PhotoSet> getPhotoSets() {
-        // TODO Auto-generated method stub
-        return null;
+        List<PhotoSet> photoSets = new ArrayList<PhotoSet>();
+        PhotoSet photoSet = new PhotoSet();
+        photoSet.setId("123");
+        photoSets.add(photoSet);
+        return photoSets;
     }
 
     @Override

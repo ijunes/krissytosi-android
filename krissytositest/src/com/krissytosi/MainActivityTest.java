@@ -85,13 +85,7 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
     @UiThreadTest
     public void testStoreFragment() throws Exception {
         MainActivity activity = getActivity();
-        activity.runOnUiThread(
-                new Runnable() {
-                    @Override
-                    public void run() {
-                        getActivity().getTabHost().setCurrentTab(0);
-                        getActivity().getTabHost().setCurrentTab(1);
-                    }
-                });
+        activity.getTabHost().setCurrentTab(0);
+        activity.getTabHost().setCurrentTab(1);
     }
 }

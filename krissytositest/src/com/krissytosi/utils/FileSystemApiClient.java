@@ -21,16 +21,16 @@ import com.krissytosi.api.services.PhotoService;
 
 public class FileSystemApiClient implements ApiClient {
 
+    private String baseUrl;
+
     @Override
     public void setBaseUrl(String baseUrl) {
-        // TODO Auto-generated method stub
-
+        this.baseUrl = baseUrl;
     }
 
     @Override
     public PhotoService getPhotoService() {
-        // TODO Auto-generated method stub
-        return null;
+        return new FileSystemPhotoService();
     }
 
 }
