@@ -175,15 +175,19 @@ public class StoreFragment extends BaseListFragment {
      * @param result should contain all the shop listings
      */
     protected void onGetListings(EtsyResult result) {
-        List<BaseModel> results = result.getResults();
-        if (HttpStatus.SC_OK == result.getCode()) {
-            List<Listing> listings = new ArrayList<Listing>();
-            for (BaseModel listingResult : results) {
-                listings.add((Listing) listingResult);
+        if (result != null) {
+            List<BaseModel> results = result.getResults();
+            if (HttpStatus.SC_OK == result.getCode()) {
+                List<Listing> listings = new ArrayList<Listing>();
+                for (BaseModel listingResult : results) {
+                    listings.add((Listing) listingResult);
+                }
+                buildView(listings);
+            } else {
+                onGetListingsFailure(result.getCode());
             }
-            buildView(listings);
         } else {
-            onGetListingsFailure(result.getCode());
+            onGetListingsFailure(HttpStatus.SC_INTERNAL_SERVER_ERROR);
         }
     }
 

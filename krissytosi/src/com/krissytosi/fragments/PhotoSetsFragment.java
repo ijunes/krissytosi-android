@@ -229,33 +229,37 @@ public class PhotoSetsFragment extends BaseFragment implements OnItemClickListen
      */
     protected void onGetPhotos(List<Photo> photos) {
         String photoSetId = "";
-        if (photos.size() != 0) {
-            photoSetId = photos.get(0).getPhotoSetId();
-        }
-        // check to see whether we can go ahead and build the view.
-        Iterator<GetPhotosTask> iterator = getPhotosTasks.iterator();
-        while (iterator.hasNext()) {
-            GetPhotosTask task = iterator.next();
-            if (photoSetId.equalsIgnoreCase(task.getPhotoSetId())) {
-                iterator.remove();
+        if (photos != null) {
+            if (photos.size() != 0) {
+                photoSetId = photos.get(0).getPhotoSetId();
             }
-        }
-        for (PhotoSet photoSet : photoSets) {
-            if (photoSet.getId() != null && photoSet.getId().equalsIgnoreCase(photoSetId)) {
-                photoSet.setPhotos(photos);
-                // see if there's a primary photo id
-                int primaryPhotoIndex = 0;
-                for (int i = 0, l = photos.size(); i < l; i++) {
-                    if (photos.get(i).getIsPrimary() == 1) {
-                        primaryPhotoIndex = i;
-                        break;
-                    }
+            // check to see whether we can go ahead and build the view.
+            Iterator<GetPhotosTask> iterator = getPhotosTasks.iterator();
+            while (iterator.hasNext()) {
+                GetPhotosTask task = iterator.next();
+                if (photoSetId != null && photoSetId.equalsIgnoreCase(task.getPhotoSetId())) {
+                    iterator.remove();
                 }
-                photoSet.setIndexOfPrimaryPhoto(primaryPhotoIndex);
             }
-        }
-        if (getPhotosTasks.size() == 0) {
-            buildView();
+            for (PhotoSet photoSet : photoSets) {
+                if (photoSet.getId() != null && photoSet.getId().equalsIgnoreCase(photoSetId)) {
+                    photoSet.setPhotos(photos);
+                    // see if there's a primary photo id
+                    int primaryPhotoIndex = 0;
+                    for (int i = 0, l = photos.size(); i < l; i++) {
+                        if (photos.get(i).getIsPrimary() == 1) {
+                            primaryPhotoIndex = i;
+                            break;
+                        }
+                    }
+                    photoSet.setIndexOfPrimaryPhoto(primaryPhotoIndex);
+                }
+            }
+            if (getPhotosTasks.size() == 0) {
+                buildView();
+            }
+        } else {
+
         }
     }
 

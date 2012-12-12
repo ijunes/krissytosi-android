@@ -43,8 +43,13 @@ public class FileSystemPhotoService implements PhotoService {
 
     @Override
     public List<Photo> getPhotos(String photoSetId) {
-        // TODO Auto-generated method stub
-        return null;
+        List<Photo> photos = new ArrayList<Photo>();
+        Photo photo = new Photo();
+        photo.setUrlMedium("http://www.google.com");
+        photo.setPhotoSetId("123");
+        photo.setIsPrimary(1);
+        photos.add(photo);
+        return photos;
     }
 
 }
