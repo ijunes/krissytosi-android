@@ -144,7 +144,7 @@ public class StoreFragment extends BaseListFragment {
         // when a photo is loaded into a ImagePagerAdapter, the storeDetailView
         // needs to be notified in order to resize itself to accommodate the
         // image.
-        if (!isListViewShowing()) {
+        if (!isListViewShowing() && storeDetailView != null) {
             storeDetailView.onPhotoLoaded(height, width);
         }
     }
