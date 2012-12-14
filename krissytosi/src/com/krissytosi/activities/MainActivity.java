@@ -38,7 +38,6 @@ import com.krissytosi.KrissyTosiApplication;
 import com.krissytosi.R;
 import com.krissytosi.fragments.BlogFragment;
 import com.krissytosi.fragments.ContactFragment;
-import com.krissytosi.fragments.NewsFragment;
 import com.krissytosi.fragments.PhotoSetsFragment;
 import com.krissytosi.fragments.StoreFragment;
 import com.krissytosi.utils.KrissyTosiConstants;
@@ -51,7 +50,7 @@ import java.util.Map;
 
 /**
  * Main activity in the application. Gives the user the choice to browse photo
- * sets, view news or contact.
+ * sets, view the etsy store, the blog or contact.
  */
 public class MainActivity extends SherlockFragmentActivity {
 
@@ -172,10 +171,6 @@ public class MainActivity extends SherlockFragmentActivity {
                 tabHost.newTabSpec(KrissyTosiConstants.FRAGMENT_BLOG_ID).setIndicator(
                         resources.getString(R.string.blog)),
                 BlogFragment.class, null);
-        tabManager.addTab(
-                tabHost.newTabSpec(KrissyTosiConstants.FRAGMENT_NEWS_ID).setIndicator(
-                        resources.getString(R.string.news)),
-                NewsFragment.class, null);
         tabManager.addTab(
                 tabHost.newTabSpec(KrissyTosiConstants.FRAGMENT_CONTACT_ID).setIndicator(
                         resources.getString(R.string.contact)),

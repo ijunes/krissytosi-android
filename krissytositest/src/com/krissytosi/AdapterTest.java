@@ -47,14 +47,14 @@ public class AdapterTest extends AndroidTestCase {
         PhotoSet photoSet = new PhotoSet();
         List<Photo> photos = new ArrayList<Photo>();
         Photo photo = new Photo();
-        photo.setIsPrimary(0);
+        photo.setIsPrimary(1);
         photo.setPhotoSetId("1");
         photo.setUrlMedium("http://www.google.com");
         photos.add(photo);
         photoSet.setPhotos(photos);
         photoSet.setId("1");
         photoSet.setTitle("Title");
-        photoSet.setIndexOfPrimaryPhoto(1);
+        photoSet.setIndexOfPrimaryPhoto(0);
         photoSets.add(photoSet);
         PhotoSetsAdapter photoSetsAdapter = new PhotoSetsAdapter(getContext(),
                 R.layout.photoset_detail_view,

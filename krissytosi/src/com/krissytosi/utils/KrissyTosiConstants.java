@@ -26,8 +26,12 @@ public final class KrissyTosiConstants {
     public static final String FRAGMENT_PHOTOSETS_ID = "photosets";
     public static final String FRAGMENT_STORE_ID = "store";
     public static final String FRAGMENT_BLOG_ID = "blog";
-    public static final String FRAGMENT_NEWS_ID = "news";
     public static final String FRAGMENT_CONTACT_ID = "contact";
+
+    public static final int FRAGMENT_PHOTOSETS_POSITION = 0;
+    public static final int FRAGMENT_STORE_POSITION = 1;
+    public static final int FRAGMENT_BLOG_POSITION = 2;
+    public static final int FRAGMENT_CONTACT_POSITION = 3;
 
     public static final String BLOG_URL = "http://cottagefarm.blogspot.com/";
 

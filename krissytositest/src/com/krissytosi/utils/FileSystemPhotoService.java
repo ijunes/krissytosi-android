@@ -37,6 +37,7 @@ public class FileSystemPhotoService implements PhotoService {
         List<PhotoSet> photoSets = new ArrayList<PhotoSet>();
         PhotoSet photoSet = new PhotoSet();
         photoSet.setId("123");
+        photoSet.setTitle("Title");
         photoSets.add(photoSet);
         return photoSets;
     }
