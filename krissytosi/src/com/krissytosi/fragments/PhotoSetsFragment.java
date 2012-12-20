@@ -51,6 +51,11 @@ public class PhotoSetsFragment extends BaseFragment implements OnItemClickListen
 
     private static final String LOG_TAG = "PhotoSetsFragment";
 
+    // orientation flag handlers
+
+    private static final String CURRENT_PHOTOSET_ID = "com.krissytosi.fragments.PhotoSetsFragment.CURRENT_PHOTOSET_ID";
+    private String currentPhotoSetId = "";
+
     /**
      * Used to display a summary of photo sets to the user.
      */
@@ -101,7 +106,20 @@ public class PhotoSetsFragment extends BaseFragment implements OnItemClickListen
         };
         listener.setIsLongpressEnabled(true);
         photoSetDetailView.setOnTouchListener(listener);
+        if (savedInstanceState != null) {
+            currentPhotoSetId = savedInstanceState.getString(CURRENT_PHOTOSET_ID);
+        }
         return v;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        // ensure that the correct photo set view shows up again after an
+        // orientation change
+        if (!isGridViewShowing()) {
+            outState.putString(CURRENT_PHOTOSET_ID, currentPhotoSetId);
+        }
+        super.onSaveInstanceState(outState);
     }
 
     @Override
@@ -137,10 +155,15 @@ public class PhotoSetsFragment extends BaseFragment implements OnItemClickListen
 
     @Override
     public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+        handleOnItemClick(position);
+    }
+
+    private void handleOnItemClick(int position) {
         toggleGridView(false);
         PhotoSet photoSet = adapter.getItem(position);
         populatePhotoSet(photoSet);
         getView().findViewById(R.id.photoset_detail_view).setVisibility(View.VISIBLE);
+        currentPhotoSetId = photoSet.getId();
     }
 
     private void populatePhotoSet(PhotoSet photoSet) {
@@ -191,6 +214,17 @@ public class PhotoSetsFragment extends BaseFragment implements OnItemClickListen
         }
         adapter.notifyDataSetChanged();
         toggleLoading(false, getActivity().findViewById(R.id.photoset_flipper));
+        if (currentPhotoSetId != null && !"".equalsIgnoreCase(currentPhotoSetId)) {
+            // deal with remembering the previous photo set after an orientation
+            // change
+            for (int i = 0, l = photoSets.size(); i < l; i++) {
+                PhotoSet photoSet = photoSets.get(i);
+                if (currentPhotoSetId.equalsIgnoreCase(photoSet.getId())) {
+                    handleOnItemClick(i);
+                    break;
+                }
+            }
+        }
     }
 
     /**

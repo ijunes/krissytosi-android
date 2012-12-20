@@ -51,6 +51,12 @@ public class StoreFragment extends BaseListFragment {
 
     private static final String LOG_TAG = "StoreFragment";
 
+    // orientation flag handlers
+
+    private static final String CURRENT_LISTING_POSITION = "com.krissytosi.fragments.StoreFragment.CURRENT_LISTING_POSITION";
+    private static final int CURRENT_LISTING_POSITION_DEFAULT_VALUE = -1;
+    private int currentListingPosition = CURRENT_LISTING_POSITION_DEFAULT_VALUE;
+
     /**
      * Task used to retrieve the shop's listings from the API server.
      */
@@ -83,7 +89,21 @@ public class StoreFragment extends BaseListFragment {
                 toggleListView(true);
             }
         });
+        if (savedInstanceState != null) {
+            currentListingPosition = savedInstanceState.getInt(CURRENT_LISTING_POSITION,
+                    CURRENT_LISTING_POSITION_DEFAULT_VALUE);
+        }
         return v;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        // ensure that the correct detail view shows up again after an
+        // orientation change
+        if (!isListViewShowing()) {
+            outState.putInt(CURRENT_LISTING_POSITION, currentListingPosition);
+        }
+        super.onSaveInstanceState(outState);
     }
 
     @Override
@@ -123,10 +143,7 @@ public class StoreFragment extends BaseListFragment {
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
-        toggleListView(false);
-        Listing listing = adapter.getItem(position);
-        populateStoreListing(listing);
-        getView().findViewById(R.id.store_detail_view).setVisibility(View.VISIBLE);
+        handleOnListItemClick(position);
     }
 
     /**
@@ -167,6 +184,10 @@ public class StoreFragment extends BaseListFragment {
         }
         adapter.notifyDataSetChanged();
         toggleLoading(false, getActivity().findViewById(R.id.store_flipper));
+        if (currentListingPosition != CURRENT_LISTING_POSITION_DEFAULT_VALUE
+                && adapter.getCount() > currentListingPosition) {
+            handleOnListItemClick(currentListingPosition);
+        }
     }
 
     /**
@@ -221,7 +242,6 @@ public class StoreFragment extends BaseListFragment {
      * @param listing the listing on which the user clicked.
      */
     private void populateStoreListing(Listing listing) {
-        // perhaps pop these into member variables
         if (storeDetailView == null) {
             storeDetailView = new StoreDetailView();
         }
@@ -229,6 +249,20 @@ public class StoreFragment extends BaseListFragment {
         storeDetailView.setListing(listing);
         storeDetailView.setContext(getActivity());
         storeDetailView.buildPage();
+    }
+
+    /**
+     * Executes behavior necessary when a user clicks on a particular store
+     * item.
+     * 
+     * @param position the position in the list view on which the user clicked.
+     */
+    private void handleOnListItemClick(int position) {
+        toggleListView(false);
+        Listing listing = adapter.getItem(position);
+        populateStoreListing(listing);
+        getView().findViewById(R.id.store_detail_view).setVisibility(View.VISIBLE);
+        currentListingPosition = position;
     }
 
     /**

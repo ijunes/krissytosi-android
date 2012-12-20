@@ -113,6 +113,14 @@ public class MainActivity extends SherlockFragmentActivity {
     }
 
     @Override
+    protected void onPause() {
+        if (broadcastReceiver != null) {
+            unregisterReceiver(broadcastReceiver);
+        }
+        super.onPause();
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getSupportMenuInflater();
         inflater.inflate(R.xml.main_menu, menu);
