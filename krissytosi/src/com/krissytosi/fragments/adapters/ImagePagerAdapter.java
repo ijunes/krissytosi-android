@@ -36,6 +36,8 @@ import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.assist.ImageLoadingListener;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 
+import uk.co.senab.photoview.PhotoViewAttacher;
+
 /**
  * Used to show a list of swipe-able images.
  */
@@ -107,6 +109,8 @@ public class ImagePagerAdapter extends PagerAdapter {
                     @Override
                     public void onLoadingComplete(Bitmap loadedImage) {
                         spinner.setVisibility(View.GONE);
+                        PhotoViewAttacher attacher = new PhotoViewAttacher(imageView);
+                        attacher.update();
                         Animation anim = AnimationUtils.loadAnimation(activity,
                                 android.R.anim.fade_in);
                         imageView.setAnimation(anim);
