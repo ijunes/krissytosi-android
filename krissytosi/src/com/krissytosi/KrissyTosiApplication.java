@@ -26,6 +26,7 @@ import android.os.Build;
 import android.os.StrictMode;
 import android.util.Log;
 
+import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 import com.krissytosi.api.ApiClient;
 import com.krissytosi.api.store.StoreApiClient;
 import com.krissytosi.modules.KrissyTosiModule;
@@ -93,8 +94,9 @@ public class KrissyTosiApplication extends Application {
 
     @Override
     public void onLowMemory() {
-        super.onLowMemory();
         ImageLoader.getInstance().clearMemoryCache();
+        UrlImageViewHelper.cleanup(getApplicationContext());
+        super.onLowMemory();
     }
 
     @Override
