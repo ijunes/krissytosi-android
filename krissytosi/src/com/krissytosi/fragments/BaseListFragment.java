@@ -22,6 +22,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.ListFragment;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
@@ -33,6 +34,8 @@ import com.krissytosi.utils.KrissyTosiConstants;
  * Base class for {@link Fragment}s which need a {@link ListView}.
  */
 public abstract class BaseListFragment extends ListFragment implements TabbedFragment {
+
+    private static final String LOG_TAG = "BaseListFragment";
 
     /**
      * Button which allows the user to re-initiate a request should they get the
@@ -117,6 +120,11 @@ public abstract class BaseListFragment extends ListFragment implements TabbedFra
     @Override
     public void onCurrentTabClicked() {
 
+    }
+
+    @Override
+    public void beforeDetatched() {
+        Log.d(LOG_TAG, "beforeDetatched " + getFragmentIdentifier());
     }
 
     // Getters/Setters

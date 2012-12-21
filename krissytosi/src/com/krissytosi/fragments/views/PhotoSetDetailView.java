@@ -46,18 +46,13 @@ public class PhotoSetDetailView extends BaseDetailView {
     private TextView photoSetTitle;
 
     /**
-     * The pager which is the primary component in this view.
-     */
-    private ViewPager photoSetViewPager;
-
-    /**
      * Builds the page and kicks off the request to find all the images for this
      * photo set.
      */
     public void buildPage() {
         photoSetTitle = (TextView) getBaseView().findViewById(R.id.photoset_title);
-        photoSetViewPager = (ViewPager) getBaseView().findViewById(R.id.pager);
         photoSetTitle.setText(photoSet.getTitle());
+        ViewPager photoSetViewPager = (ViewPager) getBaseView().findViewById(R.id.pager);
         List<Photo> photos = photoSet.getPhotos();
         String[] images = new String[photos.size()];
         int counter = 0;

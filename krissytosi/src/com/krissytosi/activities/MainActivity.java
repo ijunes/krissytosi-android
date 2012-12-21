@@ -40,6 +40,7 @@ import com.krissytosi.fragments.BlogFragment;
 import com.krissytosi.fragments.ContactFragment;
 import com.krissytosi.fragments.PhotoSetsFragment;
 import com.krissytosi.fragments.StoreFragment;
+import com.krissytosi.fragments.TabbedFragment;
 import com.krissytosi.utils.KrissyTosiConstants;
 import com.krissytosi.utils.KrissyTosiUtils;
 import com.krissytosi.utils.ReClickableTabHost;
@@ -274,6 +275,9 @@ public class MainActivity extends SherlockFragmentActivity {
             if (lastTab != newTab) {
                 FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
                 if (lastTab != null && lastTab.fragment != null) {
+                    if (lastTab.fragment instanceof TabbedFragment) {
+                        ((TabbedFragment) lastTab.fragment).beforeDetatched();
+                    }
                     ft.detach(lastTab.fragment);
                 }
                 if (newTab != null) {

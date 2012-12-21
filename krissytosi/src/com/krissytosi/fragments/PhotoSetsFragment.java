@@ -154,6 +154,12 @@ public class PhotoSetsFragment extends BaseFragment implements OnItemClickListen
     }
 
     @Override
+    public void beforeDetatched() {
+        super.beforeDetatched();
+        photoSetDetailView = null;
+    }
+
+    @Override
     public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
         handleOnItemClick(position);
     }

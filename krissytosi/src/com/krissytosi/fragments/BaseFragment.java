@@ -118,6 +118,11 @@ public abstract class BaseFragment extends Fragment implements TabbedFragment {
         Log.d(LOG_TAG, "Current tab clicked by user");
     }
 
+    @Override
+    public void beforeDetatched() {
+        Log.d(LOG_TAG, "beforeDetatched " + getFragmentIdentifier());
+    }
+
     // Getters/Setters
 
     @Override

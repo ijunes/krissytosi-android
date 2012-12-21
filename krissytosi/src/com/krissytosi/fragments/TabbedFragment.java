@@ -74,4 +74,6 @@ public interface TabbedFragment extends OnClickListener {
      * @param noNetworkButton
      */
     void setNoNetworkButton(Button noNetworkButton);
+
+    void beforeDetatched();
 }

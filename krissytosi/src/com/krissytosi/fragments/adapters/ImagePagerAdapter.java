@@ -52,6 +52,7 @@ public class ImagePagerAdapter extends PagerAdapter {
     public ImagePagerAdapter(String[] urls, Activity activity) {
         this.urls = urls;
         this.options = new DisplayImageOptions.Builder()
+                .cacheInMemory()
                 .cacheOnDisc()
                 .imageScaleType(ImageScaleType.IN_SAMPLE_INT)
                 .build();
