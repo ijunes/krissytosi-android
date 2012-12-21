@@ -33,6 +33,7 @@ import com.krissytosi.modules.KrissyTosiModule;
 import com.krissytosi.tracking.Tracking;
 import com.krissytosi.utils.ApiConstants;
 import com.krissytosi.utils.KrissyTosiConstants;
+import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
@@ -165,7 +166,12 @@ public class KrissyTosiApplication extends Application {
     }
 
     private void initializeImageLoader() {
-        ImageLoader.getInstance().init(ImageLoaderConfiguration.createDefault(this));
+        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
+                getApplicationContext())
+                .memoryCache(new WeakMemoryCache())
+                .threadPoolSize(3)
+                .build();
+        ImageLoader.getInstance().init(config);
     }
 
     // Getters/Setters
