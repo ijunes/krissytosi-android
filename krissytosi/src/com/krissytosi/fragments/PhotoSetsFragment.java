@@ -145,6 +145,9 @@ public class PhotoSetsFragment extends BaseFragment implements OnItemClickListen
         if (!isGridViewShowing()) {
             toggleGridView(true);
         }
+        if (photoSetDetailView != null) {
+            photoSetDetailView.beforeDetatched();
+        }
     }
 
     @Override

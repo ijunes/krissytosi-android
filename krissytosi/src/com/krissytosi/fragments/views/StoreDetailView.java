@@ -25,6 +25,7 @@ import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -49,7 +50,6 @@ public class StoreDetailView extends BaseDetailView implements OnClickListener,
     private int maximumHeight;
     private Listing listing;
 
-    private ViewPager detailViewPager;
     private TextView detailViewPagerIndicator;
     private TextView detailViewPrice;
     private Button detailViewBuyButton;
@@ -71,7 +71,7 @@ public class StoreDetailView extends BaseDetailView implements OnClickListener,
         // reset the max height
         maximumHeight = 0;
         // first get all the views back from the base view
-        detailViewPager = (ViewPager) getBaseView().findViewById(R.id.detail_view_pager);
+        viewPager = (ViewPager) getBaseView().findViewById(R.id.detail_view_pager);
         detailViewPagerIndicator = (TextView) getBaseView().findViewById(
                 R.id.detail_view_pager_indicator);
         detailViewPrice = (TextView) getBaseView().findViewById(R.id.detail_view_price);
@@ -122,7 +122,7 @@ public class StoreDetailView extends BaseDetailView implements OnClickListener,
             ((Activity) getContext()).runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) detailViewPager
+                    RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) viewPager
                             .getLayoutParams();
                     params.height = maximumHeight;
                 }
@@ -155,9 +155,13 @@ public class StoreDetailView extends BaseDetailView implements OnClickListener,
             images[counter] = KrissyTosiUtils.determineImageUrl(listingImage, ImageSize.LARGE);
             counter++;
         }
-        detailViewPager.setAdapter(new ImagePagerAdapter(images, (Activity) getContext()));
-        detailViewPager.setCurrentItem(0);
-        detailViewPager.setOnPageChangeListener(this);
+        viewPager
+                .setAdapter(new ImagePagerAdapter(images, ((Activity) getContext())
+                        .getLayoutInflater(),
+                        AnimationUtils.loadAnimation((getContext()), android.R.anim.fade_in),
+                        getContext()));
+        viewPager.setCurrentItem(0);
+        viewPager.setOnPageChangeListener(this);
     }
 
     // Getters/Setters

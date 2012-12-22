@@ -16,15 +16,15 @@
 
 package com.krissytosi.fragments.adapters;
 
-import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
@@ -36,8 +36,6 @@ import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.assist.ImageLoadingListener;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 
-import uk.co.senab.photoview.PhotoViewAttacher;
-
 /**
  * Used to show a list of swipe-able images.
  */
@@ -45,19 +43,24 @@ public class ImagePagerAdapter extends PagerAdapter {
 
     private static final String LOG_TAG = "ImagePagerAdapter";
 
-    private final Activity activity;
+    private final LayoutInflater inflater;
     private final String[] urls;
     private final DisplayImageOptions options;
+    private final Animation animation;
+    private final Context context;
 
-    public ImagePagerAdapter(String[] urls, Activity activity) {
+    public ImagePagerAdapter(String[] urls, LayoutInflater layoutInflater,
+            Animation fadeInAnimation, Context intentContext) {
         this.urls = urls;
         this.options = new DisplayImageOptions.Builder()
                 .cacheInMemory()
                 .cacheOnDisc()
                 .bitmapConfig(Bitmap.Config.RGB_565)
-                .imageScaleType(ImageScaleType.IN_SAMPLE_POWER_OF_2)
+                .imageScaleType(ImageScaleType.IN_SAMPLE_INT)
                 .build();
-        this.activity = activity;
+        inflater = layoutInflater;
+        animation = fadeInAnimation;
+        context = intentContext;
     }
 
     @Override
@@ -79,7 +82,7 @@ public class ImagePagerAdapter extends PagerAdapter {
 
     @Override
     public Object instantiateItem(View view, int position) {
-        final View imageLayout = activity.getLayoutInflater().inflate(R.layout.image, null);
+        final View imageLayout = inflater.inflate(R.layout.image, null);
         final ImageView imageView = (ImageView) imageLayout.findViewById(R.id.image);
         final ProgressBar spinner = (ProgressBar) imageLayout.findViewById(R.id.loading);
 
@@ -100,6 +103,7 @@ public class ImagePagerAdapter extends PagerAdapter {
                                 break;
                             case OUT_OF_MEMORY:
                                 message = "Out Of Memory error";
+                                ImageLoader.getInstance().clearMemoryCache();
                                 break;
                             default:
                                 message = "Unknown error";
@@ -111,12 +115,8 @@ public class ImagePagerAdapter extends PagerAdapter {
                     @Override
                     public void onLoadingComplete(Bitmap loadedImage) {
                         spinner.setVisibility(View.GONE);
-                        PhotoViewAttacher attacher = new PhotoViewAttacher(imageView);
-                        attacher.update();
-                        Animation anim = AnimationUtils.loadAnimation(activity,
-                                android.R.anim.fade_in);
-                        imageView.setAnimation(anim);
-                        anim.start();
+                        imageView.setAnimation(animation);
+                        animation.start();
                         Intent intent = new Intent(KrissyTosiConstants.KT_PHOTO_LOADED);
                         intent.putExtra(KrissyTosiConstants.KT_FRAGMENT_IDENTIFIER_KEY,
                                 KrissyTosiConstants.FRAGMENT_STORE_ID);
@@ -124,7 +124,7 @@ public class ImagePagerAdapter extends PagerAdapter {
                                 loadedImage.getHeight());
                         intent.putExtra(KrissyTosiConstants.KT_PHOTO_LOADED_WIDTH,
                                 loadedImage.getWidth());
-                        activity.sendBroadcast(intent);
+                        context.sendBroadcast(intent);
                     }
 
                     @Override

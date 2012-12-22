@@ -18,6 +18,7 @@ package com.krissytosi.fragments.views;
 
 import android.app.Activity;
 import android.support.v4.view.ViewPager;
+import android.view.animation.AnimationUtils;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -43,6 +44,9 @@ public class PhotoSetDetailView extends BaseDetailView {
      */
     private PhotoSet photoSet;
 
+    /**
+     * Title view for the photo set.
+     */
     private TextView photoSetTitle;
 
     /**
@@ -52,7 +56,7 @@ public class PhotoSetDetailView extends BaseDetailView {
     public void buildPage() {
         photoSetTitle = (TextView) getBaseView().findViewById(R.id.photoset_title);
         photoSetTitle.setText(photoSet.getTitle());
-        ViewPager photoSetViewPager = (ViewPager) getBaseView().findViewById(R.id.pager);
+        viewPager = (ViewPager) getBaseView().findViewById(R.id.pager);
         List<Photo> photos = photoSet.getPhotos();
         String[] images = new String[photos.size()];
         int counter = 0;
@@ -64,9 +68,12 @@ public class PhotoSetDetailView extends BaseDetailView {
             }
             counter++;
         }
-        photoSetViewPager.setAdapter(new ImagePagerAdapter(images, (Activity) getContext()));
-        photoSetViewPager.setCurrentItem(0);
-        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) photoSetViewPager
+        viewPager.setAdapter(new ImagePagerAdapter(images, ((Activity) getContext())
+                .getLayoutInflater(),
+                AnimationUtils.loadAnimation((getContext()), android.R.anim.fade_in),
+                getContext()));
+        viewPager.setCurrentItem(0);
+        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) viewPager
                 .getLayoutParams();
         params.height = maximumHeight;
     }

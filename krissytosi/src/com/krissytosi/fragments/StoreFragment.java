@@ -135,7 +135,7 @@ public class StoreFragment extends BaseListFragment {
     @Override
     public void beforeDetatched() {
         super.beforeDetatched();
-        storeDetailView = null;
+        storeDetailView.beforeDetatched();
     }
 
     @Override

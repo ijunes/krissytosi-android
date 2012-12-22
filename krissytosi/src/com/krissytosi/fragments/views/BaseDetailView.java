@@ -17,12 +17,24 @@
 package com.krissytosi.fragments.views;
 
 import android.content.Context;
+import android.support.v4.view.ViewPager;
 import android.view.View;
 
 public class BaseDetailView {
 
     private View baseView;
     private Context context;
+    protected ViewPager viewPager;
+
+    /**
+     * Used to clean up a detail view after the user has navigated away from it.
+     */
+    public void beforeDetatched() {
+        if (viewPager != null) {
+            viewPager.removeAllViews();
+            viewPager.setOnPageChangeListener(null);
+        }
+    }
 
     // Getters/Setters
 

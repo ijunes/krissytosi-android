@@ -33,11 +33,16 @@ import com.krissytosi.modules.KrissyTosiModule;
 import com.krissytosi.tracking.Tracking;
 import com.krissytosi.utils.ApiConstants;
 import com.krissytosi.utils.KrissyTosiConstants;
+import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiscCache;
+import com.nostra13.universalimageloader.cache.disc.naming.HashCodeFileNameGenerator;
 import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.utils.StorageUtils;
 
 import dagger.ObjectGraph;
+
+import java.io.File;
 
 /**
  * Extensions to the {@link Application} class to include specifics for this
@@ -166,9 +171,13 @@ public class KrissyTosiApplication extends Application {
     }
 
     private void initializeImageLoader() {
+        File cacheDir = StorageUtils.getOwnCacheDirectory(getApplicationContext(),
+                "UniversalImageLoader/Cache");
         ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
                 getApplicationContext())
                 .memoryCache(new WeakMemoryCache())
+                .discCache(new UnlimitedDiscCache(cacheDir))
+                .discCacheFileNameGenerator(new HashCodeFileNameGenerator())
                 .threadPoolSize(3)
                 .build();
         ImageLoader.getInstance().init(config);
