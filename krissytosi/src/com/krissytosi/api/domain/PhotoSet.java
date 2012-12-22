@@ -16,12 +16,12 @@
 
 package com.krissytosi.api.domain;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.List;
 
-/**
- * Defines what makes up a photo set.
- */
-public class PhotoSet extends ApiResponse {
+public class PhotoSet extends ApiResponse implements Parcelable {
 
     /**
      * Unique identifier for the photo set.
@@ -48,6 +48,49 @@ public class PhotoSet extends ApiResponse {
      * primary photo in this set.
      */
     private int indexOfPrimaryPhoto;
+
+    public PhotoSet() {
+
+    }
+
+    public PhotoSet(Parcel in) {
+        this();
+        readFromParcel(in);
+    }
+
+    public static final Parcelable.Creator<PhotoSet> CREATOR = new Parcelable.Creator<PhotoSet>() {
+        @Override
+        public PhotoSet createFromParcel(Parcel in) {
+            return new PhotoSet(in);
+        }
+
+        @Override
+        public PhotoSet[] newArray(int size) {
+            return new PhotoSet[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(getId());
+        dest.writeString(getTitle());
+        dest.writeString(getDescription());
+        dest.writeTypedList(getPhotos());
+        dest.writeInt(getIndexOfPrimaryPhoto());
+    }
+
+    public void readFromParcel(Parcel in) {
+        id = in.readString();
+        title = in.readString();
+        description = in.readString();
+        in.readTypedList(photos, Photo.CREATOR);
+        indexOfPrimaryPhoto = in.readInt();
+    }
 
     // Getters/Setters
 

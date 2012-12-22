@@ -53,6 +53,7 @@ public class PhotoSetsFragment extends BaseFragment implements OnItemClickListen
 
     // orientation flag handlers
 
+    private static final String PHOTOSETS = "com.krissytosi.fragments.PhotoSetsFragment.PHOTOSETS";
     private static final String CURRENT_PHOTOSET_ID = "com.krissytosi.fragments.PhotoSetsFragment.CURRENT_PHOTOSET_ID";
     private String currentPhotoSetId = "";
 
@@ -84,7 +85,7 @@ public class PhotoSetsFragment extends BaseFragment implements OnItemClickListen
     /**
      * Photo sets which back this view.
      */
-    private List<PhotoSet> photoSets;
+    private ArrayList<PhotoSet> photoSets;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -108,6 +109,9 @@ public class PhotoSetsFragment extends BaseFragment implements OnItemClickListen
         photoSetDetailView.setOnTouchListener(listener);
         if (savedInstanceState != null) {
             currentPhotoSetId = savedInstanceState.getString(CURRENT_PHOTOSET_ID);
+            if (savedInstanceState.containsKey(PHOTOSETS)) {
+                photoSets = savedInstanceState.getParcelableArrayList(PHOTOSETS);
+            }
         }
         return v;
     }
@@ -118,6 +122,9 @@ public class PhotoSetsFragment extends BaseFragment implements OnItemClickListen
         // orientation change
         if (!isGridViewShowing()) {
             outState.putString(CURRENT_PHOTOSET_ID, currentPhotoSetId);
+        }
+        if (photoSets != null && photoSets.size() > 0) {
+            outState.putParcelableArrayList(PHOTOSETS, photoSets);
         }
         super.onSaveInstanceState(outState);
     }
@@ -130,10 +137,17 @@ public class PhotoSetsFragment extends BaseFragment implements OnItemClickListen
     @Override
     public void onTabSelected() {
         if (getActivity() != null && getPhotoSetsTask == null) {
-            toggleLoading(true, getView().findViewById(R.id.photoset_flipper));
-            getPhotoSetsTask = new GetPhotoSetsTask();
-            getPhotoSetsTask.execute(((KrissyTosiApplication) getActivity().getApplication())
-                    .getApiClient());
+            // check to see whether we already have the photoSets as a result of
+            // an orientation change
+            if (photoSets != null && photoSets.size() > 0) {
+                buildView();
+            } else {
+                // no photo sets - go grab 'em
+                toggleLoading(true, getView().findViewById(R.id.photoset_flipper));
+                getPhotoSetsTask = new GetPhotoSetsTask();
+                getPhotoSetsTask.execute(((KrissyTosiApplication) getActivity().getApplication())
+                        .getApiClient());
+            }
         } else if (adapter != null && adapter.getCount() > 0) {
             toggleLoading(false, getView().findViewById(R.id.photoset_flipper));
         }
@@ -186,7 +200,7 @@ public class PhotoSetsFragment extends BaseFragment implements OnItemClickListen
     }
 
     protected void buildPhotoSets(List<PhotoSet> photoSets) {
-        this.photoSets = photoSets;
+        this.photoSets = (ArrayList<PhotoSet>) photoSets;
         cleanupPhotoTasks();
         // populate a new batch of GetPhotosTask objects & execute 'em all
         for (PhotoSet photoSet : photoSets) {
@@ -216,7 +230,7 @@ public class PhotoSetsFragment extends BaseFragment implements OnItemClickListen
         gridView.setOnItemClickListener(this);
         if (adapter == null) {
             adapter = new PhotoSetsAdapter(getActivity(), R.layout.photoset_detail_view,
-                    (ArrayList<PhotoSet>) photoSets);
+                    photoSets);
         }
         if (gridView.getAdapter() == null) {
             gridView.setAdapter(adapter);

@@ -16,10 +16,13 @@
 
 package com.krissytosi.api.domain;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Represents a photo which is typically part of an {@link PhotoSet}.
  */
-public class Photo extends ApiResponse {
+public class Photo extends ApiResponse implements Parcelable {
 
     private String photoSetId;
     private String urlSquare;
@@ -33,6 +36,63 @@ public class Photo extends ApiResponse {
     private int heightMedium;
     private int widthMedium;
     private int isPrimary;
+
+    public Photo() {
+
+    }
+
+    public Photo(Parcel in) {
+        this();
+        readFromParcel(in);
+    }
+
+    public static final Parcelable.Creator<Photo> CREATOR = new Parcelable.Creator<Photo>() {
+        @Override
+        public Photo createFromParcel(Parcel in) {
+            return new Photo(in);
+        }
+
+        @Override
+        public Photo[] newArray(int size) {
+            return new Photo[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(getPhotoSetId());
+        dest.writeString(getUrlSquare());
+        dest.writeString(getUrlSmall());
+        dest.writeString(getUrlMedium());
+        dest.writeString(getUrlOriginal());
+        dest.writeInt(getHeightSquare());
+        dest.writeInt(getWidthSquare());
+        dest.writeInt(getHeightSmall());
+        dest.writeInt(getWidthSmall());
+        dest.writeInt(getHeightMedium());
+        dest.writeInt(getWidthMedium());
+        dest.writeInt(getIsPrimary());
+    }
+
+    public void readFromParcel(Parcel in) {
+        photoSetId = in.readString();
+        urlSquare = in.readString();
+        urlSmall = in.readString();
+        urlMedium = in.readString();
+        urlOriginal = in.readString();
+        heightSquare = in.readInt();
+        widthSquare = in.readInt();
+        heightSmall = in.readInt();
+        widthSmall = in.readInt();
+        heightMedium = in.readInt();
+        widthMedium = in.readInt();
+        isPrimary = in.readInt();
+    }
 
     // Getters/Setters
 
