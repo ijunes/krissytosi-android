@@ -36,6 +36,8 @@ import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.assist.ImageLoadingListener;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 
+import uk.co.senab.photoview.PhotoViewAttacher;
+
 /**
  * Used to show a list of swipe-able images.
  */
@@ -85,6 +87,7 @@ public class ImagePagerAdapter extends PagerAdapter {
         final View imageLayout = inflater.inflate(R.layout.image, null);
         final ImageView imageView = (ImageView) imageLayout.findViewById(R.id.image);
         final ProgressBar spinner = (ProgressBar) imageLayout.findViewById(R.id.loading);
+        final PhotoViewAttacher attacher = new PhotoViewAttacher(imageView);
 
         ImageLoader.getInstance().displayImage(urls[position], imageView, options,
 
@@ -125,6 +128,7 @@ public class ImagePagerAdapter extends PagerAdapter {
                         intent.putExtra(KrissyTosiConstants.KT_PHOTO_LOADED_WIDTH,
                                 loadedImage.getWidth());
                         context.sendBroadcast(intent);
+                        attacher.update();
                     }
 
                     @Override
