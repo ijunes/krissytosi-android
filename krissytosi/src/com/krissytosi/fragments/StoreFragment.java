@@ -165,7 +165,6 @@ public class StoreFragment extends BaseListFragment {
 
     @Override
     public void onPhotoLoaded(int height, int width) {
-        super.onPhotoLoaded(height, width);
         // when a photo is loaded into a ImagePagerAdapter, the storeDetailView
         // needs to be notified in order to resize itself to accommodate the
         // image.

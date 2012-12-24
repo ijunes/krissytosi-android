@@ -70,7 +70,7 @@ public class PhotoSetDetailView extends BaseDetailView {
         }
         viewPager.setAdapter(new ImagePagerAdapter(images, ((Activity) getContext())
                 .getLayoutInflater(),
-                AnimationUtils.loadAnimation((getContext()), android.R.anim.fade_in),
+                AnimationUtils.loadAnimation(getContext(), android.R.anim.fade_in),
                 getContext()));
         viewPager.setCurrentItem(0);
         RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) viewPager

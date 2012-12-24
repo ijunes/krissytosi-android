@@ -155,11 +155,9 @@ public class StoreDetailView extends BaseDetailView implements OnClickListener,
             images[counter] = KrissyTosiUtils.determineImageUrl(listingImage, ImageSize.LARGE);
             counter++;
         }
-        viewPager
-                .setAdapter(new ImagePagerAdapter(images, ((Activity) getContext())
-                        .getLayoutInflater(),
-                        AnimationUtils.loadAnimation((getContext()), android.R.anim.fade_in),
-                        getContext()));
+        viewPager.setAdapter(new ImagePagerAdapter(images, ((Activity) getContext())
+                .getLayoutInflater(), AnimationUtils.loadAnimation(getContext(),
+                android.R.anim.fade_in), getContext()));
         viewPager.setCurrentItem(0);
         viewPager.setOnPageChangeListener(this);
     }

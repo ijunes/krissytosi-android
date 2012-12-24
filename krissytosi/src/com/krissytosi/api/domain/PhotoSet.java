@@ -49,15 +49,6 @@ public class PhotoSet extends ApiResponse implements Parcelable {
      */
     private int indexOfPrimaryPhoto;
 
-    public PhotoSet() {
-
-    }
-
-    public PhotoSet(Parcel in) {
-        this();
-        readFromParcel(in);
-    }
-
     public static final Parcelable.Creator<PhotoSet> CREATOR = new Parcelable.Creator<PhotoSet>() {
         @Override
         public PhotoSet createFromParcel(Parcel in) {
@@ -70,6 +61,15 @@ public class PhotoSet extends ApiResponse implements Parcelable {
         }
     };
 
+    public PhotoSet() {
+
+    }
+
+    public PhotoSet(Parcel in) {
+        this();
+        readFromParcel(in);
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -77,14 +77,14 @@ public class PhotoSet extends ApiResponse implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(getId());
-        dest.writeString(getTitle());
-        dest.writeString(getDescription());
-        dest.writeTypedList(getPhotos());
-        dest.writeInt(getIndexOfPrimaryPhoto());
+        dest.writeString(id);
+        dest.writeString(title);
+        dest.writeString(description);
+        dest.writeTypedList(photos);
+        dest.writeInt(indexOfPrimaryPhoto);
     }
 
-    public void readFromParcel(Parcel in) {
+    final private void readFromParcel(Parcel in) {
         id = in.readString();
         title = in.readString();
         description = in.readString();

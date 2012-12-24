@@ -54,8 +54,8 @@ public class MainActivityState implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(getCurrentTabIdentifier());
-        dest.writeString(getFragmentIdentifierInDetailView());
+        dest.writeString(currentTabIdentifier);
+        dest.writeString(fragmentIdentifierInDetailView);
     }
 
     private void readFromParcel(Parcel in) {

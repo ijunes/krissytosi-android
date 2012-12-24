@@ -123,7 +123,7 @@ public class PhotoSetsFragment extends BaseFragment implements OnItemClickListen
         if (!isGridViewShowing()) {
             outState.putString(CURRENT_PHOTOSET_ID, currentPhotoSetId);
         }
-        if (photoSets != null && photoSets.size() > 0) {
+        if (photoSets != null && !photoSets.isEmpty()) {
             outState.putParcelableArrayList(PHOTOSETS, photoSets);
         }
         super.onSaveInstanceState(outState);
@@ -139,7 +139,7 @@ public class PhotoSetsFragment extends BaseFragment implements OnItemClickListen
         if (getActivity() != null && getPhotoSetsTask == null) {
             // check to see whether we already have the photoSets as a result of
             // an orientation change
-            if (photoSets != null && photoSets.size() > 0) {
+            if (photoSets != null && !photoSets.isEmpty()) {
                 buildView();
             } else {
                 // no photo sets - go grab 'em
@@ -259,7 +259,7 @@ public class PhotoSetsFragment extends BaseFragment implements OnItemClickListen
     protected void onGetPhotoSets(List<PhotoSet> photoSets) {
         // check to see that we actually have *a* photo set back from the API
         // server
-        if (photoSets.size() > 0) {
+        if (!photoSets.isEmpty()) {
             // check to see that the first photo set isn't an error (is there a
             // better way to communicate these errors?)
             PhotoSet photoSet = photoSets.get(0);
@@ -287,7 +287,7 @@ public class PhotoSetsFragment extends BaseFragment implements OnItemClickListen
     protected void onGetPhotos(List<Photo> photos) {
         String photoSetId = "";
         if (photos != null) {
-            if (photos.size() != 0) {
+            if (!photos.isEmpty()) {
                 photoSetId = photos.get(0).getPhotoSetId();
             }
             // check to see whether we can go ahead and build the view.
@@ -312,7 +312,7 @@ public class PhotoSetsFragment extends BaseFragment implements OnItemClickListen
                     photoSet.setIndexOfPrimaryPhoto(primaryPhotoIndex);
                 }
             }
-            if (getPhotosTasks.size() == 0) {
+            if (getPhotosTasks.isEmpty()) {
                 buildView();
             }
         } else {
@@ -335,7 +335,7 @@ public class PhotoSetsFragment extends BaseFragment implements OnItemClickListen
             getPhotoSetsTask.cancel(true);
         }
         // make sure we're starting with a clean slate.
-        if (getPhotosTasks.size() > 0) {
+        if (!getPhotosTasks.isEmpty()) {
             for (GetPhotosTask task : getPhotosTasks) {
                 task.cancel(true);
             }

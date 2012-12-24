@@ -37,15 +37,6 @@ public class Photo extends ApiResponse implements Parcelable {
     private int widthMedium;
     private int isPrimary;
 
-    public Photo() {
-
-    }
-
-    public Photo(Parcel in) {
-        this();
-        readFromParcel(in);
-    }
-
     public static final Parcelable.Creator<Photo> CREATOR = new Parcelable.Creator<Photo>() {
         @Override
         public Photo createFromParcel(Parcel in) {
@@ -58,6 +49,15 @@ public class Photo extends ApiResponse implements Parcelable {
         }
     };
 
+    public Photo() {
+
+    }
+
+    public Photo(Parcel in) {
+        this();
+        readFromParcel(in);
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -65,21 +65,21 @@ public class Photo extends ApiResponse implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(getPhotoSetId());
-        dest.writeString(getUrlSquare());
-        dest.writeString(getUrlSmall());
-        dest.writeString(getUrlMedium());
-        dest.writeString(getUrlOriginal());
-        dest.writeInt(getHeightSquare());
-        dest.writeInt(getWidthSquare());
-        dest.writeInt(getHeightSmall());
-        dest.writeInt(getWidthSmall());
-        dest.writeInt(getHeightMedium());
-        dest.writeInt(getWidthMedium());
-        dest.writeInt(getIsPrimary());
+        dest.writeString(photoSetId);
+        dest.writeString(urlSquare);
+        dest.writeString(urlSmall);
+        dest.writeString(urlMedium);
+        dest.writeString(urlOriginal);
+        dest.writeInt(heightSquare);
+        dest.writeInt(widthSquare);
+        dest.writeInt(heightSmall);
+        dest.writeInt(widthSmall);
+        dest.writeInt(heightMedium);
+        dest.writeInt(widthMedium);
+        dest.writeInt(isPrimary);
     }
 
-    public void readFromParcel(Parcel in) {
+    final private void readFromParcel(Parcel in) {
         photoSetId = in.readString();
         urlSquare = in.readString();
         urlSmall = in.readString();

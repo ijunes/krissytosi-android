@@ -59,7 +59,7 @@ limitations under the License.
         <module name="AvoidStarImport"/>
         <module name="IllegalImport"/> <!-- defaults to sun.* packages -->
         <module name="RedundantImport"/>
-        <module name="UnusedImports"/>
+        <!-- <module name="UnusedImports"/> -->
 
 
         <!-- Checks for Size Violations.                    -->

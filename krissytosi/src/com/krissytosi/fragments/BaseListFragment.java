@@ -113,14 +113,7 @@ public abstract class BaseListFragment extends ListFragment implements TabbedFra
      * @param height the height of the loaded image.
      * @param width the width of the loaded image.
      */
-    public void onPhotoLoaded(int height, int width) {
-
-    }
-
-    @Override
-    public void onCurrentTabClicked() {
-
-    }
+    public abstract void onPhotoLoaded(int height, int width);
 
     @Override
     public void beforeDetatched() {

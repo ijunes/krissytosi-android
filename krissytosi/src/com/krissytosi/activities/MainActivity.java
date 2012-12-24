@@ -288,15 +288,15 @@ public class MainActivity extends SherlockFragmentActivity {
                     } else {
                         ft.attach(newTab.fragment);
                     }
+                    Intent intent = new Intent(KrissyTosiConstants.KT_TAB_SELECTED);
+                    intent.putExtra(KrissyTosiConstants.KT_FRAGMENT_IDENTIFIER_KEY, newTab.tag);
+                    activity.sendBroadcast(intent);
+                    ((KrissyTosiApplication) activity.getApplication()).getTracking()
+                            .trackTabChange(newTab.tag);
                 }
                 lastTab = newTab;
                 ft.commit();
                 activity.getSupportFragmentManager().executePendingTransactions();
-                Intent intent = new Intent(KrissyTosiConstants.KT_TAB_SELECTED);
-                intent.putExtra(KrissyTosiConstants.KT_FRAGMENT_IDENTIFIER_KEY, newTab.tag);
-                activity.sendBroadcast(intent);
-                ((KrissyTosiApplication) activity.getApplication()).getTracking().trackTabChange(
-                        newTab.tag);
             }
         }
 
