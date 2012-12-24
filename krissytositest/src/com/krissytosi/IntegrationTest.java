@@ -111,6 +111,8 @@ public class IntegrationTest extends ActivityInstrumentationTestCase2<MainActivi
         assertNotNull(flipper);
         assertNotNull(listView);
         solo.sleep(1000);
-        // TODO
+        Adapter adapter = listView.getAdapter();
+        assertNotNull(adapter);
+        assertTrue(adapter.getCount() == 1);
     }
 }

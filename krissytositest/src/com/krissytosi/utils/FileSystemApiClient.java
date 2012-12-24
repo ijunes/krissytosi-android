@@ -32,5 +32,4 @@ public class FileSystemApiClient implements ApiClient {
     public PhotoService getPhotoService() {
         return new FileSystemPhotoService();
     }
-
 }

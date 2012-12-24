@@ -16,16 +16,54 @@
 
 package com.krissytosi.utils;
 
+import android.util.Log;
+
 import com.etsy.etsyCore.EtsyResult;
+import com.etsy.etsyModels.BaseModel;
+import com.etsy.etsyModels.Listing;
 import com.etsy.etsyRequests.EtsyRequest;
 import com.krissytosi.api.store.StoreApiClient;
 
+import org.apache.http.HttpStatus;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 public class FileSystemStoreApiClient implements StoreApiClient {
+
+    private static final String LOG_TAG = "FileSystemStoreApiClient";
 
     @Override
     public EtsyResult runRequest(EtsyRequest etsyRequest) {
         EtsyResult response = new EtsyResult();
+        if (etsyRequest.getMethod().indexOf("shops") != -1) {
+            response.setCode(HttpStatus.SC_OK);
+            List<BaseModel> results = new ArrayList<BaseModel>();
+            results.add(generateListing());
+            response.setResults(results);
+        }
         return response;
     }
 
+    private Listing generateListing() {
+        Listing listing = new Listing();
+        Map<String, String> properties = new HashMap<String, String>();
+        properties.put("url", "http://www.google.com");
+        properties.put("title", "Title");
+        properties.put("description", "Description");
+        properties.put("currency_code", "USD");
+        properties.put("price", "12");
+        properties.put("quantity", "1");
+        properties.put("when_made", "20s");
+        try {
+            listing.parseData(new JSONObject(properties));
+        } catch (JSONException e) {
+            Log.e(LOG_TAG, "readFromParcel", e);
+        }
+        return listing;
+    }
 }

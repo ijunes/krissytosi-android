@@ -28,6 +28,9 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Wrapper class used to persist listings through orientation changes.
+ */
 public class ParcelableListing implements Parcelable {
 
     private final static String LOG_TAG = "ParcelableListing";

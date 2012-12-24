@@ -164,7 +164,7 @@
         <echo>*** Running pmd ***</echo>
         <mkdir dir="${dist.dir}" />
         <mkdir dir="${pmd.dir}" />
-        <pmd rulesetfiles="pmd.xml">
+        <pmd rulesetfiles="${basedir}/pmd.xml">
             <formatter type="html" toFile="${pmd.dir}/pmd_report.html" toConsole="true" />
             <fileset dir="${src.dir}">
                 <include name="**/*.java"/>
