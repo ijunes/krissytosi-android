@@ -43,6 +43,9 @@ public class StoreAdapter extends ArrayAdapter<Listing> {
 
     private static final String LOG_TAG = "StoreAdapter";
 
+    /**
+     * Data structure which backs this adapter.
+     */
     private final List<Listing> listings;
 
     public StoreAdapter(Context context, int textViewResourceId, ArrayList<Listing> listings) {
@@ -97,6 +100,12 @@ public class StoreAdapter extends ArrayAdapter<Listing> {
             count = listings.size();
         }
         return count;
+    }
+
+    // Getters/Setters
+
+    public List<Listing> getListings() {
+        return listings;
     }
 
     public static class ViewHolder {

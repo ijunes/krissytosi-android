@@ -32,6 +32,7 @@ import com.etsy.etsyModels.Listing;
 import com.etsy.etsyRequests.ListingsRequest;
 import com.krissytosi.KrissyTosiApplication;
 import com.krissytosi.R;
+import com.krissytosi.api.store.ParcelableListing;
 import com.krissytosi.api.store.StoreApiClient;
 import com.krissytosi.fragments.adapters.StoreAdapter;
 import com.krissytosi.fragments.views.StoreDetailView;
@@ -53,6 +54,7 @@ public class StoreFragment extends BaseListFragment {
 
     // orientation flag handlers
 
+    private static final String LISTINGS = "com.krissytosi.fragments.StoreFragment.LISTINGS";
     private static final String CURRENT_LISTING_POSITION = "com.krissytosi.fragments.StoreFragment.CURRENT_LISTING_POSITION";
     private static final int CURRENT_LISTING_POSITION_DEFAULT_VALUE = -1;
     private int currentListingPosition = CURRENT_LISTING_POSITION_DEFAULT_VALUE;
@@ -92,6 +94,18 @@ public class StoreFragment extends BaseListFragment {
         if (savedInstanceState != null) {
             currentListingPosition = savedInstanceState.getInt(CURRENT_LISTING_POSITION,
                     CURRENT_LISTING_POSITION_DEFAULT_VALUE);
+            // see if we had already retrieved the listings
+            if (savedInstanceState.containsKey(LISTINGS)) {
+                // get them back from the bundle
+                ArrayList<ParcelableListing> parcelableListings = savedInstanceState
+                        .getParcelableArrayList(LISTINGS);
+                // convert them into a usable list
+                List<Listing> listings = parseListingsFromParcelableListings(parcelableListings);
+                adapter = new StoreAdapter(getActivity(), R.layout.store_listing,
+                        (ArrayList<Listing>) listings);
+                setListAdapter(adapter);
+                adapter.notifyDataSetChanged();
+            }
         }
         return v;
     }
@@ -102,6 +116,12 @@ public class StoreFragment extends BaseListFragment {
         // orientation change
         if (!isListViewShowing()) {
             outState.putInt(CURRENT_LISTING_POSITION, currentListingPosition);
+        }
+        // save the current collection of listings if we've already gone to the
+        // trouble to get them from the API server.
+        if (adapter != null && adapter.getCount() > 0) {
+            outState.putParcelableArrayList(LISTINGS,
+                    createParcelableListingsFromListings(adapter.getListings()));
         }
         super.onSaveInstanceState(outState);
     }
@@ -126,7 +146,6 @@ public class StoreFragment extends BaseListFragment {
 
     @Override
     public void onCurrentTabClicked() {
-        super.onCurrentTabClicked();
         if (!isListViewShowing()) {
             toggleListView(true);
         }
@@ -270,6 +289,40 @@ public class StoreFragment extends BaseListFragment {
         populateStoreListing(listing);
         getView().findViewById(R.id.store_detail_view).setVisibility(View.VISIBLE);
         currentListingPosition = position;
+    }
+
+    /**
+     * Given a collection of {@link ParcelableListing} listings, this method
+     * returns a list of {@link Listing} objects.
+     * 
+     * @param parcelableListings retrieved from the saved instance state.
+     * @return a usable List of {@link Listing} objects.
+     */
+    private List<Listing> parseListingsFromParcelableListings(
+            ArrayList<ParcelableListing> parcelableListings) {
+        List<Listing> listings = new ArrayList<Listing>();
+        for (ParcelableListing parcelableListing : parcelableListings) {
+            listings.add(parcelableListing.getListing());
+        }
+        return listings;
+    }
+
+    /**
+     * Given a collection of {@link Listing} listings, this method returns an
+     * ArrayList of {@link ParcelableListing} objects.
+     * 
+     * @param adapterListings
+     * @return
+     */
+    private ArrayList<ParcelableListing> createParcelableListingsFromListings(
+            List<Listing> adapterListings) {
+        ArrayList<ParcelableListing> parcelableListings = new ArrayList<ParcelableListing>();
+        for (Listing listing : adapterListings) {
+            ParcelableListing parcelableListing = new ParcelableListing();
+            parcelableListing.setListing(listing);
+            parcelableListings.add(parcelableListing);
+        }
+        return parcelableListings;
     }
 
     /**

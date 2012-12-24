@@ -198,18 +198,20 @@ public class FragmentHelper {
      */
     public static void toggleFlipper(boolean show, ViewFlipper flipper, Activity activity,
             String fragmentIdentifier) {
-        if (show) {
-            flipper.setInAnimation(AnimationUtils.loadAnimation(activity,
-                    android.R.anim.slide_in_left));
-            flipper.setOutAnimation(AnimationUtils.loadAnimation(activity,
-                    android.R.anim.slide_out_right));
-            flipper.showPrevious();
-        } else {
-            flipper.setInAnimation(AnimationUtils.loadAnimation(activity,
-                    R.anim.slide_in_right));
-            flipper.setOutAnimation(AnimationUtils.loadAnimation(activity,
-                    R.anim.slide_out_left));
-            flipper.showNext();
+        if (flipper != null) {
+            if (show) {
+                flipper.setInAnimation(AnimationUtils.loadAnimation(activity,
+                        android.R.anim.slide_in_left));
+                flipper.setOutAnimation(AnimationUtils.loadAnimation(activity,
+                        android.R.anim.slide_out_right));
+                flipper.showPrevious();
+            } else {
+                flipper.setInAnimation(AnimationUtils.loadAnimation(activity,
+                        R.anim.slide_in_right));
+                flipper.setOutAnimation(AnimationUtils.loadAnimation(activity,
+                        R.anim.slide_out_left));
+                flipper.showNext();
+            }
         }
         toggleDetailViewNotification(activity, fragmentIdentifier, show);
     }
