@@ -141,6 +141,10 @@ public class StoreFragment extends BaseListFragment {
                     getActivity().getApplication()).getStoreApiClient());
         } else if (adapter != null && adapter.getCount() > 0) {
             toggleLoading(false, getActivity().findViewById(R.id.store_flipper));
+            if (currentListingPosition != CURRENT_LISTING_POSITION_DEFAULT_VALUE
+                    && adapter.getCount() > currentListingPosition) {
+                handleOnListItemClick(currentListingPosition);
+            }
         }
     }
 
@@ -210,10 +214,6 @@ public class StoreFragment extends BaseListFragment {
         }
         adapter.notifyDataSetChanged();
         toggleLoading(false, getActivity().findViewById(R.id.store_flipper));
-        if (currentListingPosition != CURRENT_LISTING_POSITION_DEFAULT_VALUE
-                && adapter.getCount() > currentListingPosition) {
-            handleOnListItemClick(currentListingPosition);
-        }
     }
 
     /**
