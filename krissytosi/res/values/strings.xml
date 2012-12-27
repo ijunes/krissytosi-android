@@ -13,7 +13,6 @@
     <string name="number_of_images">%1$d images</string>
     <string name="detail_view_num_images">Image %1$d of %2$d</string>
     <string name="buy_now">Buy Now!</string>
-    <string name="detail_view_created">Listing Created: %1$s</string>
     <string name="detail_view_quantity">Quantity: %1$s</string>
     <string name="detail_view_quantity_one">Only one available.</string>
     <string name="detail_view_quantity_n">%1$d available.</string>

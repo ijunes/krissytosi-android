@@ -21,7 +21,6 @@ import android.content.res.Resources;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.text.Html;
-import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -36,8 +35,6 @@ import com.krissytosi.R;
 import com.krissytosi.fragments.adapters.ImagePagerAdapter;
 import com.krissytosi.utils.KrissyTosiUtils;
 import com.krissytosi.utils.KrissyTosiUtils.ImageSize;
-
-import java.util.Date;
 
 /**
  * Includes logic on how to deal with interactions on a store detail view.
@@ -55,7 +52,6 @@ public class StoreDetailView extends BaseDetailView implements OnClickListener,
     private Button detailViewBuyButton;
     private TextView detailViewDescription;
     private TextView detailViewTitle;
-    private TextView detailViewCreated;
     private TextView detailViewQuantity;
     private TextView detailViewWhenMade;
 
@@ -64,6 +60,14 @@ public class StoreDetailView extends BaseDetailView implements OnClickListener,
         // to be sure
         if (v.equals(detailViewBuyButton)) {
             Log.d(LOG_TAG, "Will open " + listing.getUrl());
+        }
+    }
+
+    @Override
+    public void beforeDetatched() {
+        super.beforeDetatched();
+        if (detailViewBuyButton != null) {
+            detailViewBuyButton.setOnClickListener(null);
         }
     }
 
@@ -79,7 +83,6 @@ public class StoreDetailView extends BaseDetailView implements OnClickListener,
         detailViewTitle = (TextView) getBaseView().findViewById(R.id.detail_view_title);
         detailViewDescription = (TextView) getBaseView().findViewById(
                 R.id.detail_view_description);
-        detailViewCreated = (TextView) getBaseView().findViewById(R.id.detail_view_created);
         detailViewQuantity = (TextView) getBaseView().findViewById(R.id.detail_view_quantity);
         detailViewWhenMade = (TextView) getBaseView().findViewById(R.id.detail_view_when_made);
         // then assign values & text to each view.
@@ -97,9 +100,6 @@ public class StoreDetailView extends BaseDetailView implements OnClickListener,
         detailViewPrice.setText(String.format("%s %s", listing.getCurrencyCode(),
                 listing.getPrice()));
         detailViewBuyButton.setOnClickListener(this);
-        Date listingCreated = new Date((long) listing.getCreationTsz() * 1000);
-        detailViewCreated.setText(String.format(resources.getString(R.string.detail_view_created),
-                DateFormat.getDateFormat(getContext()).format(listingCreated)));
         String quantity = "";
         String quantityResource = resources.getString(R.string.detail_view_quantity);
         int listingQuantity = listing.getQuantity();
