@@ -37,6 +37,7 @@ public class ContactFragment extends BaseFragment {
         if (getView() != null) {
             getView().findViewById(R.id.base_fragment).setVisibility(View.GONE);
         }
+        FragmentHelper.setTitle(getActivity(), getResources().getString(R.string.app_name));
     }
 
     @Override

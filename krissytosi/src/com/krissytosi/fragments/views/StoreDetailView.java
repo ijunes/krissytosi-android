@@ -53,7 +53,6 @@ public class StoreDetailView extends BaseDetailView implements OnClickListener,
     private TextView detailViewPrice;
     private Button detailViewBuyButton;
     private TextView detailViewDescription;
-    private TextView detailViewTitle;
     private TextView detailViewQuantity;
     private TextView detailViewWhenMade;
 
@@ -82,14 +81,12 @@ public class StoreDetailView extends BaseDetailView implements OnClickListener,
                 R.id.detail_view_pager_indicator);
         detailViewPrice = (TextView) getBaseView().findViewById(R.id.detail_view_price);
         detailViewBuyButton = (Button) getBaseView().findViewById(R.id.detail_view_buy_button);
-        detailViewTitle = (TextView) getBaseView().findViewById(R.id.detail_view_title);
         detailViewDescription = (TextView) getBaseView().findViewById(
                 R.id.detail_view_description);
         detailViewQuantity = (TextView) getBaseView().findViewById(R.id.detail_view_quantity);
         detailViewWhenMade = (TextView) getBaseView().findViewById(R.id.detail_view_when_made);
         // then assign values & text to each view.
         Resources resources = getContext().getResources();
-        detailViewTitle.setText(listing.getTitle());
         initializeViewPager();
         // descriptions can include \n's which should be translated into <br />s
         String detailDescription = listing.getDescription();

@@ -20,7 +20,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -97,12 +96,6 @@ public class PhotoSetsFragment extends BaseFragment implements OnItemClickListen
             @Override
             public void onSwipeRight() {
                 toggleGridView(true);
-            }
-
-            @Override
-            public void onLongPressDetected(MotionEvent motionEvent) {
-                super.onLongPressDetected(motionEvent);
-                Log.d(LOG_TAG, "Long Press Detected");
             }
         };
         listener.setIsLongpressEnabled(true);
@@ -191,6 +184,7 @@ public class PhotoSetsFragment extends BaseFragment implements OnItemClickListen
         populatePhotoSet(photoSet);
         getView().findViewById(R.id.photoset_detail_view).setVisibility(View.VISIBLE);
         currentPhotoSetId = photoSet.getId();
+        FragmentHelper.setTitle(getActivity(), photoSet.getTitle());
     }
 
     private void populatePhotoSet(PhotoSet photoSet) {
@@ -225,6 +219,8 @@ public class PhotoSetsFragment extends BaseFragment implements OnItemClickListen
                 getActivity(), getFragmentIdentifier());
         if (!show) {
             getView().findViewById(R.id.photoset_detail_view).scrollTo(0, 0);
+        } else {
+            FragmentHelper.setTitle(getActivity(), getResources().getString(R.string.app_name));
         }
     }
 

@@ -259,6 +259,8 @@ public class StoreFragment extends BaseListFragment {
                 getActivity(), getFragmentIdentifier());
         if (!show) {
             getView().findViewById(R.id.store_detail_view).scrollTo(0, 0);
+        } else {
+            FragmentHelper.setTitle(getActivity(), getResources().getString(R.string.app_name));
         }
     }
 
@@ -289,6 +291,7 @@ public class StoreFragment extends BaseListFragment {
         populateStoreListing(listing);
         getView().findViewById(R.id.store_detail_view).setVisibility(View.VISIBLE);
         currentListingPosition = position;
+        FragmentHelper.setTitle(getActivity(), listing.getTitle());
     }
 
     /**

@@ -61,6 +61,7 @@ public class BlogFragment extends BaseFragment {
     public void onTabSelected() {
         toggleLoading(true, getWebView());
         getWebView().loadUrl(KrissyTosiConstants.BLOG_URL);
+        FragmentHelper.setTitle(getActivity(), getResources().getString(R.string.app_name));
     }
 
     @Override

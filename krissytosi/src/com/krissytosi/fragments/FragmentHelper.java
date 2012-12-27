@@ -30,6 +30,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
+import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.krissytosi.R;
 import com.krissytosi.utils.KrissyTosiConstants;
 import com.krissytosi.utils.KrissyTosiUtils;
@@ -222,6 +223,19 @@ public class FragmentHelper {
             Intent intent = new Intent(KrissyTosiConstants.KT_FRAGMENT_IN_DETAIL_VIEW_KEY);
             intent.putExtra(KrissyTosiConstants.KT_FRAGMENT_IN_DETAIL_VIEW, fragmentIdentifier);
             activity.sendBroadcast(intent);
+        }
+    }
+
+    /**
+     * Sets the action bar title for an activity.
+     * 
+     * @param activity the activity in question.
+     * @param title the title to set.
+     */
+    public static void setTitle(FragmentActivity activity, String title) {
+        if (activity != null) {
+            SherlockFragmentActivity sherlockFragmentActivity = (SherlockFragmentActivity) activity;
+            sherlockFragmentActivity.getSupportActionBar().setTitle(title);
         }
     }
 }
