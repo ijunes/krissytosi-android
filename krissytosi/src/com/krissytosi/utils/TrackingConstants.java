@@ -22,7 +22,7 @@ package com.krissytosi.utils;
  */
 public class TrackingConstants {
 
-    public static final String TRACKING_KEY = "";
+    public static final String TRACKING_KEY = "UA-32840879-2";
 
     public static final int DEFAULT_SAMPLE_RATE_SECONDS = 60;
     public static final boolean DEFAULT_DEBUG_ENABLED = false;

@@ -184,6 +184,10 @@ public class PhotoSetsFragment extends BaseFragment implements OnItemClickListen
     private void handleOnItemClick(int position) {
         toggleGridView(false);
         PhotoSet photoSet = adapter.getItem(position);
+        if (getActivity() != null && photoSet.getTitle() != null) {
+            ((KrissyTosiApplication) getActivity().getApplication()).getTracking()
+                    .trackPhotoSetChange(photoSet.getTitle());
+        }
         populatePhotoSet(photoSet);
         getView().findViewById(R.id.photoset_detail_view).setVisibility(View.VISIBLE);
         currentPhotoSetId = photoSet.getId();

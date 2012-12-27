@@ -33,6 +33,7 @@ import com.krissytosi.modules.KrissyTosiModule;
 import com.krissytosi.tracking.Tracking;
 import com.krissytosi.utils.ApiConstants;
 import com.krissytosi.utils.KrissyTosiConstants;
+import com.krissytosi.utils.TrackingConstants;
 import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiscCache;
 import com.nostra13.universalimageloader.cache.disc.naming.HashCodeFileNameGenerator;
 import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
@@ -96,6 +97,7 @@ public class KrissyTosiApplication extends Application {
         initializeModules();
         initializeNetworkReceiver();
         initializeImageLoader();
+        initializeTracking();
     }
 
     @Override
@@ -181,6 +183,10 @@ public class KrissyTosiApplication extends Application {
                 .threadPoolSize(3)
                 .build();
         ImageLoader.getInstance().init(config);
+    }
+
+    private void initializeTracking() {
+        getTracking().initialize(getApplicationContext(), TrackingConstants.TRACKING_KEY);
     }
 
     // Getters/Setters
