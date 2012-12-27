@@ -9,7 +9,7 @@
         android:id="@+id/base_fragment"
         layout="@layout/base_fragment" />
 
-    <ViewFlipper
+    <com.krissytosi.utils.KrissyTosiViewFlipper
         android:id="@+id/photoset_flipper"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent" >
@@ -29,6 +29,6 @@
             android:id="@+id/photoset_detail_view"
             layout="@layout/photoset_detail_view"
             android:visibility="gone" />
-    </ViewFlipper>
+    </com.krissytosi.utils.KrissyTosiViewFlipper>
 
 </LinearLayout>
