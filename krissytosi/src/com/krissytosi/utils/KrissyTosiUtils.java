@@ -23,7 +23,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.util.DisplayMetrics;
-import android.util.Log;
 
 import com.etsy.etsyModels.ListingImage;
 import com.krissytosi.api.domain.Photo;
@@ -78,7 +77,6 @@ public class KrissyTosiUtils {
         } else {
             imageUrl = listingImage.getUrlFullxfull();
         }
-        Log.d("KTU", "imageURL " + imageUrl);
         return imageUrl;
     }
 

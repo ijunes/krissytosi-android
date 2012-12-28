@@ -261,6 +261,7 @@ public class StoreFragment extends BaseListFragment {
         if (!show) {
             getView().findViewById(R.id.store_detail_view).scrollTo(0, 0);
         } else {
+            currentListingPosition = CURRENT_LISTING_POSITION_DEFAULT_VALUE;
             FragmentHelper.setTitle(getActivity(), getResources().getString(R.string.app_name));
         }
     }
