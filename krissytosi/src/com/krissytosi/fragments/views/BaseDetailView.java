@@ -32,7 +32,6 @@ public class BaseDetailView {
     public void beforeDetatched() {
         if (viewPager != null) {
             viewPager.removeAllViews();
-            viewPager.setOnPageChangeListener(null);
         }
     }
 

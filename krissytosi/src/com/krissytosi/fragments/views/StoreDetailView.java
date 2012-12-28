@@ -125,6 +125,10 @@ public class StoreDetailView extends BaseDetailView implements OnClickListener {
                     public void run() {
                         RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) viewPager
                                 .getLayoutParams();
+                        if (params.height < 0) {
+                            viewPager.setBackgroundColor(getContext().getResources().getColor(
+                                    android.R.color.white));
+                        }
                         params.height = maximumHeight;
                     }
                 });
@@ -133,19 +137,21 @@ public class StoreDetailView extends BaseDetailView implements OnClickListener {
     }
 
     private void initializeViewPager() {
-        String[] images = new String[listing.getImages().length];
-        int counter = 0;
-        for (ListingImage listingImage : listing.getImages()) {
-            images[counter] = KrissyTosiUtils.determineImageUrl(listingImage, ImageSize.LARGE);
-            counter++;
+        if (listing != null) {
+            String[] images = new String[listing.getImages().length];
+            int counter = 0;
+            for (ListingImage listingImage : listing.getImages()) {
+                images[counter] = KrissyTosiUtils.determineImageUrl(listingImage, ImageSize.LARGE);
+                counter++;
+            }
+            viewPager.setAdapter(new ImagePagerAdapter(images, ((Activity) getContext())
+                    .getLayoutInflater(), AnimationUtils.loadAnimation(getContext(),
+                    android.R.anim.fade_in), getContext()));
+            LinePageIndicator indicator = (LinePageIndicator) getBaseView()
+                    .findViewById(R.id.detail_view_indicator);
+            indicator.setViewPager(viewPager);
+            viewPager.setCurrentItem(0);
         }
-        viewPager.setAdapter(new ImagePagerAdapter(images, ((Activity) getContext())
-                .getLayoutInflater(), AnimationUtils.loadAnimation(getContext(),
-                android.R.anim.fade_in), getContext()));
-        viewPager.setCurrentItem(0);
-        LinePageIndicator indicator = (LinePageIndicator) getBaseView()
-                .findViewById(R.id.detail_view_indicator);
-        indicator.setViewPager(viewPager);
     }
 
     // Getters/Setters
@@ -156,5 +162,13 @@ public class StoreDetailView extends BaseDetailView implements OnClickListener {
 
     public void setListing(Listing listing) {
         this.listing = listing;
+    }
+
+    public int getMaximumHeight() {
+        return maximumHeight;
+    }
+
+    public void setMaximumHeight(int maximumHeight) {
+        this.maximumHeight = maximumHeight;
     }
 }

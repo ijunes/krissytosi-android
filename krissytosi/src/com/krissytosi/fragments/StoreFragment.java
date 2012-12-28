@@ -145,6 +145,7 @@ public class StoreFragment extends BaseListFragment {
             if (currentListingPosition != CURRENT_LISTING_POSITION_DEFAULT_VALUE
                     && adapter.getCount() > currentListingPosition) {
                 handleOnListItemClick(currentListingPosition);
+                storeDetailView.setMaximumHeight(0);
             }
         }
     }
