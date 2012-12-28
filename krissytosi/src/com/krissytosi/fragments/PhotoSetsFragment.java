@@ -236,6 +236,7 @@ public class PhotoSetsFragment extends BaseFragment implements OnItemClickListen
             gridView.setAdapter(adapter);
         }
         adapter.notifyDataSetChanged();
+        FragmentHelper.setTitle(getActivity(), getResources().getString(R.string.app_name));
         toggleLoading(false, getActivity().findViewById(R.id.photoset_flipper));
         if (currentPhotoSetId != null && !"".equalsIgnoreCase(currentPhotoSetId)) {
             // deal with remembering the previous photo set after an orientation

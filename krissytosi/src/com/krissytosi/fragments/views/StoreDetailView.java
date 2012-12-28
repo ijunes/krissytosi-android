@@ -20,7 +20,6 @@ import android.app.Activity;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.support.v4.view.ViewPager;
-import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.text.Html;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -37,19 +36,18 @@ import com.krissytosi.R;
 import com.krissytosi.fragments.adapters.ImagePagerAdapter;
 import com.krissytosi.utils.KrissyTosiUtils;
 import com.krissytosi.utils.KrissyTosiUtils.ImageSize;
+import com.viewpagerindicator.LinePageIndicator;
 
 /**
  * Includes logic on how to deal with interactions on a store detail view.
  */
-public class StoreDetailView extends BaseDetailView implements OnClickListener,
-        OnPageChangeListener {
+public class StoreDetailView extends BaseDetailView implements OnClickListener {
 
     private static final String LOG_TAG = "StoreDetailView";
 
     private int maximumHeight;
     private Listing listing;
 
-    private TextView detailViewPagerIndicator;
     private TextView detailViewPrice;
     private Button detailViewBuyButton;
     private TextView detailViewDescription;
@@ -77,8 +75,6 @@ public class StoreDetailView extends BaseDetailView implements OnClickListener,
         maximumHeight = 0;
         // first get all the views back from the base view
         viewPager = (ViewPager) getBaseView().findViewById(R.id.detail_view_pager);
-        detailViewPagerIndicator = (TextView) getBaseView().findViewById(
-                R.id.detail_view_pager_indicator);
         detailViewPrice = (TextView) getBaseView().findViewById(R.id.detail_view_price);
         detailViewBuyButton = (Button) getBaseView().findViewById(R.id.detail_view_buy_button);
         detailViewDescription = (TextView) getBaseView().findViewById(
@@ -92,9 +88,6 @@ public class StoreDetailView extends BaseDetailView implements OnClickListener,
         String detailDescription = listing.getDescription();
         detailDescription = detailDescription.replaceAll("\n", "<br />");
         detailViewDescription.setText(Html.fromHtml(detailDescription));
-        detailViewPagerIndicator.setText(String.format(
-                resources.getString(R.string.detail_view_num_images), 1,
-                listing.getImages().length));
         // TODO - i18n & placement of currency symbols
         detailViewPrice.setText(String.format("%s %s", listing.getCurrencyCode(),
                 listing.getPrice()));
@@ -110,8 +103,14 @@ public class StoreDetailView extends BaseDetailView implements OnClickListener,
                     resources.getString(R.string.detail_view_quantity_n), listingQuantity));
         }
         detailViewQuantity.setText(quantity);
-        detailViewWhenMade.setText(String.format(resources.getString(R.string.detail_view_made),
-                listing.getWhenMade()));
+        boolean hasWhenMadeEntry = listing.getWhenMade() != null
+                && !"null".equalsIgnoreCase(listing.getWhenMade());
+        if (hasWhenMadeEntry) {
+            detailViewWhenMade.setText(String.format(
+                    resources.getString(R.string.detail_view_made),
+                    listing.getWhenMade()));
+        }
+        detailViewWhenMade.setVisibility(hasWhenMadeEntry ? View.VISIBLE : View.GONE);
     }
 
     public void onPhotoLoaded(int height, int width) {
@@ -149,24 +148,6 @@ public class StoreDetailView extends BaseDetailView implements OnClickListener,
         }
     }
 
-    @Override
-    public void onPageScrollStateChanged(int state) {
-
-    }
-
-    @Override
-    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-    }
-
-    @Override
-    public void onPageSelected(int position) {
-        detailViewPagerIndicator.setText(String.format(
-                getContext().getResources().getString(R.string.detail_view_num_images),
-                position + 1,
-                listing.getImages().length));
-    }
-
     private void initializeViewPager() {
         String[] images = new String[listing.getImages().length];
         int counter = 0;
@@ -178,7 +159,9 @@ public class StoreDetailView extends BaseDetailView implements OnClickListener,
                 .getLayoutInflater(), AnimationUtils.loadAnimation(getContext(),
                 android.R.anim.fade_in), getContext()));
         viewPager.setCurrentItem(0);
-        viewPager.setOnPageChangeListener(this);
+        LinePageIndicator indicator = (LinePageIndicator) getBaseView()
+                .findViewById(R.id.detail_view_indicator);
+        indicator.setViewPager(viewPager);
     }
 
     // Getters/Setters

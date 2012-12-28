@@ -133,6 +133,7 @@ public class StoreFragment extends BaseListFragment {
 
     @Override
     public void onTabSelected() {
+        FragmentHelper.setTitle(getActivity(), getResources().getString(R.string.app_name));
         if (getActivity() != null && getListingsTask == null && adapter == null) {
             // check to see whether we even need to get more store listings
             toggleLoading(true, getActivity().findViewById(R.id.store_flipper));

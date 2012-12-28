@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.krissytosi.utils.CustomScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res/com.krissytosi"
     android:id="@+id/store_detail_view"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
@@ -21,13 +22,19 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/detail_view_pager" >
 
-            <TextView
-                android:id="@+id/detail_view_pager_indicator"
-                style="@style/KTParagraphText" />
+            <com.viewpagerindicator.LinePageIndicator
+                android:id="@+id/detail_view_indicator"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:paddingBottom="@dimen/dbl"
+                android:paddingTop="@dimen/single" />
 
             <TextView
                 android:id="@+id/detail_view_price"
                 style="@style/KTParagraphText"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/detail_view_indicator"
                 android:layout_toLeftOf="@+id/detail_view_buy_button" />
 
             <Button
@@ -35,6 +42,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
+                android:layout_below="@+id/detail_view_indicator"
                 android:text="@string/buy_now" />
 
             <TextView
