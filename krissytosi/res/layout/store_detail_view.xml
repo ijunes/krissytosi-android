@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.krissytosi.utils.CustomScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.krissytosi.utils.KrissyTosiScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/store_detail_view"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
@@ -66,4 +66,4 @@
         </RelativeLayout>
     </RelativeLayout>
 
-</com.krissytosi.utils.CustomScrollView>
+</com.krissytosi.utils.KrissyTosiScrollView>

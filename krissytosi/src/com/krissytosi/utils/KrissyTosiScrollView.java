@@ -28,11 +28,11 @@ import android.widget.ScrollView;
  * ://stackoverflow.com/questions/2646028/android-horizontalscrollview
  * -within-scrollview-touch-handling}.
  */
-public class CustomScrollView extends ScrollView {
+public class KrissyTosiScrollView extends ScrollView {
 
     private final GestureDetector mGestureDetector;
 
-    public CustomScrollView(Context context, AttributeSet attrs) {
+    public KrissyTosiScrollView(Context context, AttributeSet attrs) {
         super(context, attrs);
         mGestureDetector = new GestureDetector(context, new YScrollDetector());
         setFadingEdgeLength(0);

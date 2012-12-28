@@ -1,4 +1,4 @@
-<com.krissytosi.utils.CustomScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.krissytosi.utils.KrissyTosiScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical" >
@@ -20,4 +20,4 @@
             android:layout_below="@+id/photoset_title" />
     </RelativeLayout>
 
-</com.krissytosi.utils.CustomScrollView>
+</com.krissytosi.utils.KrissyTosiScrollView>
