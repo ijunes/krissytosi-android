@@ -17,6 +17,7 @@
 package com.krissytosi.fragments.adapters;
 
 import android.content.Context;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -75,7 +76,7 @@ public class StoreAdapter extends ArrayAdapter<Listing> {
             if (listing != null) {
                 final ViewHolder holder = (ViewHolder) v.getTag();
                 if (holder != null) {
-                    holder.listingTitle.setText(listing.getTitle());
+                    holder.listingTitle.setText(Html.fromHtml(listing.getTitle()));
                     holder.listingPrice.setText(String.format("%s %s", listing.getCurrencyCode(),
                             listing.getPrice()));
                     ListingImage[] images = listing.getImages();
