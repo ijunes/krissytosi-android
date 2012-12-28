@@ -54,34 +54,36 @@ public class PhotoSetDetailView extends BaseDetailView {
      * photo set.
      */
     public void buildPage() {
-        photoSetTitle = (TextView) getBaseView().findViewById(R.id.photoset_title);
-        photoSetTitle.setText(photoSet.getTitle());
-        viewPager = (ViewPager) getBaseView().findViewById(R.id.pager);
-        List<Photo> photos = photoSet.getPhotos();
-        String[] images = new String[photos.size()];
-        int counter = 0;
-        int maximumHeight = 0;
-        int maximumWidth = 0;
-        for (Photo photo : photos) {
-            images[counter] = KrissyTosiUtils.determineImageUrl(photo, ImageSize.LARGE);
-            if (photo.getWidthMedium() > maximumWidth) {
-                maximumWidth = photo.getWidthMedium();
+        if (photoSet != null) {
+            photoSetTitle = (TextView) getBaseView().findViewById(R.id.photoset_title);
+            photoSetTitle.setText(photoSet.getTitle());
+            viewPager = (ViewPager) getBaseView().findViewById(R.id.pager);
+            List<Photo> photos = photoSet.getPhotos();
+            String[] images = new String[photos.size()];
+            int counter = 0;
+            int maximumHeight = 0;
+            int maximumWidth = 0;
+            for (Photo photo : photos) {
+                images[counter] = KrissyTosiUtils.determineImageUrl(photo, ImageSize.LARGE);
+                if (photo.getWidthMedium() > maximumWidth) {
+                    maximumWidth = photo.getWidthMedium();
+                }
+                if (photo.getHeightMedium() > maximumHeight) {
+                    maximumHeight = photo.getHeightMedium();
+                }
+                counter++;
             }
-            if (photo.getHeightMedium() > maximumHeight) {
-                maximumHeight = photo.getHeightMedium();
-            }
-            counter++;
+            double allowedHeight = KrissyTosiUtils.getAllowedHeight(maximumHeight, maximumWidth,
+                    (Activity) getContext());
+            viewPager.setAdapter(new ImagePagerAdapter(images, ((Activity) getContext())
+                    .getLayoutInflater(),
+                    AnimationUtils.loadAnimation(getContext(), android.R.anim.fade_in),
+                    getContext()));
+            viewPager.setCurrentItem(0);
+            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) viewPager
+                    .getLayoutParams();
+            params.height = (int) allowedHeight;
         }
-        double allowedHeight = KrissyTosiUtils.getAllowedHeight(maximumHeight, maximumWidth,
-                (Activity) getContext());
-        viewPager.setAdapter(new ImagePagerAdapter(images, ((Activity) getContext())
-                .getLayoutInflater(),
-                AnimationUtils.loadAnimation(getContext(), android.R.anim.fade_in),
-                getContext()));
-        viewPager.setCurrentItem(0);
-        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) viewPager
-                .getLayoutParams();
-        params.height = (int) allowedHeight;
     }
 
     // Getters/Setters
