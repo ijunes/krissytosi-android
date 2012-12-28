@@ -186,7 +186,7 @@ public class KrissyTosiApplication extends Application {
     }
 
     private void initializeTracking() {
-        getTracking().initialize(getApplicationContext(), TrackingConstants.TRACKING_KEY);
+        tracking.initialize(getApplicationContext(), TrackingConstants.TRACKING_KEY);
     }
 
     // Getters/Setters
