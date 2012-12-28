@@ -17,11 +17,9 @@
 package com.krissytosi.fragments.views;
 
 import android.app.Activity;
-import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.support.v4.view.ViewPager;
 import android.text.Html;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -117,24 +115,10 @@ public class StoreDetailView extends BaseDetailView implements OnClickListener {
         // first check the device's orientation to see whether the height and
         // width requested can even be accommodated.
         if (getContext() != null) {
-            double requestedHeight = height;
-            boolean isPortrait = getContext().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT;
-            DisplayMetrics metrics = new DisplayMetrics();
-            ((Activity) getContext()).getWindowManager().getDefaultDisplay().getMetrics(metrics);
-            if (isPortrait) {
-                // check to see whether the requested image width will be
-                // automatically squashed
-                if (metrics.widthPixels < width) {
-                    // this will have an impact on the height of the image.
-                    double difference = width - metrics.widthPixels;
-                    double percentage = width / difference;
-                    requestedHeight = height / percentage;
-                }
-            } else {
-                // TODO
-            }
-            if (requestedHeight > maximumHeight) {
-                maximumHeight = (int) requestedHeight;
+            double allowedHeight = KrissyTosiUtils.getAllowedHeight(height, width,
+                    (Activity) getContext());
+            if (allowedHeight > maximumHeight) {
+                maximumHeight = (int) allowedHeight;
                 // TODO - animate
                 ((Activity) getContext()).runOnUiThread(new Runnable() {
                     @Override

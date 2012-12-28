@@ -61,13 +61,19 @@ public class PhotoSetDetailView extends BaseDetailView {
         String[] images = new String[photos.size()];
         int counter = 0;
         int maximumHeight = 0;
+        int maximumWidth = 0;
         for (Photo photo : photos) {
             images[counter] = KrissyTosiUtils.determineImageUrl(photo, ImageSize.LARGE);
+            if (photo.getWidthMedium() > maximumWidth) {
+                maximumWidth = photo.getWidthMedium();
+            }
             if (photo.getHeightMedium() > maximumHeight) {
                 maximumHeight = photo.getHeightMedium();
             }
             counter++;
         }
+        double allowedHeight = KrissyTosiUtils.getAllowedHeight(maximumHeight, maximumWidth,
+                (Activity) getContext());
         viewPager.setAdapter(new ImagePagerAdapter(images, ((Activity) getContext())
                 .getLayoutInflater(),
                 AnimationUtils.loadAnimation(getContext(), android.R.anim.fade_in),
@@ -75,7 +81,7 @@ public class PhotoSetDetailView extends BaseDetailView {
         viewPager.setCurrentItem(0);
         RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) viewPager
                 .getLayoutParams();
-        params.height = maximumHeight;
+        params.height = (int) allowedHeight;
     }
 
     // Getters/Setters

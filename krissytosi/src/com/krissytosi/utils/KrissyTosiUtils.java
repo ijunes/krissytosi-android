@@ -16,10 +16,14 @@
 
 package com.krissytosi.utils;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.res.Configuration;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
+import android.util.DisplayMetrics;
+import android.util.Log;
 
 import com.etsy.etsyModels.ListingImage;
 import com.krissytosi.api.domain.Photo;
@@ -74,6 +78,7 @@ public class KrissyTosiUtils {
         } else {
             imageUrl = listingImage.getUrlFullxfull();
         }
+        Log.d("KTU", "imageURL " + imageUrl);
         return imageUrl;
     }
 
@@ -94,5 +99,34 @@ public class KrissyTosiUtils {
             imageUrl = photo.getUrlMedium();
         }
         return imageUrl;
+    }
+
+    /**
+     * Gets the max allowable height for a photo given the original width and
+     * height.
+     * 
+     * @param height the original height of the photo.
+     * @param width the original width of the photo.
+     * @param activity used to determine whether or not the user is in portrait
+     *            or landscape.
+     * @return double indicating the maximum allowable height for the photo.
+     */
+    public static double getAllowedHeight(int height, int width, Activity activity) {
+        double allowedHeight = height;
+        boolean isPortrait = activity.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT;
+        DisplayMetrics metrics = new DisplayMetrics();
+        activity.getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        if (isPortrait) {
+            // check to see whether the requested image width will be
+            // automatically squashed
+            if (metrics.widthPixels < width) {
+                // this will have an impact on the height of the image.
+                double percentage = (double) metrics.widthPixels / width;
+                allowedHeight = percentage * height;
+            }
+        } else {
+            // TODO
+        }
+        return allowedHeight;
     }
 }
