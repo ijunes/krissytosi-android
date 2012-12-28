@@ -151,6 +151,7 @@ public class StoreDetailView extends BaseDetailView implements OnClickListener {
                     .findViewById(R.id.detail_view_indicator);
             indicator.setViewPager(viewPager);
             viewPager.setCurrentItem(0);
+            indicator.setCurrentItem(0);
         }
     }
 
