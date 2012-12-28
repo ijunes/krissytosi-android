@@ -4,3 +4,6 @@
 [submodule "EtsyAndroidSDK"]
 	path = EtsyAndroidSDK
 	url = https://github.com/etsy/EtsyAndroidSDK.git
+[submodule "Android-ViewPagerIndicator"]
+	path = Android-ViewPagerIndicator
+	url = https://github.com/JakeWharton/Android-ViewPagerIndicator.git
