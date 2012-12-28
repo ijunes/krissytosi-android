@@ -20,7 +20,6 @@ import android.app.Activity;
 import android.support.v4.view.ViewPager;
 import android.view.animation.AnimationUtils;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.krissytosi.R;
 import com.krissytosi.api.domain.Photo;
@@ -45,18 +44,11 @@ public class PhotoSetDetailView extends BaseDetailView {
     private PhotoSet photoSet;
 
     /**
-     * Title view for the photo set.
-     */
-    private TextView photoSetTitle;
-
-    /**
      * Builds the page and kicks off the request to find all the images for this
      * photo set.
      */
     public void buildPage() {
         if (photoSet != null) {
-            photoSetTitle = (TextView) getBaseView().findViewById(R.id.photoset_title);
-            photoSetTitle.setText(photoSet.getTitle());
             viewPager = (ViewPager) getBaseView().findViewById(R.id.pager);
             List<Photo> photos = photoSet.getPhotos();
             String[] images = new String[photos.size()];
