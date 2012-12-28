@@ -16,7 +16,6 @@
             android:layout_height="wrap_content" />
 
         <RelativeLayout
-            android:id="@+id/store_detail_view_container"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/detail_view_pager" >
@@ -50,14 +49,9 @@
                 android:layout_below="@+id/detail_view_buy_button" />
 
             <TextView
-                android:id="@+id/detail_view_created"
-                style="@style/KTParagraphText"
-                android:layout_below="@+id/detail_view_description" />
-
-            <TextView
                 android:id="@+id/detail_view_quantity"
                 style="@style/KTParagraphText"
-                android:layout_below="@+id/detail_view_created" />
+                android:layout_below="@+id/detail_view_description" />
 
             <TextView
                 android:id="@+id/detail_view_when_made"
