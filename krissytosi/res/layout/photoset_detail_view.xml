@@ -12,7 +12,7 @@
             style="@style/KTPrimaryHeaderText"
             android:layout_centerHorizontal="true" />
 
-        <android.support.v4.view.ViewPager
+        <com.krissytosi.utils.KrissyTosiViewPager
             android:id="@+id/pager"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
