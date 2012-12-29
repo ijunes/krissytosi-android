@@ -24,8 +24,8 @@ import android.os.Parcelable;
  */
 public class MainActivityState implements Parcelable {
 
-    private String currentTabIdentifier;
-    private String fragmentIdentifierInDetailView;
+    private int currentTabPosition;
+    private int fragmentIdentifierInDetailView;
 
     public static final Parcelable.Creator<MainActivityState> CREATOR = new Parcelable.Creator<MainActivityState>() {
         @Override
@@ -54,31 +54,30 @@ public class MainActivityState implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(currentTabIdentifier);
-        dest.writeString(fragmentIdentifierInDetailView);
+        dest.writeInt(currentTabPosition);
+        dest.writeInt(fragmentIdentifierInDetailView);
     }
 
     private void readFromParcel(Parcel in) {
-        currentTabIdentifier = in.readString();
-        fragmentIdentifierInDetailView = in.readString();
+        currentTabPosition = in.readInt();
+        fragmentIdentifierInDetailView = in.readInt();
     }
 
     // Getters/Setters
 
-    public String getCurrentTabIdentifier() {
-        return currentTabIdentifier;
+    public int getCurrentTabPosition() {
+        return currentTabPosition;
     }
 
-    public void setCurrentTabIdentifier(String currentTabIdentifier) {
-        this.currentTabIdentifier = currentTabIdentifier;
+    public void setCurrentTabPosition(int currentTabPosition) {
+        this.currentTabPosition = currentTabPosition;
     }
 
-    public String getFragmentIdentifierInDetailView() {
+    public int getFragmentIdentifierInDetailView() {
         return fragmentIdentifierInDetailView;
     }
 
-    public void setFragmentIdentifierInDetailView(String fragmentIdentifierInDetailView) {
+    public void setFragmentIdentifierInDetailView(int fragmentIdentifierInDetailView) {
         this.fragmentIdentifierInDetailView = fragmentIdentifierInDetailView;
     }
-
 }

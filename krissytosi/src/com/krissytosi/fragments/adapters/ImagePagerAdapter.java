@@ -122,7 +122,7 @@ public class ImagePagerAdapter extends PagerAdapter {
                         animation.start();
                         Intent intent = new Intent(KrissyTosiConstants.KT_PHOTO_LOADED);
                         intent.putExtra(KrissyTosiConstants.KT_FRAGMENT_IDENTIFIER_KEY,
-                                KrissyTosiConstants.FRAGMENT_STORE_ID);
+                                KrissyTosiConstants.FRAGMENT_STORE_POSITION);
                         intent.putExtra(KrissyTosiConstants.KT_PHOTO_LOADED_HEIGHT,
                                 loadedImage.getHeight());
                         intent.putExtra(KrissyTosiConstants.KT_PHOTO_LOADED_WIDTH,

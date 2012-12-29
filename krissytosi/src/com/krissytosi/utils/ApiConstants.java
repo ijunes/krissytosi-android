@@ -34,7 +34,7 @@ public class ApiConstants {
     public static final String FLICKR_GET_LIST_METHOD = "flickr.photosets.getList";
     public static final String FLICKR_GET_PHOTOS_METHOD = "flickr.photosets.getPhotos";
 
-    public static final String FLICKR_USER_ID = "48071389@N07";
+    public static final String FLICKR_USER_ID = "91622522@N07";
     public static final String FLICKR_USER_ID_PARAM = "user_id";
     public static final String FLICKR_API_KEY_PARAM = "api_key";
     public static final String FLICKR_PHOTOSET_ID_PARAM = "photoset_id";

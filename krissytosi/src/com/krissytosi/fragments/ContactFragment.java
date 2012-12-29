@@ -41,7 +41,7 @@ public class ContactFragment extends BaseFragment {
     }
 
     @Override
-    public String getFragmentIdentifier() {
-        return KrissyTosiConstants.FRAGMENT_CONTACT_ID;
+    public int getFragmentIdentifier() {
+        return KrissyTosiConstants.FRAGMENT_CONTACT_POSITION;
     }
 }

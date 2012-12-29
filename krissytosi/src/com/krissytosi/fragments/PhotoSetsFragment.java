@@ -123,8 +123,8 @@ public class PhotoSetsFragment extends BaseFragment implements OnItemClickListen
     }
 
     @Override
-    public String getFragmentIdentifier() {
-        return KrissyTosiConstants.FRAGMENT_PHOTOSETS_ID;
+    public int getFragmentIdentifier() {
+        return KrissyTosiConstants.FRAGMENT_PHOTOSETS_POSITION;
     }
 
     @Override

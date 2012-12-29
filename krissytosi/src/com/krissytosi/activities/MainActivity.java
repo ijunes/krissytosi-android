@@ -24,30 +24,22 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.view.KeyEvent;
-import android.view.View;
-import android.widget.TabHost;
 
+import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.app.ActionBar.Tab;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
-import com.krissytosi.KrissyTosiApplication;
 import com.krissytosi.R;
 import com.krissytosi.fragments.BlogFragment;
 import com.krissytosi.fragments.ContactFragment;
 import com.krissytosi.fragments.PhotoSetsFragment;
 import com.krissytosi.fragments.StoreFragment;
-import com.krissytosi.fragments.TabbedFragment;
 import com.krissytosi.utils.KrissyTosiConstants;
 import com.krissytosi.utils.KrissyTosiUtils;
-import com.krissytosi.utils.ReClickableTabHost;
-import com.krissytosi.utils.ReClickableTabHostListener;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Main activity in the application. Gives the user the choice to browse photo
@@ -57,11 +49,8 @@ public class MainActivity extends SherlockFragmentActivity {
 
     private static final String MAIN_ACTIVITY_STATE = "com.krissytosi.activities.MainActivity.MAIN_ACTIVITY_STATE";
 
-    private ReClickableTabHost tabHost;
-    private TabManager tabManager;
-
     // State
-    private String fragmentIdentifierInDetailView;
+    private int fragmentIdentifierInDetailView;
 
     /**
      * Used to understand which fragment is currently selected in the tab
@@ -72,9 +61,9 @@ public class MainActivity extends SherlockFragmentActivity {
         public void onReceive(Context context, Intent intent) {
             if (KrissyTosiConstants.KT_FRAGMENT_IN_DETAIL_VIEW_KEY.equalsIgnoreCase(intent
                     .getAction())) {
-                String fragmentIdentifier = intent
-                        .getStringExtra(KrissyTosiConstants.KT_FRAGMENT_IN_DETAIL_VIEW);
-                if (fragmentIdentifier != null) {
+                int fragmentIdentifier = intent.getIntExtra(
+                        KrissyTosiConstants.KT_FRAGMENT_IN_DETAIL_VIEW, -1);
+                if (fragmentIdentifier != -1) {
                     fragmentIdentifierInDetailView = fragmentIdentifier;
                 }
             }
@@ -84,15 +73,14 @@ public class MainActivity extends SherlockFragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
 
         PreferenceManager.setDefaultValues(this, R.xml.settings, false);
-        initializeViewElements();
         initializeTabs(getApplicationContext().getResources());
 
         if (savedInstanceState != null) {
             MainActivityState state = savedInstanceState.getParcelable(MAIN_ACTIVITY_STATE);
-            tabHost.setCurrentTabByTag(state.getCurrentTabIdentifier());
+            // TODO
+            // tabHost.setCurrentTabByTag(state.getCurrentTabIdentifier());
             fragmentIdentifierInDetailView = state.getFragmentIdentifierInDetailView();
         }
     }
@@ -101,7 +89,10 @@ public class MainActivity extends SherlockFragmentActivity {
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         MainActivityState state = new MainActivityState();
-        state.setCurrentTabIdentifier(tabHost.getCurrentTabTag());
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            state.setCurrentTabPosition(actionBar.getSelectedTab().getPosition());
+        }
         state.setFragmentIdentifierInDetailView(fragmentIdentifierInDetailView);
         outState.putParcelable(MAIN_ACTIVITY_STATE, state);
     }
@@ -145,12 +136,12 @@ public class MainActivity extends SherlockFragmentActivity {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            if (!"".equalsIgnoreCase(fragmentIdentifierInDetailView)) {
+            if (fragmentIdentifierInDetailView != -1) {
                 Intent intent = new Intent(KrissyTosiConstants.KT_NOTIFY_DETAIL_VIEW_KEY);
                 intent.putExtra(KrissyTosiConstants.KT_FRAGMENT_IDENTIFIER_KEY,
                         fragmentIdentifierInDetailView);
                 sendBroadcast(intent);
-                fragmentIdentifierInDetailView = "";
+                fragmentIdentifierInDetailView = -1;
                 return true;
             } else {
                 return super.onKeyDown(keyCode, event);
@@ -160,47 +151,51 @@ public class MainActivity extends SherlockFragmentActivity {
         }
     }
 
-    private void initializeViewElements() {
-        tabHost = (ReClickableTabHost) findViewById(android.R.id.tabhost);
-        tabHost.setup();
-        tabManager = new TabManager(this, tabHost, R.id.realtabcontent);
-        tabHost.setReClickableTabHostListener(tabManager);
-    }
-
     private void initializeTabs(Resources resources) {
-        tabManager.addTab(
-                tabHost.newTabSpec(KrissyTosiConstants.FRAGMENT_PHOTOSETS_ID).setIndicator(
-                        resources.getString(R.string.photosets)),
-                PhotoSetsFragment.class, null);
-        tabManager.addTab(
-                tabHost.newTabSpec(KrissyTosiConstants.FRAGMENT_STORE_ID).setIndicator(
-                        resources.getString(R.string.store)),
-                StoreFragment.class, null);
-        tabManager.addTab(
-                tabHost.newTabSpec(KrissyTosiConstants.FRAGMENT_BLOG_ID).setIndicator(
-                        resources.getString(R.string.blog)),
-                BlogFragment.class, null);
-        tabManager.addTab(
-                tabHost.newTabSpec(KrissyTosiConstants.FRAGMENT_CONTACT_ID).setIndicator(
-                        resources.getString(R.string.contact)),
-                ContactFragment.class, null);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+        actionBar.setDisplayShowTitleEnabled(true);
+        actionBar
+                .addTab(actionBar
+                        .newTab()
+                        .setText(resources.getString(R.string.photosets))
+                        .setTabListener(
+                                new TabListener<PhotoSetsFragment>(this,
+                                        KrissyTosiConstants.FRAGMENT_PHOTOSETS_ID,
+                                        PhotoSetsFragment.class)));
+        actionBar
+                .addTab(actionBar
+                        .newTab()
+                        .setText(resources.getString(R.string.store))
+                        .setTabListener(
+                                new TabListener<StoreFragment>(this,
+                                        KrissyTosiConstants.FRAGMENT_STORE_ID,
+                                        StoreFragment.class)));
+        actionBar
+                .addTab(actionBar
+                        .newTab()
+                        .setText(resources.getString(R.string.blog))
+                        .setTabListener(
+                                new TabListener<BlogFragment>(this,
+                                        KrissyTosiConstants.FRAGMENT_BLOG_ID,
+                                        BlogFragment.class)));
+        actionBar
+                .addTab(actionBar
+                        .newTab()
+                        .setText(resources.getString(R.string.contact))
+                        .setTabListener(
+                                new TabListener<ContactFragment>(this,
+                                        KrissyTosiConstants.FRAGMENT_CONTACT_ID,
+                                        ContactFragment.class)));
     }
 
-    // Getters
+    // Getters/Setters
 
-    public TabHost getTabHost() {
-        return tabHost;
-    }
-
-    public TabManager getTabManager() {
-        return tabManager;
-    }
-
-    public String getFragmentIdentifierInDetailView() {
+    public int getFragmentIdentifierInDetailView() {
         return fragmentIdentifierInDetailView;
     }
 
-    public void setFragmentIdentifierInDetailView(String fragmentIdentifierInDetailView) {
+    public void setFragmentIdentifierInDetailView(int fragmentIdentifierInDetailView) {
         this.fragmentIdentifierInDetailView = fragmentIdentifierInDetailView;
     }
 
@@ -208,102 +203,42 @@ public class MainActivity extends SherlockFragmentActivity {
         return broadcastReceiver;
     }
 
-    // Tab Manager Class
+    // TabListener Class
 
-    public static class TabManager implements TabHost.OnTabChangeListener,
-            ReClickableTabHostListener {
+    public static class TabListener<T extends Fragment> implements ActionBar.TabListener {
 
-        private final FragmentActivity activity;
-        private final TabHost tabHost;
-        private final int containerId;
-        private final Map<String, TabInfo> tabs = new HashMap<String, TabInfo>();
-        TabInfo lastTab;
+        private Fragment fragment;
+        private final SherlockFragmentActivity activity;
+        private final String tag;
+        private final Class<T> clazz;
 
-        static final class TabInfo {
-            private final String tag;
-            private final Class<?> clss;
-            private final Bundle args;
-            private Fragment fragment;
-
-            TabInfo(String tag, Class<?> clazz, Bundle args) {
-                this.tag = tag;
-                this.clss = clazz;
-                this.args = args;
-            }
-        }
-
-        static class TabFactory implements TabHost.TabContentFactory {
-            private final Context mContext;
-
-            public TabFactory(Context context) {
-                mContext = context;
-            }
-
-            @Override
-            public View createTabContent(String tag) {
-                View v = new View(mContext);
-                v.setMinimumWidth(0);
-                v.setMinimumHeight(0);
-                return v;
-            }
-        }
-
-        public TabManager(FragmentActivity activity, TabHost tabHost, int containerId) {
+        public TabListener(SherlockFragmentActivity activity, String tag, Class<T> clz) {
             this.activity = activity;
-            this.tabHost = tabHost;
-            this.containerId = containerId;
-            this.tabHost.setOnTabChangedListener(this);
-        }
-
-        public void addTab(TabHost.TabSpec tabSpec, Class<?> clss, Bundle args) {
-            tabSpec.setContent(new TabFactory(activity));
-            String tag = tabSpec.getTag();
-            TabInfo info = new TabInfo(tag, clss, args);
-            info.fragment = activity.getSupportFragmentManager().findFragmentByTag(tag);
-            if (info.fragment != null && !info.fragment.isDetached()) {
-                FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
-                ft.detach(info.fragment);
-                ft.commit();
-            }
-            tabs.put(tag, info);
-            tabHost.addTab(tabSpec);
+            this.tag = tag;
+            this.clazz = clz;
         }
 
         @Override
-        public void onTabChanged(String tabId) {
-            TabInfo newTab = tabs.get(tabId);
-            if (lastTab != newTab) {
-                FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
-                if (lastTab != null && lastTab.fragment != null) {
-                    if (lastTab.fragment instanceof TabbedFragment) {
-                        ((TabbedFragment) lastTab.fragment).beforeDetatched();
-                    }
-                    ft.detach(lastTab.fragment);
-                }
-                if (newTab != null) {
-                    if (newTab.fragment == null) {
-                        newTab.fragment = Fragment.instantiate(activity,
-                                newTab.clss.getName(), newTab.args);
-                        ft.add(containerId, newTab.fragment, newTab.tag);
-                    } else {
-                        ft.attach(newTab.fragment);
-                    }
-                    Intent intent = new Intent(KrissyTosiConstants.KT_TAB_SELECTED);
-                    intent.putExtra(KrissyTosiConstants.KT_FRAGMENT_IDENTIFIER_KEY, newTab.tag);
-                    activity.sendBroadcast(intent);
-                    ((KrissyTosiApplication) activity.getApplication()).getTracking()
-                            .trackTabChange(newTab.tag);
-                }
-                lastTab = newTab;
-                ft.commit();
-                activity.getSupportFragmentManager().executePendingTransactions();
+        public void onTabSelected(Tab tab, FragmentTransaction ft) {
+            if (fragment == null) {
+                fragment = Fragment.instantiate(activity, clazz.getName());
+                ft.add(android.R.id.content, fragment, tag);
+            } else {
+                ft.attach(fragment);
             }
         }
 
         @Override
-        public void onCurrentTabClicked(String tabId) {
+        public void onTabUnselected(Tab tab, FragmentTransaction ft) {
+            if (fragment != null) {
+                ft.detach(fragment);
+            }
+        }
+
+        @Override
+        public void onTabReselected(Tab tab, FragmentTransaction ft) {
             Intent intent = new Intent(KrissyTosiConstants.KT_CURRENT_TAB_SELECTED);
-            intent.putExtra(KrissyTosiConstants.KT_FRAGMENT_IDENTIFIER_KEY, tabId);
+            intent.putExtra(KrissyTosiConstants.KT_FRAGMENT_IDENTIFIER_KEY, tab.getPosition());
             activity.sendBroadcast(intent);
         }
     }

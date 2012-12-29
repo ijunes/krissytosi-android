@@ -105,12 +105,12 @@ public class FragmentHelper {
      * @return boolean indicating that this broadcast was intended for *this*
      *         fragment.
      */
-    public static boolean onReceive(Context context, Intent intent, String fragmentIdentifier) {
+    public static boolean onReceive(Context context, Intent intent, int fragmentIdentifier) {
         boolean isIntendedForThisFragment = false;
         String action = intent.getAction();
         if (!action.equals(ConnectivityManager.CONNECTIVITY_ACTION)
-                && fragmentIdentifier.equalsIgnoreCase(intent
-                        .getStringExtra(KrissyTosiConstants.KT_FRAGMENT_IDENTIFIER_KEY))) {
+                && fragmentIdentifier == intent.getIntExtra(
+                        KrissyTosiConstants.KT_FRAGMENT_IDENTIFIER_KEY, -1)) {
             isIntendedForThisFragment = true;
         }
         return isIntendedForThisFragment;
@@ -197,9 +197,10 @@ public class FragmentHelper {
      *            {@link ViewFlipper}.
      * @param flipper the {@link ViewFlipper} to hide/show.
      * @param activity the activity associated with the {@link ViewFlipper}.
+     * @param fragmentIdentifier the id for the fragment in question.
      */
     public static void toggleFlipper(boolean show, ViewFlipper flipper, Activity activity,
-            String fragmentIdentifier) {
+            int fragmentIdentifier) {
         if (flipper != null) {
             if (show) {
                 flipper.setInAnimation(AnimationUtils.loadAnimation(activity,
@@ -218,7 +219,7 @@ public class FragmentHelper {
         toggleDetailViewNotification(activity, fragmentIdentifier, show);
     }
 
-    public static void toggleDetailViewNotification(Activity activity, String fragmentIdentifier,
+    public static void toggleDetailViewNotification(Activity activity, int fragmentIdentifier,
             boolean inDetailView) {
         if (activity != null) {
             Intent intent = new Intent(KrissyTosiConstants.KT_FRAGMENT_IN_DETAIL_VIEW_KEY);

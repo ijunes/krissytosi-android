@@ -40,9 +40,9 @@ public interface TabbedFragment extends OnClickListener {
      * Uniquely identifies this fragment. Any child fragment should override
      * this method and provide it's own distinct implementation.
      * 
-     * @return String representation of an id.
+     * @return int representation of the fragment's position.
      */
-    String getFragmentIdentifier();
+    int getFragmentIdentifier();
 
     /**
      * Hides/shows a loading message.

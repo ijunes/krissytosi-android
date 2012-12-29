@@ -47,8 +47,8 @@ public class BlogFragment extends BaseFragment {
     }
 
     @Override
-    public String getFragmentIdentifier() {
-        return KrissyTosiConstants.FRAGMENT_BLOG_ID;
+    public int getFragmentIdentifier() {
+        return KrissyTosiConstants.FRAGMENT_BLOG_POSITION;
     }
 
     @Override

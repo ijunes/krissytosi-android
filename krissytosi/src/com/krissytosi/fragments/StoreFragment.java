@@ -127,8 +127,8 @@ public class StoreFragment extends BaseListFragment {
     }
 
     @Override
-    public String getFragmentIdentifier() {
-        return KrissyTosiConstants.FRAGMENT_STORE_ID;
+    public int getFragmentIdentifier() {
+        return KrissyTosiConstants.FRAGMENT_STORE_POSITION;
     }
 
     @Override
