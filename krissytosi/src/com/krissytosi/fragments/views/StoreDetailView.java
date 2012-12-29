@@ -34,6 +34,7 @@ import com.krissytosi.R;
 import com.krissytosi.fragments.adapters.ImagePagerAdapter;
 import com.krissytosi.utils.KrissyTosiUtils;
 import com.krissytosi.utils.KrissyTosiUtils.ImageSize;
+import com.krissytosi.utils.KrissyTosiViewPagerAnimation;
 import com.viewpagerindicator.LinePageIndicator;
 
 /**
@@ -119,19 +120,26 @@ public class StoreDetailView extends BaseDetailView implements OnClickListener {
                     (Activity) getContext());
             if (allowedHeight > maximumHeight) {
                 maximumHeight = (int) allowedHeight;
-                // TODO - animate
-                ((Activity) getContext()).runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) viewPager
-                                .getLayoutParams();
-                        if (params.height < 0) {
-                            viewPager.setBackgroundColor(getContext().getResources().getColor(
-                                    android.R.color.white));
-                        }
-                        params.height = maximumHeight;
+                RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) viewPager
+                        .getLayoutParams();
+                int currentHeight = viewPager.getLayoutParams().height;
+                if (currentHeight <= 0) {
+                    if (params.height < 0) {
+                        viewPager.setBackgroundColor(getContext().getResources().getColor(
+                                android.R.color.white));
                     }
-                });
+                    params.height = maximumHeight;
+                } else {
+                    KrissyTosiViewPagerAnimation anim = new KrissyTosiViewPagerAnimation(
+                            viewPager, maximumHeight, viewPager.getLayoutParams().height, true);
+                    viewPager.setAnimation(anim);
+                    if (params.height < 0) {
+                        viewPager.setBackgroundColor(getContext().getResources().getColor(
+                                android.R.color.white));
+                    }
+                    anim.setDuration(250);
+                    anim.start();
+                }
             }
         }
     }

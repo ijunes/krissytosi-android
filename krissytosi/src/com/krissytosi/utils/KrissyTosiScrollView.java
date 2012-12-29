@@ -18,6 +18,7 @@ package com.krissytosi.utils;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.MotionEvent;
@@ -30,6 +31,8 @@ import android.widget.ScrollView;
  */
 public class KrissyTosiScrollView extends ScrollView {
 
+    private static final String LOG_TAG = "KrissyTosiScrollView";
+
     private final GestureDetector mGestureDetector;
 
     public KrissyTosiScrollView(Context context, AttributeSet attrs) {
@@ -40,7 +43,12 @@ public class KrissyTosiScrollView extends ScrollView {
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
-        return super.onInterceptTouchEvent(ev) && mGestureDetector.onTouchEvent(ev);
+        try {
+            return super.onInterceptTouchEvent(ev) && mGestureDetector.onTouchEvent(ev);
+        } catch (Exception e) {
+            Log.d(LOG_TAG, "onInterceptTouchEvent", e);
+        }
+        return false;
     }
 
     // Return false if we're scrolling in the x direction
