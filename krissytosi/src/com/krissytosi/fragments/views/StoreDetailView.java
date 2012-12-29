@@ -130,13 +130,9 @@ public class StoreDetailView extends BaseDetailView implements OnClickListener {
                     }
                     params.height = maximumHeight;
                 } else {
-                    KrissyTosiViewPagerAnimation anim = new KrissyTosiViewPagerAnimation(
-                            viewPager, maximumHeight, viewPager.getLayoutParams().height, true);
+                    KrissyTosiViewPagerAnimation anim = new KrissyTosiViewPagerAnimation(viewPager,
+                            maximumHeight, viewPager.getLayoutParams().height);
                     viewPager.setAnimation(anim);
-                    if (params.height < 0) {
-                        viewPager.setBackgroundColor(getContext().getResources().getColor(
-                                android.R.color.white));
-                    }
                     anim.setDuration(250);
                     anim.start();
                 }

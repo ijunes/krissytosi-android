@@ -16,28 +16,31 @@
 
 package com.krissytosi.utils;
 
+import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.Transformation;
 
+/**
+ * Custom animation used to resize {@link ViewPager} views when displaying
+ * images of varying sizes.
+ */
 public class KrissyTosiViewPagerAnimation extends Animation {
-    int startingHeight;
-    int targetHeight;
-    View view;
-    boolean down;
 
-    public KrissyTosiViewPagerAnimation(View view, int targetHeight, int startingHeight,
-            boolean down) {
+    private final int startingHeight;
+    private final int targetHeight;
+    private final View view;
+
+    public KrissyTosiViewPagerAnimation(View view, int targetHeight, int startingHeight) {
         this.view = view;
         this.targetHeight = targetHeight;
         this.startingHeight = startingHeight;
-        this.down = down;
     }
 
     @Override
     protected void applyTransformation(float interpolatedTime, Transformation t) {
         int newHeight;
-        newHeight = (int) (((targetHeight - startingHeight) * interpolatedTime) + startingHeight);
+        newHeight = (int) ((targetHeight - startingHeight) * interpolatedTime) + startingHeight;
         view.getLayoutParams().height = newHeight;
         view.requestLayout();
     }
