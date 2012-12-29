@@ -21,6 +21,7 @@ import android.content.Intent;
 import android.test.ActivityInstrumentationTestCase2;
 import android.test.UiThreadTest;
 
+import com.actionbarsherlock.app.ActionBar;
 import com.krissytosi.activities.MainActivity;
 import com.krissytosi.api.ApiClient;
 import com.krissytosi.api.store.StoreApiClient;
@@ -56,36 +57,28 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
     public void testSanityChecks() throws Exception {
         assertNotNull("activity should be launched successfully", getActivity());
         MainActivity activity = getActivity();
-        assertNotNull("tab host should not be null", activity.getTabHost());
-        assertNotNull("tab manager should not be null", activity.getTabManager());
-        assertNotNull("fragment manager should not be null", activity.getSupportFragmentManager());
+        ActionBar actionBar = activity.getSupportActionBar();
+        assertNotNull("action bar should not be null", actionBar);
+        assertTrue(actionBar.getTabCount() != 0);
     }
 
     public void testBroadcastReceiver() throws Exception {
         Intent intent = new Intent(KrissyTosiConstants.KT_FRAGMENT_IN_DETAIL_VIEW_KEY);
-        intent.putExtra(KrissyTosiConstants.KT_FRAGMENT_IN_DETAIL_VIEW, "key");
+        intent.putExtra(KrissyTosiConstants.KT_FRAGMENT_IN_DETAIL_VIEW, 1);
         getActivity().getBroadcastReceiver().onReceive(getActivity(), intent);
-        String fragmentIdentifier = getActivity().getFragmentIdentifierInDetailView();
-        assertNotNull("fragmentIdentifier should not be null", fragmentIdentifier);
-        assertTrue("key".equalsIgnoreCase(fragmentIdentifier));
+        int fragmentIdentifier = getActivity().getFragmentIdentifierInDetailView();
+        assertFalse(fragmentIdentifier == -1);
+        assertTrue(1 == fragmentIdentifier);
     }
 
     @UiThreadTest
     public void testStatePause() throws Exception {
-        String fragmentIdentifier = "fragmentIdentifier";
+        int fragmentIdentifier = 0;
         MainActivity activity = getActivity();
         Instrumentation instr = getInstrumentation();
         activity.setFragmentIdentifierInDetailView(fragmentIdentifier);
         instr.callActivityOnPause(activity);
         instr.callActivityOnResume(activity);
-        assertTrue(fragmentIdentifier.equalsIgnoreCase(activity
-                .getFragmentIdentifierInDetailView()));
-    }
-
-    @UiThreadTest
-    public void testStoreFragment() throws Exception {
-        MainActivity activity = getActivity();
-        activity.getTabHost().setCurrentTab(0);
-        activity.getTabHost().setCurrentTab(1);
+        assertTrue(fragmentIdentifier == activity.getFragmentIdentifierInDetailView());
     }
 }

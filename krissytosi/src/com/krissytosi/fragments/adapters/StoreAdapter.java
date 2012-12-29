@@ -76,7 +76,9 @@ public class StoreAdapter extends ArrayAdapter<Listing> {
             if (listing != null) {
                 final ViewHolder holder = (ViewHolder) v.getTag();
                 if (holder != null) {
-                    holder.listingTitle.setText(Html.fromHtml(listing.getTitle()));
+                    if (listing.getTitle() != null) {
+                        holder.listingTitle.setText(Html.fromHtml(listing.getTitle()));
+                    }
                     holder.listingPrice.setText(String.format("%s %s", listing.getCurrencyCode(),
                             listing.getPrice()));
                     ListingImage[] images = listing.getImages();
