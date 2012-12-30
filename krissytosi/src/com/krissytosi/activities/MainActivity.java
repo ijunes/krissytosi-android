@@ -223,11 +223,11 @@ public class MainActivity extends SherlockFragmentActivity {
 
         @Override
         public void onTabSelected(Tab tab, FragmentTransaction ft) {
-            Fragment prevFragment;
-            FragmentManager fm = activity.getSupportFragmentManager();
-            prevFragment = fm.findFragmentByTag(tag);
-            if (prevFragment != null) {
-                fragment = prevFragment;
+            Fragment previousFragment;
+            FragmentManager fragmentManager = activity.getSupportFragmentManager();
+            previousFragment = fragmentManager.findFragmentByTag(tag);
+            if (previousFragment != null) {
+                fragment = previousFragment;
             }
             if (fragment == null) {
                 fragment = Fragment.instantiate(activity, clazz.getName());

@@ -33,6 +33,7 @@ import android.widget.ViewFlipper;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.krissytosi.R;
+import com.krissytosi.fragments.views.BaseDetailView;
 import com.krissytosi.utils.KrissyTosiConstants;
 import com.krissytosi.utils.KrissyTosiUtils;
 
@@ -238,6 +239,15 @@ public class FragmentHelper {
         if (activity != null) {
             SherlockFragmentActivity sherlockFragmentActivity = (SherlockFragmentActivity) activity;
             sherlockFragmentActivity.getSupportActionBar().setTitle(Html.fromHtml(title));
+        }
+    }
+
+    /**
+     * @param detailView
+     */
+    public static void handleDetailViewBeforeDetatched(BaseDetailView detailView) {
+        if (detailView != null) {
+            detailView.beforeDetatched();
         }
     }
 }

@@ -154,15 +154,15 @@ public class StoreFragment extends BaseListFragment {
     public void onCurrentTabClicked() {
         if (!isListViewShowing()) {
             toggleListView(true);
+            currentListingPosition = CURRENT_LISTING_POSITION_DEFAULT_VALUE;
+            FragmentHelper.handleDetailViewBeforeDetatched(storeDetailView);
         }
     }
 
     @Override
     public void beforeDetatched() {
         super.beforeDetatched();
-        if (storeDetailView != null) {
-            storeDetailView.beforeDetatched();
-        }
+        FragmentHelper.handleDetailViewBeforeDetatched(storeDetailView);
     }
 
     @Override

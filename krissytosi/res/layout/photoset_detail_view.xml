@@ -1,7 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
 <com.krissytosi.utils.KrissyTosiScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical" >
+    android:fillViewport="true"
+    android:orientation="vertical"
+    android:padding="@dimen/single" >
 
     <RelativeLayout
         android:layout_width="fill_parent"
@@ -11,7 +14,15 @@
             android:id="@+id/pager"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true" />
+            android:layout_alignParentTop="true" />
+
+        <com.viewpagerindicator.LinePageIndicator
+            android:id="@+id/photoset_view_indicator"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:paddingBottom="@dimen/dbl"
+            android:paddingTop="@dimen/single" />
     </RelativeLayout>
 
 </com.krissytosi.utils.KrissyTosiScrollView>

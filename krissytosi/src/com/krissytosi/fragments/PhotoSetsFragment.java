@@ -151,9 +151,8 @@ public class PhotoSetsFragment extends BaseFragment implements OnItemClickListen
         super.onCurrentTabClicked();
         if (!isGridViewShowing()) {
             toggleGridView(true);
-        }
-        if (photoSetDetailView != null) {
-            photoSetDetailView.beforeDetatched();
+            currentPhotoSetId = "";
+            FragmentHelper.handleDetailViewBeforeDetatched(photoSetDetailView);
         }
     }
 
@@ -166,6 +165,7 @@ public class PhotoSetsFragment extends BaseFragment implements OnItemClickListen
     @Override
     public void beforeDetatched() {
         super.beforeDetatched();
+        FragmentHelper.handleDetailViewBeforeDetatched(photoSetDetailView);
         photoSetDetailView = null;
     }
 
