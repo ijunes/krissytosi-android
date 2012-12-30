@@ -24,7 +24,7 @@ import android.os.Parcelable;
  */
 public class MainActivityState implements Parcelable {
 
-    private int currentTabPosition;
+    private int currentTabPosition = -1;
     private int fragmentIdentifierInDetailView;
 
     public static final Parcelable.Creator<MainActivityState> CREATOR = new Parcelable.Creator<MainActivityState>() {

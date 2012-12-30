@@ -24,6 +24,7 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.KeyEvent;
 
@@ -73,14 +74,14 @@ public class MainActivity extends SherlockFragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         PreferenceManager.setDefaultValues(this, R.xml.settings, false);
         initializeTabs(getApplicationContext().getResources());
-
         if (savedInstanceState != null) {
             MainActivityState state = savedInstanceState.getParcelable(MAIN_ACTIVITY_STATE);
-            // TODO
-            // tabHost.setCurrentTabByTag(state.getCurrentTabIdentifier());
+            ActionBar actionBar = getSupportActionBar();
+            if (actionBar != null && state.getCurrentTabPosition() != -1) {
+                actionBar.setSelectedNavigationItem(state.getCurrentTabPosition());
+            }
             fragmentIdentifierInDetailView = state.getFragmentIdentifierInDetailView();
         }
     }
@@ -92,6 +93,8 @@ public class MainActivity extends SherlockFragmentActivity {
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             state.setCurrentTabPosition(actionBar.getSelectedTab().getPosition());
+        } else {
+            state.setCurrentTabPosition(0);
         }
         state.setFragmentIdentifierInDetailView(fragmentIdentifierInDetailView);
         outState.putParcelable(MAIN_ACTIVITY_STATE, state);
@@ -220,6 +223,12 @@ public class MainActivity extends SherlockFragmentActivity {
 
         @Override
         public void onTabSelected(Tab tab, FragmentTransaction ft) {
+            Fragment prevFragment;
+            FragmentManager fm = activity.getSupportFragmentManager();
+            prevFragment = fm.findFragmentByTag(tag);
+            if (prevFragment != null) {
+                fragment = prevFragment;
+            }
             if (fragment == null) {
                 fragment = Fragment.instantiate(activity, clazz.getName());
                 ft.add(android.R.id.content, fragment, tag);
