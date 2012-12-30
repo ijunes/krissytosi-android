@@ -94,6 +94,7 @@ public class StoreFragment extends BaseListFragment {
         if (savedInstanceState != null) {
             currentListingPosition = savedInstanceState.getInt(CURRENT_LISTING_POSITION,
                     CURRENT_LISTING_POSITION_DEFAULT_VALUE);
+            Log.d(LOG_TAG, "The current listing position is " + currentListingPosition);
             // see if we had already retrieved the listings
             if (savedInstanceState.containsKey(LISTINGS)) {
                 // get them back from the bundle
@@ -142,6 +143,7 @@ public class StoreFragment extends BaseListFragment {
                     getActivity().getApplication()).getStoreApiClient());
         } else if (adapter != null && adapter.getCount() > 0) {
             toggleLoading(false, getActivity().findViewById(R.id.store_flipper));
+            Log.d(LOG_TAG, "onTabSelected " + currentListingPosition);
             if (currentListingPosition != CURRENT_LISTING_POSITION_DEFAULT_VALUE
                     && adapter.getCount() > currentListingPosition) {
                 handleOnListItemClick(currentListingPosition);

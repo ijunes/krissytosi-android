@@ -47,11 +47,7 @@ public class StoreDetailView extends BaseDetailView implements OnClickListener {
     private int maximumHeight;
     private Listing listing;
 
-    private TextView detailViewPrice;
     private Button detailViewBuyButton;
-    private TextView detailViewDescription;
-    private TextView detailViewQuantity;
-    private TextView detailViewWhenMade;
 
     @Override
     public void onClick(View v) {
@@ -74,12 +70,14 @@ public class StoreDetailView extends BaseDetailView implements OnClickListener {
         maximumHeight = 0;
         // first get all the views back from the base view
         viewPager = (ViewPager) getBaseView().findViewById(R.id.detail_view_pager);
-        detailViewPrice = (TextView) getBaseView().findViewById(R.id.detail_view_price);
         detailViewBuyButton = (Button) getBaseView().findViewById(R.id.detail_view_buy_button);
-        detailViewDescription = (TextView) getBaseView().findViewById(
+        TextView detailViewPrice = (TextView) getBaseView().findViewById(R.id.detail_view_price);
+        TextView detailViewDescription = (TextView) getBaseView().findViewById(
                 R.id.detail_view_description);
-        detailViewQuantity = (TextView) getBaseView().findViewById(R.id.detail_view_quantity);
-        detailViewWhenMade = (TextView) getBaseView().findViewById(R.id.detail_view_when_made);
+        TextView detailViewQuantity = (TextView) getBaseView().findViewById(
+                R.id.detail_view_quantity);
+        TextView detailViewWhenMade = (TextView) getBaseView().findViewById(
+                R.id.detail_view_when_made);
         // then assign values & text to each view.
         Resources resources = getContext().getResources();
         initializeViewPager();

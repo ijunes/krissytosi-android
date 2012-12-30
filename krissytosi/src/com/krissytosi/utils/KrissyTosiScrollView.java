@@ -44,10 +44,7 @@ public class KrissyTosiScrollView extends ScrollView {
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
         try {
-            boolean one = super.onInterceptTouchEvent(ev);
-            boolean two = mGestureDetector.onTouchEvent(ev);
-            boolean returnValue = one && two;
-            return returnValue;
+            return super.onInterceptTouchEvent(ev) && mGestureDetector.onTouchEvent(ev);
         } catch (Exception e) {
             Log.d(LOG_TAG, "onInterceptTouchEvent", e);
         }
