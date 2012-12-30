@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
+    <!-- Main Application -->
     <string name="app_name">Krissy Tosi</string>
     <string name="photosets">Portfolios</string>
     <string name="store">Store</string>
@@ -16,6 +16,7 @@
     <string name="detail_view_quantity_one">Only one available.</string>
     <string name="detail_view_quantity_n">%1$d available.</string>
     <string name="detail_view_made">Made: %1$s</string>
+    <string name="share_this">Share This</string>
     <!-- Settings -->
     <string name="settings">Settings</string>
     <string name="tracking_preference">Tracking</string>

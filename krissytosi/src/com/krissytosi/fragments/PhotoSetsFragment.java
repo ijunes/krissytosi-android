@@ -16,10 +16,12 @@
 
 package com.krissytosi.fragments;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -55,6 +57,8 @@ public class PhotoSetsFragment extends BaseFragment implements OnItemClickListen
     private static final String PHOTOSETS = "com.krissytosi.fragments.PhotoSetsFragment.PHOTOSETS";
     private static final String CURRENT_PHOTOSET_ID = "com.krissytosi.fragments.PhotoSetsFragment.CURRENT_PHOTOSET_ID";
     private String currentPhotoSetId = "";
+
+    private static final String TEXT_MIME_TYPE = "text/plain";
 
     /**
      * Used to display a summary of photo sets to the user.
@@ -97,6 +101,12 @@ public class PhotoSetsFragment extends BaseFragment implements OnItemClickListen
             public void onSwipeRight() {
                 toggleGridView(true);
             }
+
+            @Override
+            public void onLongPressDetected(MotionEvent motionEvent) {
+                super.onLongPressDetected(motionEvent);
+                longPressDetected();
+            }
         };
         listener.setIsLongpressEnabled(true);
         photoSetDetailView.setOnTouchListener(listener);
@@ -116,7 +126,7 @@ public class PhotoSetsFragment extends BaseFragment implements OnItemClickListen
         if (!isGridViewShowing()) {
             outState.putString(CURRENT_PHOTOSET_ID, currentPhotoSetId);
         }
-        if (photoSets != null && !photoSets.isEmpty()) {
+        if (hasPhotoSets()) {
             outState.putParcelableArrayList(PHOTOSETS, photoSets);
         }
         super.onSaveInstanceState(outState);
@@ -132,7 +142,7 @@ public class PhotoSetsFragment extends BaseFragment implements OnItemClickListen
         if (getActivity() != null && getPhotoSetsTask == null) {
             // check to see whether we already have the photoSets as a result of
             // an orientation change
-            if (photoSets != null && !photoSets.isEmpty()) {
+            if (hasPhotoSets()) {
                 buildView();
             } else {
                 // no photo sets - go grab 'em
@@ -172,6 +182,41 @@ public class PhotoSetsFragment extends BaseFragment implements OnItemClickListen
     @Override
     public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
         handleOnItemClick(position);
+    }
+
+    /**
+     * Executed when a long press is detected on one of the photos in the photo
+     * set.
+     */
+    protected void longPressDetected() {
+        // check to see what photo set is currently selected
+        if (hasPhotoSets() && !"".equalsIgnoreCase(currentPhotoSetId) && !isGridViewShowing()
+                && photoSetDetailView != null && photoSetDetailView.getPhotoSet() != null) {
+            PhotoSet photoSet = photoSetDetailView.getPhotoSet();
+            int currentPhotoIndex = photoSetDetailView.getViewPager().getCurrentItem();
+            if (photoSet != null && photoSet.getPhotos() != null
+                    && photoSet.getPhotos().size() > currentPhotoIndex) {
+                Photo photo = photoSet.getPhotos().get(currentPhotoIndex);
+                createShareIntentWithPhoto(photo);
+            }
+        }
+    }
+
+    /**
+     * Responsible for presenting the user with a set of share options.
+     * 
+     * @param photo the photo to share.
+     */
+    private void createShareIntentWithPhoto(Photo photo) {
+        final Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_SEND);
+        intent.setType(TEXT_MIME_TYPE);
+        intent.putExtra(Intent.EXTRA_TEXT, photo.getUrlOriginal());
+        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        if (getActivity() != null) {
+            PhotoSetsFragment.this.startActivity(Intent.createChooser(intent, getResources()
+                    .getString(R.string.share_this)));
+        }
     }
 
     private void handleOnItemClick(int position) {
@@ -249,6 +294,21 @@ public class PhotoSetsFragment extends BaseFragment implements OnItemClickListen
                 }
             }
         }
+    }
+
+    /**
+     * Checks to see whether there are photo sets available.
+     * 
+     * @return boolean indicating that there is at least one photo set
+     *         available.
+     */
+    private boolean hasPhotoSets() {
+        boolean hasPhotoSets = photoSets != null && !photoSets.isEmpty();
+        if (hasPhotoSets) {
+            // make sure that the first photo set does not include an error
+            hasPhotoSets = photoSets.get(0).getErrorCode() == -1;
+        }
+        return hasPhotoSets;
     }
 
     /**

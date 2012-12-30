@@ -53,4 +53,12 @@ public class BaseDetailView {
         this.context = context;
     }
 
+    public ViewPager getViewPager() {
+        return viewPager;
+    }
+
+    public void setViewPager(ViewPager viewPager) {
+        this.viewPager = viewPager;
+    }
+
 }
