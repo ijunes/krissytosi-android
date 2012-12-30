@@ -66,6 +66,8 @@ public abstract class BaseListFragment extends ListFragment implements TabbedFra
                     onPhotoLoaded(
                             intent.getIntExtra(KrissyTosiConstants.KT_PHOTO_LOADED_HEIGHT, 0),
                             intent.getIntExtra(KrissyTosiConstants.KT_PHOTO_LOADED_WIDTH, 0));
+                } else if (action.equalsIgnoreCase(KrissyTosiConstants.KT_PHOTOSET_LONG_PRESS)) {
+                    onLongPressDetected();
                 }
             }
         }
@@ -118,6 +120,11 @@ public abstract class BaseListFragment extends ListFragment implements TabbedFra
     @Override
     public void beforeDetatched() {
         Log.d(LOG_TAG, "beforeDetatched " + getFragmentIdentifier());
+    }
+
+    @Override
+    public void onLongPressDetected() {
+        Log.d(LOG_TAG, "onLongPressDetected");
     }
 
     // Getters/Setters

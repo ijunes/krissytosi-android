@@ -48,6 +48,7 @@ public final class KrissyTosiConstants {
     public static final String KT_PHOTO_LOADED = "com.krissytosi.utils.Constants.KT_PHOTO_LOADED";
     public static final String KT_PHOTO_LOADED_HEIGHT = "com.krissytosi.utils.Constants.KT_PHOTO_LOADED_HEIGHT";
     public static final String KT_PHOTO_LOADED_WIDTH = "com.krissytosi.utils.Constants.KT_PHOTO_LOADED_WIDTH";
+    public static final String KT_PHOTOSET_LONG_PRESS = "com.krissytosi.utils.Constants.KT_PHOTOSET_LONG_PRESS";
 
     // settings constants
 

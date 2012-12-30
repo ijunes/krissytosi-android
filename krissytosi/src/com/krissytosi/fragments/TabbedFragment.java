@@ -80,4 +80,9 @@ public interface TabbedFragment extends OnClickListener {
      * Callback executed _just_ before a fragment is detatched from an activity.
      */
     void beforeDetatched();
+
+    /**
+     * Callback executed when the user long-presses on a photo view.
+     */
+    void onLongPressDetected();
 }

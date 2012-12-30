@@ -77,6 +77,7 @@ public class FragmentHelper {
             filter.addAction(KrissyTosiConstants.KT_CURRENT_TAB_SELECTED);
             filter.addAction(KrissyTosiConstants.KT_NOTIFY_DETAIL_VIEW_KEY);
             filter.addAction(KrissyTosiConstants.KT_PHOTO_LOADED);
+            filter.addAction(KrissyTosiConstants.KT_PHOTOSET_LONG_PRESS);
             filter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
             activity.registerReceiver(broadcastReceiver, filter);
         }

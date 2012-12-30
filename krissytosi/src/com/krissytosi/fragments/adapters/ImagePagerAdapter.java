@@ -19,11 +19,15 @@ package com.krissytosi.fragments.adapters;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.os.Handler;
+import android.support.v4.view.MotionEventCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnTouchListener;
 import android.view.animation.Animation;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -50,6 +54,18 @@ public class ImagePagerAdapter extends PagerAdapter {
     private final DisplayImageOptions options;
     private final Animation animation;
     private final Context context;
+    private boolean pressed;
+    Handler handle = new Handler();
+    Runnable longClick = new Runnable() {
+        @Override
+        public void run() {
+            if (pressed) {
+                Intent intent = new Intent(KrissyTosiConstants.KT_PHOTOSET_LONG_PRESS);
+                intent.putExtra(KrissyTosiConstants.KT_FRAGMENT_IDENTIFIER_KEY, 0);
+                context.sendBroadcast(intent);
+            }
+        }
+    };
 
     public ImagePagerAdapter(String[] urls, LayoutInflater layoutInflater,
             Animation fadeInAnimation, Context intentContext) {
@@ -88,6 +104,24 @@ public class ImagePagerAdapter extends PagerAdapter {
         final ImageView imageView = (ImageView) imageLayout.findViewById(R.id.image);
         final ProgressBar spinner = (ProgressBar) imageLayout.findViewById(R.id.loading);
         final PhotoViewAttacher attacher = new PhotoViewAttacher(imageView);
+        imageView.setOnTouchListener(new OnTouchListener() {
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                final int action = event.getAction();
+                switch (action & MotionEventCompat.ACTION_MASK) {
+                    case MotionEvent.ACTION_DOWN:
+                        pressed = true;
+                        handle.postDelayed(longClick, 800);
+                        break;
+                    case MotionEvent.ACTION_CANCEL:
+                    case MotionEvent.ACTION_UP:
+                        pressed = false;
+                        handle.removeCallbacks(longClick);
+                }
+                return true;
+            }
+        });
 
         ImageLoader.getInstance().displayImage(urls[position], imageView, options,
 

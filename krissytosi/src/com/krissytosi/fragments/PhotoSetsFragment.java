@@ -20,6 +20,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.HapticFeedbackConstants;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -182,6 +183,13 @@ public class PhotoSetsFragment extends BaseFragment implements OnItemClickListen
     @Override
     public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
         handleOnItemClick(position);
+    }
+
+    @Override
+    public void onLongPressDetected() {
+        super.onLongPressDetected();
+        longPressDetected();
+        photoSetDetailView.getViewPager().performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
     }
 
     /**

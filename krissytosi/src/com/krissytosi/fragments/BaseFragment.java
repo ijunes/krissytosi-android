@@ -52,8 +52,10 @@ public abstract class BaseFragment extends Fragment implements TabbedFragment {
     private final BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
+            Log.d(LOG_TAG, "onReceive");
             if (FragmentHelper.onReceive(context, intent, getFragmentIdentifier())) {
                 String action = intent.getAction();
+                Log.d(LOG_TAG, "onReceive 2 " + action);
                 if (action.equalsIgnoreCase(KrissyTosiConstants.KT_TAB_SELECTED)) {
                     onTabSelected();
                 } else if (action.equals(KrissyTosiConstants.KT_CURRENT_TAB_SELECTED)) {
@@ -62,6 +64,8 @@ public abstract class BaseFragment extends Fragment implements TabbedFragment {
                     FragmentHelper.toggleFlipper(false,
                             (ViewFlipper) getView().findViewById(flipperId), (Activity) context,
                             getFragmentIdentifier());
+                } else if (action.equalsIgnoreCase(KrissyTosiConstants.KT_PHOTOSET_LONG_PRESS)) {
+                    onLongPressDetected();
                 }
             }
         }
@@ -121,6 +125,11 @@ public abstract class BaseFragment extends Fragment implements TabbedFragment {
     @Override
     public void beforeDetatched() {
         Log.d(LOG_TAG, "beforeDetatched " + getFragmentIdentifier());
+    }
+
+    @Override
+    public void onLongPressDetected() {
+        Log.d(LOG_TAG, "onLongPressDetected");
     }
 
     // Getters/Setters

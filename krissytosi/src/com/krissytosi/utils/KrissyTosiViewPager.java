@@ -41,7 +41,7 @@ public class KrissyTosiViewPager extends ViewPager {
     public boolean onInterceptTouchEvent(MotionEvent ev) {
         try {
             return super.onInterceptTouchEvent(ev);
-        } catch (IllegalArgumentException e) {
+        } catch (Exception e) {
             Log.d(LOG_TAG, "onInterceptTouchEvent", e);
             return false;
         }
