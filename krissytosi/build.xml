@@ -100,11 +100,15 @@
     <!-- ===========================================    -->
     <!-- KT-DOCS                                        -->
     <!-- ===========================================    -->
-    <target name="kt-docs" description="Creates javadocs for the project">
+    <target name="kt-docs" description="Creates javadocs for the project" depends="-set-debug-mode,-build-setup">
         <echo>*** Creating documentation for the project ***</echo>
+        <property name="project.target.class.path" refid="project.target.class.path"/>
+        <property name="project.all.jars.path" refid="project.all.jars.path"/>
         <mkdir dir="${dist.dir}" />
         <javadoc destdir="${dist.dir}/docs" author="true" version="true" use="true"
-            windowtitle="${docs.window.title}" classpathref="compile.classpath">
+            stylesheetfile="${android.home}/docs/assets/android-developer-core.css"
+            linkoffline="http://d.android.com/reference ${android.home}/docs/reference"
+            windowtitle="${docs.window.title}" classpath="${project.target.class.path}:${project.all.jars.path}">
             <fileset dir="${src.dir}" defaultexcludes="yes">
                 <include name="com/krissytosi/**"/>
             </fileset>

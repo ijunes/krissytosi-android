@@ -64,7 +64,8 @@ public interface TabbedFragment extends OnClickListener {
     /**
      * Gets the 'No Network' button which is associated with each fragment.
      * 
-     * @return
+     * @return the button which notifies the user that there is no network
+     *         available.
      */
     Button getNoNetworkButton();
 
@@ -75,5 +76,8 @@ public interface TabbedFragment extends OnClickListener {
      */
     void setNoNetworkButton(Button noNetworkButton);
 
+    /**
+     * Callback executed _just_ before a fragment is detatched from an activity.
+     */
     void beforeDetatched();
 }
