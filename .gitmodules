@@ -7,3 +7,6 @@
 [submodule "Android-ViewPagerIndicator"]
 	path = Android-ViewPagerIndicator
 	url = https://github.com/JakeWharton/Android-ViewPagerIndicator.git
+[submodule "PhotoView"]
+	path = PhotoView
+	url = https://github.com/chrisbanes/PhotoView.git
