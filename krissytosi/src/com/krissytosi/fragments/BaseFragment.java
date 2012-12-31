@@ -52,10 +52,8 @@ public abstract class BaseFragment extends Fragment implements TabbedFragment {
     private final BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            Log.d(LOG_TAG, "onReceive");
             if (FragmentHelper.onReceive(context, intent, getFragmentIdentifier())) {
                 String action = intent.getAction();
-                Log.d(LOG_TAG, "onReceive 2 " + action);
                 if (action.equalsIgnoreCase(KrissyTosiConstants.KT_TAB_SELECTED)) {
                     onTabSelected();
                 } else if (action.equals(KrissyTosiConstants.KT_CURRENT_TAB_SELECTED)) {

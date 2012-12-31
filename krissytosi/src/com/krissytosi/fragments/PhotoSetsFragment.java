@@ -144,7 +144,16 @@ public class PhotoSetsFragment extends BaseFragment implements OnItemClickListen
             // check to see whether we already have the photoSets as a result of
             // an orientation change
             if (hasPhotoSets()) {
-                buildView();
+                // perhaps the user was focused on a particular photo set
+                if (hasDetailView()) {
+                    // ensure that the user is returned to the appropriate photo
+                    // set.
+                    toggleLoading(false, getView().findViewById(R.id.photoset_detail_view));
+                    navigateToCurrentPhotoSet();
+                } else {
+                    // just go ahead and build the view
+                    buildView();
+                }
             } else {
                 // no photo sets - go grab 'em
                 toggleLoading(true, getView().findViewById(R.id.photoset_flipper));
@@ -198,8 +207,8 @@ public class PhotoSetsFragment extends BaseFragment implements OnItemClickListen
      */
     protected void longPressDetected() {
         // check to see what photo set is currently selected
-        if (hasPhotoSets() && !"".equalsIgnoreCase(currentPhotoSetId) && !isGridViewShowing()
-                && photoSetDetailView != null && photoSetDetailView.getPhotoSet() != null) {
+        if (hasPhotoSets() && hasDetailView() && !isGridViewShowing()
+                && photoSetDetailView.getPhotoSet() != null) {
             PhotoSet photoSet = photoSetDetailView.getPhotoSet();
             int currentPhotoIndex = photoSetDetailView.getViewPager().getCurrentItem();
             if (photoSet != null && photoSet.getPhotos() != null
@@ -274,6 +283,7 @@ public class PhotoSetsFragment extends BaseFragment implements OnItemClickListen
             getView().findViewById(R.id.photoset_detail_view).scrollTo(0, 0);
         } else {
             FragmentHelper.setTitle(getActivity(), getResources().getString(R.string.app_name));
+            getView().findViewById(R.id.photosets_grid).setVisibility(View.VISIBLE);
         }
     }
 
@@ -291,7 +301,16 @@ public class PhotoSetsFragment extends BaseFragment implements OnItemClickListen
         adapter.notifyDataSetChanged();
         FragmentHelper.setTitle(getActivity(), getResources().getString(R.string.app_name));
         toggleLoading(false, getActivity().findViewById(R.id.photoset_flipper));
-        if (currentPhotoSetId != null && !"".equalsIgnoreCase(currentPhotoSetId)) {
+        navigateToCurrentPhotoSet();
+    }
+
+    /**
+     * Delegates to <code>handleOnItemClick</code> if the
+     * <code>currentPhotoSetId</code> member variable is set to something
+     * reasonable.
+     */
+    private void navigateToCurrentPhotoSet() {
+        if (hasDetailView()) {
             // deal with remembering the previous photo set after an orientation
             // change
             for (int i = 0, l = photoSets.size(); i < l; i++) {
@@ -317,6 +336,15 @@ public class PhotoSetsFragment extends BaseFragment implements OnItemClickListen
             hasPhotoSets = photoSets.get(0).getErrorCode() == -1;
         }
         return hasPhotoSets;
+    }
+
+    /**
+     * Checks to see whether the user is currently in a viable detail view.
+     * 
+     * @return boolean indicating that the currentPhotoSetId is set.
+     */
+    private boolean hasDetailView() {
+        return photoSetDetailView != null && !"".equalsIgnoreCase(currentPhotoSetId);
     }
 
     /**

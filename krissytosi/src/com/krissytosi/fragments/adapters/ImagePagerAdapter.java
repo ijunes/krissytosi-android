@@ -55,8 +55,8 @@ public class ImagePagerAdapter extends PagerAdapter {
     private final Animation animation;
     private final Context context;
     private boolean pressed;
-    Handler handle = new Handler();
-    Runnable longClick = new Runnable() {
+    private final Handler handle = new Handler();
+    private final Runnable longClick = new Runnable() {
         @Override
         public void run() {
             if (pressed) {
@@ -118,6 +118,9 @@ public class ImagePagerAdapter extends PagerAdapter {
                     case MotionEvent.ACTION_UP:
                         pressed = false;
                         handle.removeCallbacks(longClick);
+                        break;
+                    default:
+                        break;
                 }
                 return true;
             }

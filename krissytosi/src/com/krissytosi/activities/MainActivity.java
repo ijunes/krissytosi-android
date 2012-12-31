@@ -138,20 +138,15 @@ public class MainActivity extends SherlockFragmentActivity {
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            if (fragmentIdentifierInDetailView != -1) {
-                Intent intent = new Intent(KrissyTosiConstants.KT_NOTIFY_DETAIL_VIEW_KEY);
-                intent.putExtra(KrissyTosiConstants.KT_FRAGMENT_IDENTIFIER_KEY,
-                        fragmentIdentifierInDetailView);
-                sendBroadcast(intent);
-                fragmentIdentifierInDetailView = -1;
-                return true;
-            } else {
-                return super.onKeyDown(keyCode, event);
-            }
-        } else {
-            return super.onKeyDown(keyCode, event);
+        if (keyCode == KeyEvent.KEYCODE_BACK && fragmentIdentifierInDetailView != -1) {
+            Intent intent = new Intent(KrissyTosiConstants.KT_NOTIFY_DETAIL_VIEW_KEY);
+            intent.putExtra(KrissyTosiConstants.KT_FRAGMENT_IDENTIFIER_KEY,
+                    fragmentIdentifierInDetailView);
+            sendBroadcast(intent);
+            fragmentIdentifierInDetailView = -1;
+            return true;
         }
+        return super.onKeyDown(keyCode, event);
     }
 
     private void initializeTabs(Resources resources) {
