@@ -208,6 +208,10 @@ public class PhotoSetsFragment extends BaseFragment implements OnItemClickListen
                     && photoSet.getPhotos().size() > currentPhotoIndex) {
                 longPressDetected = true;
                 Photo photo = photoSet.getPhotos().get(currentPhotoIndex);
+                if (getActivity() != null) {
+                    ((KrissyTosiApplication) getActivity().getApplication()).getTracking()
+                            .mediaShared(photoSet.getTitle());
+                }
                 Intent intent = FragmentHelper.createShareUrlIntent(photo.getUrlOriginal());
                 PhotoSetsFragment.this.startActivity(Intent.createChooser(intent, getResources()
                         .getString(R.string.share_this)));

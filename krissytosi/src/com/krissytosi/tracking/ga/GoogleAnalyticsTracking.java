@@ -70,11 +70,10 @@ public class GoogleAnalyticsTracking implements Tracking {
     }
 
     @Override
-    public void mediaShared(String photoSetIdentifier, long mode) {
+    public void mediaShared(String photoSetIdentifier) {
         if (enabled) {
             tracker.trackEvent(TrackingConstants.CATEGORY_IDENTIFIER_UI_ACTION,
-                    TrackingConstants.ACTION_IDENTIFIER_MEDIA_SHARE,
-                    photoSetIdentifier, mode);
+                    TrackingConstants.ACTION_IDENTIFIER_MEDIA_SHARE, photoSetIdentifier, (long) 0);
         }
     }
 

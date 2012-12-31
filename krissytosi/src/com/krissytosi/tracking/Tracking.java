@@ -53,10 +53,8 @@ public interface Tracking {
      * a particular photo set.
      * 
      * @param photoSetIdentifier unique identifier for a photo set.
-     * @param mode the way in which the media was shared (Twitter, Facebook,
-     *            etc)
      */
-    void mediaShared(String photoSetIdentifier, long mode);
+    void mediaShared(String photoSetIdentifier);
 
     /**
      * Disables tracking.
