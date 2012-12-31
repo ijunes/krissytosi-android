@@ -16,9 +16,11 @@
 
 package com.krissytosi.fragments;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.HapticFeedbackConstants;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -120,7 +122,7 @@ public class StoreFragment extends BaseListFragment {
         }
         // save the current collection of listings if we've already gone to the
         // trouble to get them from the API server.
-        if (adapter != null && adapter.getCount() > 0) {
+        if (hasListings()) {
             outState.putParcelableArrayList(LISTINGS,
                     createParcelableListingsFromListings(adapter.getListings()));
         }
@@ -135,13 +137,20 @@ public class StoreFragment extends BaseListFragment {
     @Override
     public void onTabSelected() {
         FragmentHelper.setTitle(getActivity(), getResources().getString(R.string.app_name));
-        if (getActivity() != null && getListingsTask == null && adapter == null) {
+        if (getActivity() != null && getListingsTask == null) {
             // check to see whether we even need to get more store listings
-            toggleLoading(true, getActivity().findViewById(R.id.store_flipper));
-            getListingsTask = new GetListingsTask();
-            getListingsTask.execute(((KrissyTosiApplication)
-                    getActivity().getApplication()).getStoreApiClient());
-        } else if (adapter != null && adapter.getCount() > 0) {
+            if (hasListings()) {
+                // they've been retrieved already ...
+                currentListingPosition = CURRENT_LISTING_POSITION_DEFAULT_VALUE;
+                buildView(adapter.getListings());
+            } else {
+                // no listings yet ... go get 'em
+                toggleLoading(true, getActivity().findViewById(R.id.store_flipper));
+                getListingsTask = new GetListingsTask();
+                getListingsTask.execute(((KrissyTosiApplication)
+                        getActivity().getApplication()).getStoreApiClient());
+            }
+        } else if (hasListings()) {
             toggleLoading(false, getActivity().findViewById(R.id.store_flipper));
             if (currentListingPosition != CURRENT_LISTING_POSITION_DEFAULT_VALUE
                     && adapter.getCount() > currentListingPosition) {
@@ -180,6 +189,14 @@ public class StoreFragment extends BaseListFragment {
         handleOnListItemClick(position);
     }
 
+    @Override
+    public void onLongPressDetected() {
+        super.onLongPressDetected();
+        if (longPressDetected()) {
+            getView().performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
+        }
+    }
+
     /**
      * Checks to see whether the main store {@link ListView} is showing or not.
      * 
@@ -194,9 +211,28 @@ public class StoreFragment extends BaseListFragment {
         // when a photo is loaded into a ImagePagerAdapter, the storeDetailView
         // needs to be notified in order to resize itself to accommodate the
         // image.
-        if (!isListViewShowing() && storeDetailView != null) {
+        if (hasStoreDetailView()) {
             storeDetailView.onPhotoLoaded(height, width);
         }
+    }
+
+    private boolean hasListings() {
+        return adapter != null && adapter.getCount() > 0;
+    }
+
+    private boolean hasStoreDetailView() {
+        return !isListViewShowing() && storeDetailView != null;
+    }
+
+    private boolean longPressDetected() {
+        boolean longPressDetected = false;
+        if (hasStoreDetailView() && storeDetailView.getListing() != null) {
+            Intent intent = FragmentHelper.createShareUrlIntent(storeDetailView.getListing()
+                    .getUrl());
+            StoreFragment.this.startActivity(Intent.createChooser(intent, getResources()
+                    .getString(R.string.share_this)));
+        }
+        return longPressDetected;
     }
 
     /**
@@ -239,6 +275,7 @@ public class StoreFragment extends BaseListFragment {
         } else {
             onGetListingsFailure(HttpStatus.SC_INTERNAL_SERVER_ERROR);
         }
+        getListingsTask = null;
     }
 
     /**

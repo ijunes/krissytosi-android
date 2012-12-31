@@ -59,8 +59,6 @@ public class PhotoSetsFragment extends BaseFragment implements OnItemClickListen
     private static final String CURRENT_PHOTOSET_ID = "com.krissytosi.fragments.PhotoSetsFragment.CURRENT_PHOTOSET_ID";
     private String currentPhotoSetId = "";
 
-    private static final String TEXT_MIME_TYPE = "text/plain";
-
     /**
      * Used to display a summary of photo sets to the user.
      */
@@ -189,15 +187,18 @@ public class PhotoSetsFragment extends BaseFragment implements OnItemClickListen
     @Override
     public void onLongPressDetected() {
         super.onLongPressDetected();
-        longPressDetected();
-        photoSetDetailView.getViewPager().performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
+        if (longPressDetected()) {
+            photoSetDetailView.getViewPager().performHapticFeedback(
+                    HapticFeedbackConstants.LONG_PRESS);
+        }
     }
 
     /**
      * Executed when a long press is detected on one of the photos in the photo
      * set.
      */
-    protected void longPressDetected() {
+    protected boolean longPressDetected() {
+        boolean longPressDetected = false;
         // check to see what photo set is currently selected
         if (hasPhotoSets() && hasDetailView() && !isGridViewShowing()
                 && photoSetDetailView.getPhotoSet() != null) {
@@ -205,27 +206,14 @@ public class PhotoSetsFragment extends BaseFragment implements OnItemClickListen
             int currentPhotoIndex = photoSetDetailView.getViewPager().getCurrentItem();
             if (photoSet != null && photoSet.getPhotos() != null
                     && photoSet.getPhotos().size() > currentPhotoIndex) {
+                longPressDetected = true;
                 Photo photo = photoSet.getPhotos().get(currentPhotoIndex);
-                createShareIntentWithPhoto(photo);
+                Intent intent = FragmentHelper.createShareUrlIntent(photo.getUrlOriginal());
+                PhotoSetsFragment.this.startActivity(Intent.createChooser(intent, getResources()
+                        .getString(R.string.share_this)));
             }
         }
-    }
-
-    /**
-     * Responsible for presenting the user with a set of share options.
-     * 
-     * @param photo the photo to share.
-     */
-    private void createShareIntentWithPhoto(Photo photo) {
-        final Intent intent = new Intent();
-        intent.setAction(Intent.ACTION_SEND);
-        intent.setType(TEXT_MIME_TYPE);
-        intent.putExtra(Intent.EXTRA_TEXT, photo.getUrlOriginal());
-        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        if (getActivity() != null) {
-            PhotoSetsFragment.this.startActivity(Intent.createChooser(intent, getResources()
-                    .getString(R.string.share_this)));
-        }
+        return longPressDetected;
     }
 
     private void handleOnItemClick(int position) {

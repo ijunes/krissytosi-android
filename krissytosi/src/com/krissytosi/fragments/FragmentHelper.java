@@ -46,6 +46,8 @@ import com.krissytosi.utils.KrissyTosiUtils;
  */
 public class FragmentHelper {
 
+    private static final String TEXT_MIME_TYPE = "text/plain";
+
     /**
      * Common lifecycle functionality for a Fragment's onStart method.
      * 
@@ -250,5 +252,21 @@ public class FragmentHelper {
         if (detailView != null) {
             detailView.beforeDetatched();
         }
+    }
+
+    /**
+     * Creates an {@link Intent} containing the url param.
+     * 
+     * @param url the url to share.
+     * @return an {@link Intent} containing the url which the user has requested
+     *         to share.
+     */
+    public static Intent createShareUrlIntent(String url) {
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_SEND);
+        intent.setType(TEXT_MIME_TYPE);
+        intent.putExtra(Intent.EXTRA_TEXT, url);
+        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        return intent;
     }
 }

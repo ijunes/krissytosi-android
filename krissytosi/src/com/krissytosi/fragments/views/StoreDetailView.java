@@ -32,6 +32,7 @@ import com.etsy.etsyModels.Listing;
 import com.etsy.etsyModels.ListingImage;
 import com.krissytosi.R;
 import com.krissytosi.fragments.adapters.ImagePagerAdapter;
+import com.krissytosi.utils.KrissyTosiConstants;
 import com.krissytosi.utils.KrissyTosiUtils;
 import com.krissytosi.utils.KrissyTosiUtils.ImageSize;
 import com.krissytosi.utils.KrissyTosiViewPagerAnimation;
@@ -148,7 +149,8 @@ public class StoreDetailView extends BaseDetailView implements OnClickListener {
             }
             viewPager.setAdapter(new ImagePagerAdapter(images, ((Activity) getContext())
                     .getLayoutInflater(), AnimationUtils.loadAnimation(getContext(),
-                    android.R.anim.fade_in), getContext()));
+                    android.R.anim.fade_in), getContext(),
+                    KrissyTosiConstants.FRAGMENT_STORE_POSITION));
             LinePageIndicator indicator = (LinePageIndicator) getBaseView()
                     .findViewById(R.id.detail_view_indicator);
             indicator.setViewPager(viewPager);

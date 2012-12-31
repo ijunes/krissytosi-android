@@ -54,6 +54,7 @@ public class ImagePagerAdapter extends PagerAdapter {
     private final DisplayImageOptions options;
     private final Animation animation;
     private final Context context;
+    private final int tabPosition;
     private boolean pressed;
     private final Handler handle = new Handler();
     private final Runnable longClick = new Runnable() {
@@ -61,14 +62,14 @@ public class ImagePagerAdapter extends PagerAdapter {
         public void run() {
             if (pressed) {
                 Intent intent = new Intent(KrissyTosiConstants.KT_PHOTOSET_LONG_PRESS);
-                intent.putExtra(KrissyTosiConstants.KT_FRAGMENT_IDENTIFIER_KEY, 0);
+                intent.putExtra(KrissyTosiConstants.KT_FRAGMENT_IDENTIFIER_KEY, tabPosition);
                 context.sendBroadcast(intent);
             }
         }
     };
 
     public ImagePagerAdapter(String[] urls, LayoutInflater layoutInflater,
-            Animation fadeInAnimation, Context intentContext) {
+            Animation fadeInAnimation, Context intentContext, int tabPosition) {
         this.urls = urls;
         this.options = new DisplayImageOptions.Builder()
                 .cacheInMemory()
@@ -79,6 +80,7 @@ public class ImagePagerAdapter extends PagerAdapter {
         inflater = layoutInflater;
         animation = fadeInAnimation;
         context = intentContext;
+        this.tabPosition = tabPosition;
     }
 
     @Override

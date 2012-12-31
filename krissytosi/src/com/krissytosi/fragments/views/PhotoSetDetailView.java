@@ -25,6 +25,7 @@ import com.krissytosi.R;
 import com.krissytosi.api.domain.Photo;
 import com.krissytosi.api.domain.PhotoSet;
 import com.krissytosi.fragments.adapters.ImagePagerAdapter;
+import com.krissytosi.utils.KrissyTosiConstants;
 import com.krissytosi.utils.KrissyTosiUtils;
 import com.krissytosi.utils.KrissyTosiUtils.ImageSize;
 import com.viewpagerindicator.LinePageIndicator;
@@ -71,7 +72,7 @@ public class PhotoSetDetailView extends BaseDetailView {
             viewPager.setAdapter(new ImagePagerAdapter(images, ((Activity) getContext())
                     .getLayoutInflater(),
                     AnimationUtils.loadAnimation(getContext(), android.R.anim.fade_in),
-                    getContext()));
+                    getContext(), KrissyTosiConstants.FRAGMENT_PHOTOSETS_POSITION));
             viewPager.setCurrentItem(0);
             LinePageIndicator indicator = (LinePageIndicator) getBaseView()
                     .findViewById(R.id.photoset_view_indicator);
