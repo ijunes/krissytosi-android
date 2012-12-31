@@ -144,16 +144,8 @@ public class PhotoSetsFragment extends BaseFragment implements OnItemClickListen
             // check to see whether we already have the photoSets as a result of
             // an orientation change
             if (hasPhotoSets()) {
-                // perhaps the user was focused on a particular photo set
-                if (hasDetailView()) {
-                    // ensure that the user is returned to the appropriate photo
-                    // set.
-                    toggleLoading(false, getView().findViewById(R.id.photoset_detail_view));
-                    navigateToCurrentPhotoSet();
-                } else {
-                    // just go ahead and build the view
-                    buildView();
-                }
+                currentPhotoSetId = "";
+                buildView();
             } else {
                 // no photo sets - go grab 'em
                 toggleLoading(true, getView().findViewById(R.id.photoset_flipper));
@@ -283,13 +275,15 @@ public class PhotoSetsFragment extends BaseFragment implements OnItemClickListen
             getView().findViewById(R.id.photoset_detail_view).scrollTo(0, 0);
         } else {
             FragmentHelper.setTitle(getActivity(), getResources().getString(R.string.app_name));
-            getView().findViewById(R.id.photosets_grid).setVisibility(View.VISIBLE);
+            gridView.setVisibility(View.VISIBLE);
+            gridView.setAdapter(adapter);
+            adapter.notifyDataSetChanged();
         }
     }
 
     protected void buildView() {
         flipperId = R.id.photoset_flipper;
-        gridView = (GridView) getActivity().findViewById(R.id.photosets_grid);
+        gridView = (GridView) getView().findViewById(R.id.photosets_grid);
         gridView.setOnItemClickListener(this);
         if (adapter == null) {
             adapter = new PhotoSetsAdapter(getActivity(), R.layout.photoset_detail_view,
@@ -300,7 +294,7 @@ public class PhotoSetsFragment extends BaseFragment implements OnItemClickListen
         }
         adapter.notifyDataSetChanged();
         FragmentHelper.setTitle(getActivity(), getResources().getString(R.string.app_name));
-        toggleLoading(false, getActivity().findViewById(R.id.photoset_flipper));
+        toggleLoading(false, getView().findViewById(R.id.photoset_flipper));
         navigateToCurrentPhotoSet();
     }
 
