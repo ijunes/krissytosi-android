@@ -106,25 +106,30 @@ public class ImagePagerAdapter extends PagerAdapter {
         final ImageView imageView = (ImageView) imageLayout.findViewById(R.id.image);
         final ProgressBar spinner = (ProgressBar) imageLayout.findViewById(R.id.loading);
         final PhotoViewAttacher attacher = new PhotoViewAttacher(imageView);
+
         imageView.setOnTouchListener(new OnTouchListener() {
 
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                final int action = event.getAction();
-                switch (action & MotionEventCompat.ACTION_MASK) {
-                    case MotionEvent.ACTION_DOWN:
-                        pressed = true;
-                        handle.postDelayed(longClick, 800);
-                        break;
-                    case MotionEvent.ACTION_CANCEL:
-                    case MotionEvent.ACTION_UP:
-                        pressed = false;
-                        handle.removeCallbacks(longClick);
-                        break;
-                    default:
-                        break;
+                if (attacher.onTouch(v, event)) {
+                    final int action = event.getAction();
+                    switch (action & MotionEventCompat.ACTION_MASK) {
+                        case MotionEvent.ACTION_DOWN:
+                            pressed = true;
+                            handle.postDelayed(longClick, 800);
+                            break;
+                        case MotionEvent.ACTION_CANCEL:
+                        case MotionEvent.ACTION_UP:
+                            pressed = false;
+                            handle.removeCallbacks(longClick);
+                            break;
+                        default:
+                            break;
+                    }
+                    return true;
+                } else {
+                    return false;
                 }
-                return true;
             }
         });
 
