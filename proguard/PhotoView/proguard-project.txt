@@ -41,3 +41,8 @@
 -keepclasseswithmembernames class * {
     native <methods>;
 }
+
+-keep class uk.co.senab.photoview.** { *; }
+-keep interface uk.co.senab.photoview.** { *; }
+
+-keepattributes *Annotation*

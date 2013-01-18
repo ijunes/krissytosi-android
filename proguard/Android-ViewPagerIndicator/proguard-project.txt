@@ -41,3 +41,10 @@
 -keepclasseswithmembernames class * {
     native <methods>;
 }
+
+-keep class android.support.v4.app.** { *; }
+-keep interface android.support.v4.app.** { *; }
+-keep class com.viewpagerindicator.** { *; }
+-keep interface com.viewpagerindicator.** { *; }
+
+-keepattributes *Annotation*

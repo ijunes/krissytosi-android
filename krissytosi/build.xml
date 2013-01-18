@@ -113,7 +113,7 @@
                 <include name="com/krissytosi/**"/>
             </fileset>
             <doctitle><![CDATA[<h1>${docs.window.title}</h1>]]></doctitle>
-            <bottom><![CDATA[<i>Copyright &#169; 2012 Krissy Tosi. All Rights Reserved.</i>]]></bottom>
+            <bottom><![CDATA[<i>Copyright &#169; 2013 Krissy Tosi. All Rights Reserved.</i>]]></bottom>
         </javadoc>
         <!-- Archive the docs too -->
         <zip destfile="${dist.dir}/docs/docs.zip" basedir="${dist.dir}/docs" excludes="**/*.zip" />
@@ -205,8 +205,15 @@
     <!-- ===========================================    -->
     <!-- KT-RELEASE                                     -->
     <!-- ===========================================    -->
-    <target name="kt-release" description="Creates a release candidate apk" depends="kt-clean,kt-sca,kt-alter-manifest,clean,release">
+    <target name="kt-release" description="Creates a release candidate apk" depends="kt-clean,kt-alter-manifest,clean">
         <echo>*** Building release candidate ***</echo>
+        <!-- Proguard is always enabled for a release build -->
+        <property name="proguard.enabled" value="true" />
+        <!-- Copy all the relevant proguard configuration files -->
+        <copy file="${build.dir}/proguard/ActionBarSherlock/proguard-project.txt" todir="${build.dir}/ActionBarSherlock/library" />
+        <copy file="${build.dir}/proguard/PhotoView/proguard-project.txt" todir="${build.dir}/PhotoView/library" />
+        <copy file="${build.dir}/proguard/Android-ViewPagerIndicator/proguard-project.txt" todir="${build.dir}/Android-ViewPagerIndicator/library" />
+        <antcall target="release" />
     </target>
 
     <!-- ===========================================    -->
