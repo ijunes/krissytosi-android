@@ -24,17 +24,64 @@ import android.os.Parcelable;
  */
 public class Photo extends ApiResponse implements Parcelable {
 
+    /**
+     * Associates the photo with a unique photo set.
+     */
     private String photoSetId;
+
+    /**
+     * Url for the square resource.
+     */
     private String urlSquare;
+
+    /**
+     * Url for the small resource.
+     */
     private String urlSmall;
+
+    /**
+     * Url for the medium resource.
+     */
     private String urlMedium;
+
+    /**
+     * Url for the original resource.
+     */
     private String urlOriginal;
+
+    /**
+     * Height for the square resource.
+     */
     private int heightSquare;
+
+    /**
+     * Width for the square resource.
+     */
     private int widthSquare;
+
+    /**
+     * Height for the small resource.
+     */
     private int heightSmall;
+
+    /**
+     * Width for the small resource.
+     */
     private int widthSmall;
+
+    /**
+     * Height for the medium resource.
+     */
     private int heightMedium;
+
+    /**
+     * Width for the medium resource.
+     */
     private int widthMedium;
+
+    /**
+     * Indicates whether or not the photo is the primary photo for a photo set.
+     */
     private int isPrimary;
 
     public static final Parcelable.Creator<Photo> CREATOR = new Parcelable.Creator<Photo>() {
