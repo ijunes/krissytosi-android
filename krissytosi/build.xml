@@ -194,7 +194,7 @@
             <arg line="${basedir} --html ${lint.dir}/lint.html"/>
         </exec>
     </target>
-    
+
     <!-- ===========================================    -->
     <!-- KT-SCA                                         -->
     <!-- ===========================================    -->
@@ -211,9 +211,13 @@
         <property name="proguard.enabled" value="true" />
         <!-- Copy all the relevant proguard configuration files -->
         <copy file="${build.dir}/proguard/ActionBarSherlock/proguard-project.txt" todir="${build.dir}/ActionBarSherlock/library" />
-        <copy file="${build.dir}/proguard/PhotoView/proguard-project.txt" todir="${build.dir}/PhotoView/library" />
         <copy file="${build.dir}/proguard/Android-ViewPagerIndicator/proguard-project.txt" todir="${build.dir}/Android-ViewPagerIndicator/library" />
+        <copy file="${build.dir}/proguard/PhotoView/proguard-project.txt" todir="${build.dir}/PhotoView/library" />
         <antcall target="release" />
+        <!-- Clean up -->
+        <delete file="${build.dir}/ActionBarSherlock/library/proguard-project.txt" />
+        <delete file="${build.dir}/Android-ViewPagerIndicator/library/proguard-project.txt" />
+        <delete file="${build.dir}/PhotoView/library/proguard-project.txt" />
     </target>
 
     <!-- ===========================================    -->
