@@ -131,6 +131,12 @@
         <exec executable="git" dir="${build.dir}">
             <arg line="submodule update"/>
         </exec>
+        <copy file="${eclipse.dir}/ActionBarSherlock/.project" todir="${build.dir}/ActionBarSherlock" />
+        <copy file="${eclipse.dir}/ActionBarSherlock/.classpath" todir="${build.dir}/ActionBarSherlock" />
+        <copy file="${eclipse.dir}/Android-ViewPagerIndicator/.project" todir="${build.dir}/Android-ViewPagerIndicator" />
+        <copy file="${eclipse.dir}/Android-ViewPagerIndicator/.classpath" todir="${build.dir}/Android-ViewPagerIndicator" />
+        <copy file="${eclipse.dir}/Android-ViewPagerIndicator/.project" todir="${build.dir}/Android-ViewPagerIndicator" />
+        <copy file="${eclipse.dir}/PhotoView/.classpath" todir="${build.dir}/PhotoView" />
     </target>
 
     <!-- ===========================================    -->
