@@ -59,6 +59,7 @@
         <echo message="" />
         <echo message="-----------------------------------" />
         <echo message="" />
+        <echo message="kt-setup         --> Sets up the application after a fresh github clone" />
         <echo message="kt-checkstyle    --> Run checkstyle on the codebase" />
         <echo message="kt-findbugs      --> Run findbugs on the codebase" />
         <echo message="kt-javancss      --> Run javancss on the codebase" />
@@ -117,6 +118,19 @@
         </javadoc>
         <!-- Archive the docs too -->
         <zip destfile="${dist.dir}/docs/docs.zip" basedir="${dist.dir}/docs" excludes="**/*.zip" />
+    </target>
+
+    <!-- ===========================================    -->
+    <!-- KT-SETUP                                       -->
+    <!-- ===========================================    -->
+    <target name="kt-setup" description="Sets up the application after a fresh github clone">
+        <echo>*** Initializing submodules & eclipse subprojects ***</echo>
+        <exec executable="git" dir="${build.dir}">
+            <arg line="submodule --init"/>
+        </exec>
+        <exec executable="git" dir="${build.dir}">
+            <arg line="submodule --update"/>
+        </exec>
     </target>
 
     <!-- ===========================================    -->
