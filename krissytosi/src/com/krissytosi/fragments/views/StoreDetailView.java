@@ -17,7 +17,9 @@
 package com.krissytosi.fragments.views;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.res.Resources;
+import android.net.Uri;
 import android.support.v4.view.ViewPager;
 import android.text.Html;
 import android.util.Log;
@@ -55,6 +57,11 @@ public class StoreDetailView extends BaseDetailView implements OnClickListener {
         // to be sure
         if (v.equals(detailViewBuyButton)) {
             Log.d(LOG_TAG, "Will open " + listing.getUrl());
+            if (getContext() != null) {
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse(listing.getUrl()));
+                getContext().startActivity(intent);
+            }
         }
     }
 
