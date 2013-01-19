@@ -124,12 +124,12 @@
     <!-- KT-SETUP                                       -->
     <!-- ===========================================    -->
     <target name="kt-setup" description="Sets up the application after a fresh github clone">
-        <echo>*** Initializing submodules & eclipse subprojects ***</echo>
+        <echo>*** Initializing submodules and eclipse subprojects ***</echo>
         <exec executable="git" dir="${build.dir}">
-            <arg line="submodule --init"/>
+            <arg line="submodule init"/>
         </exec>
         <exec executable="git" dir="${build.dir}">
-            <arg line="submodule --update"/>
+            <arg line="submodule update"/>
         </exec>
     </target>
 
