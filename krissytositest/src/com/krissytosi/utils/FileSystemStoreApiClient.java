@@ -62,7 +62,7 @@ public class FileSystemStoreApiClient implements StoreApiClient {
         try {
             listing.parseData(new JSONObject(properties));
         } catch (JSONException e) {
-            Log.e(LOG_TAG, "readFromParcel", e);
+            Log.e(LOG_TAG, "generateListing", e);
         }
         return listing;
     }
