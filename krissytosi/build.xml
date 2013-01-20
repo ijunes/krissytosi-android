@@ -131,12 +131,15 @@
         <exec executable="git" dir="${build.dir}">
             <arg line="submodule update"/>
         </exec>
-        <copy file="${eclipse.dir}/ActionBarSherlock/.project" todir="${build.dir}/ActionBarSherlock" />
-        <copy file="${eclipse.dir}/ActionBarSherlock/.classpath" todir="${build.dir}/ActionBarSherlock" />
-        <copy file="${eclipse.dir}/Android-ViewPagerIndicator/.project" todir="${build.dir}/Android-ViewPagerIndicator" />
-        <copy file="${eclipse.dir}/Android-ViewPagerIndicator/.classpath" todir="${build.dir}/Android-ViewPagerIndicator" />
-        <copy file="${eclipse.dir}/Android-ViewPagerIndicator/.project" todir="${build.dir}/Android-ViewPagerIndicator" />
-        <copy file="${eclipse.dir}/PhotoView/.classpath" todir="${build.dir}/PhotoView" />
+        <copy file="${eclipse.dir}/ActionBarSherlock/.project" todir="${build.dir}/ActionBarSherlock/library" />
+        <copy file="${eclipse.dir}/ActionBarSherlock/.classpath" todir="${build.dir}/ActionBarSherlock/library" />
+        <copy file="${eclipse.dir}/Android-ViewPagerIndicator/.project" todir="${build.dir}/Android-ViewPagerIndicator/library" />
+        <copy file="${eclipse.dir}/Android-ViewPagerIndicator/.classpath" todir="${build.dir}/Android-ViewPagerIndicator/library" />
+        <copy file="${eclipse.dir}/Android-ViewPagerIndicator/.project" todir="${build.dir}/Android-ViewPagerIndicator/library" />
+        <copy file="${eclipse.dir}/PhotoView/.classpath" todir="${build.dir}/PhotoView/library" />
+        <copy file="${eclipse.dir}/PhotoView/.project" todir="${build.dir}/PhotoView/library" />
+        <copy file="${eclipse.dir}/ShowcaseView/.classpath" todir="${build.dir}/ShowcaseView/library" />
+        <copy file="${eclipse.dir}/ShowcaseView/.project" todir="${build.dir}/ShowcaseView/library" />
     </target>
 
     <!-- ===========================================    -->
@@ -233,11 +236,13 @@
         <copy file="${build.dir}/proguard/ActionBarSherlock/proguard-project.txt" todir="${build.dir}/ActionBarSherlock/library" />
         <copy file="${build.dir}/proguard/Android-ViewPagerIndicator/proguard-project.txt" todir="${build.dir}/Android-ViewPagerIndicator/library" />
         <copy file="${build.dir}/proguard/PhotoView/proguard-project.txt" todir="${build.dir}/PhotoView/library" />
+        <copy file="${build.dir}/proguard/ShowcaseView/proguard-project.txt" todir="${build.dir}/ShowcaseView/library" />
         <antcall target="release" />
         <!-- Clean up -->
         <delete file="${build.dir}/ActionBarSherlock/library/proguard-project.txt" />
         <delete file="${build.dir}/Android-ViewPagerIndicator/library/proguard-project.txt" />
         <delete file="${build.dir}/PhotoView/library/proguard-project.txt" />
+        <delete file="${build.dir}/ShowcaseView/library/proguard-project.txt" />
     </target>
 
     <!-- ===========================================    -->

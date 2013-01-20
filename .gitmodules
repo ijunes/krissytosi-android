@@ -9,4 +9,7 @@
 	url = https://github.com/JakeWharton/Android-ViewPagerIndicator.git
 [submodule "PhotoView"]
 	path = PhotoView
-	url = https://github.com/chrisbanes/PhotoView.git
+	url = https://github.com/seanoshea/PhotoView.git
+[submodule "ShowcaseView"]
+	path = ShowcaseView
+	url = https://github.com/Espiandev/ShowcaseView.git
