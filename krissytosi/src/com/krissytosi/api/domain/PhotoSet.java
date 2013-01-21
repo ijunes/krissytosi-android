@@ -21,6 +21,9 @@ import android.os.Parcelable;
 
 import java.util.List;
 
+/**
+ * Details everything about what constitutes a photo set.
+ */
 public class PhotoSet extends ApiResponse implements Parcelable {
 
     /**

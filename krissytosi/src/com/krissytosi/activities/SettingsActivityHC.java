@@ -24,6 +24,9 @@ import android.os.Bundle;
 
 import com.krissytosi.fragments.SettingsFragment;
 
+/**
+ * Fragment for settings.
+ */
 @SuppressLint("NewApi")
 public class SettingsActivityHC extends Activity implements
         OnSharedPreferenceChangeListener {

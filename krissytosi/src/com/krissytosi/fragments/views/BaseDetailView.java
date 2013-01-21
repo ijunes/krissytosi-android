@@ -20,6 +20,15 @@ import android.content.Context;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 
+/**
+ * Two fragments include detail views. They are:
+ * <ul>
+ * <li>PhotoSetFragment</li>
+ * <li>StoreFragment</li>
+ * </ul>
+ * This class includes base functionality which is shared between these two
+ * fragment views.
+ */
 public class BaseDetailView {
 
     private View baseView;

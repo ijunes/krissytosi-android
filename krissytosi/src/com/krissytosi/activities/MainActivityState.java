@@ -24,7 +24,14 @@ import android.os.Parcelable;
  */
 public class MainActivityState implements Parcelable {
 
+    /**
+     * Stores what tab the user is currently on.
+     */
     private int currentTabPosition = -1;
+
+    /**
+     * Indicates which fragment is in a detail view (Store or PhotoSet)
+     */
     private int fragmentIdentifierInDetailView;
 
     public static final Parcelable.Creator<MainActivityState> CREATOR = new Parcelable.Creator<MainActivityState>() {

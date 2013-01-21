@@ -28,6 +28,11 @@ import dagger.Provides;
 
 import javax.inject.Singleton;
 
+/**
+ * Dagger injection module for the application. Includes entry points for the
+ * {@link ApiClient} & {@link StoreApiClient} & {@link Tracking}
+ * implementations.
+ */
 @Module(entryPoints = {
         ApiClient.class, StoreApiClient.class, Tracking.class
 })

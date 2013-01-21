@@ -20,7 +20,7 @@ import com.etsy.etsyCore.EtsyResult;
 import com.etsy.etsyRequests.EtsyRequest;
 
 /**
- * Hmmm. Bleeding Etsy particulars into an interface? Suppose this is better
+ * Hmmmm. Bleeding Etsy particulars into an interface? Suppose this is better
  * than a bunch of casting?
  */
 public interface StoreApiClient {

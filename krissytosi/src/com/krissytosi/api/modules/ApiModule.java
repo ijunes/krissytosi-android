@@ -26,6 +26,10 @@ import dagger.Provides;
 
 import javax.inject.Singleton;
 
+/**
+ * Dagger injection module for the API classes. Includes entry points for the
+ * {@link PhotoService} & {@link PhotoParser} implementations.
+ */
 @Module(entryPoints = {
         PhotoService.class, PhotoParser.class
 })
@@ -42,5 +46,4 @@ public class ApiModule {
     PhotoParser providePhotoSetParser() {
         return new JsonPhotoParser();
     }
-
 }

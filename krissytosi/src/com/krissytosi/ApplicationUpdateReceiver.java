@@ -34,5 +34,4 @@ public class ApplicationUpdateReceiver extends BroadcastReceiver {
             Toast.makeText(context, R.string.app_update_received, Toast.LENGTH_SHORT).show();
         }
     }
-
 }
