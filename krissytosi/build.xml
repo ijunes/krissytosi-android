@@ -135,13 +135,18 @@
         <copy file="${eclipse.dir}/ActionBarSherlock/.classpath" todir="${build.dir}/ActionBarSherlock/library" />
         <copy file="${eclipse.dir}/Android-ViewPagerIndicator/.project" todir="${build.dir}/Android-ViewPagerIndicator/library" />
         <copy file="${eclipse.dir}/Android-ViewPagerIndicator/.classpath" todir="${build.dir}/Android-ViewPagerIndicator/library" />
-        <copy file="${eclipse.dir}/Android-ViewPagerIndicator/.project" todir="${build.dir}/Android-ViewPagerIndicator/library" />
         <copy file="${eclipse.dir}/PhotoView/.classpath" todir="${build.dir}/PhotoView/library" />
         <copy file="${eclipse.dir}/PhotoView/.project" todir="${build.dir}/PhotoView/library" />
         <copy file="${eclipse.dir}/ShowcaseView/.classpath" todir="${build.dir}/ShowcaseView/library" />
         <copy file="${eclipse.dir}/ShowcaseView/.project" todir="${build.dir}/ShowcaseView/library" />
         <copy file="${eclipse.dir}/Crouton/.classpath" todir="${build.dir}/Crouton/library" />
         <copy file="${eclipse.dir}/Crouton/.project" todir="${build.dir}/Crouton/library" />
+        <echo>*** Ensuring that the android-support.jar files are up to date with the latest ***</echo>
+        <copy file="${sdk.dir}/extras/android/support/v4/android-support-v4.jar" todir="${build.dir}/ActionBarSherlock/library" />
+        <copy file="${sdk.dir}/extras/android/support/v4/android-support-v4.jar" todir="${build.dir}/Android-ViewPagerIndicator/library" />
+        <copy file="${sdk.dir}/extras/android/support/v4/android-support-v4.jar" todir="${build.dir}/Android-ViewPagerIndicator/library" />
+        <copy file="${sdk.dir}/extras/android/support/v4/android-support-v4.jar" todir="${build.dir}/Crouton/library" />
+        
     </target>
 
     <!-- ===========================================    -->
