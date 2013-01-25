@@ -44,6 +44,9 @@ import com.krissytosi.utils.ApiConstants;
 import com.krissytosi.utils.KrissyTosiConstants;
 import com.krissytosi.utils.OnSwipeTouchListener;
 
+import de.keyboardsurfer.android.widget.crouton.Crouton;
+import de.keyboardsurfer.android.widget.crouton.Style;
+
 import org.apache.http.HttpStatus;
 
 import java.util.ArrayList;
@@ -88,7 +91,7 @@ public class StoreFragment extends BaseListFragment {
     private StoreAdapter adapter;
 
     /**
-     * 
+     * Message displayed to the user should the shop be on vacation.
      */
     private String vacationMessage;
 
@@ -300,6 +303,7 @@ public class StoreFragment extends BaseListFragment {
         if (shop.getIsVacation()) {
             if (shop.getVacationMessage() != null) {
                 vacationMessage = shop.getVacationMessage();
+                Crouton.makeText(getActivity(), vacationMessage, Style.INFO).show();
             }
         } else {
             Log.d(LOG_TAG, "Store is not on vacation");

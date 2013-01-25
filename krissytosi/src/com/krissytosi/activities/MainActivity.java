@@ -42,6 +42,8 @@ import com.krissytosi.fragments.StoreFragment;
 import com.krissytosi.utils.KrissyTosiConstants;
 import com.krissytosi.utils.KrissyTosiUtils;
 
+import de.keyboardsurfer.android.widget.crouton.Crouton;
+
 /**
  * Main activity in the application. Gives the user the choice to browse photo
  * sets, view the etsy store, the blog or contact.
@@ -113,6 +115,12 @@ public class MainActivity extends SherlockFragmentActivity {
             unregisterReceiver(broadcastReceiver);
         }
         super.onPause();
+    }
+
+    @Override
+    protected void onDestroy() {
+        Crouton.cancelAllCroutons();
+        super.onDestroy();
     }
 
     @Override

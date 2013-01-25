@@ -13,3 +13,6 @@
 [submodule "ShowcaseView"]
 	path = ShowcaseView
 	url = https://github.com/Espiandev/ShowcaseView.git
+[submodule "Crouton"]
+	path = Crouton
+	url = https://github.com/keyboardsurfer/Crouton.git
