@@ -31,7 +31,9 @@ import android.widget.ViewFlipper;
 import com.etsy.etsyCore.EtsyResult;
 import com.etsy.etsyModels.BaseModel;
 import com.etsy.etsyModels.Listing;
+import com.etsy.etsyModels.Shop;
 import com.etsy.etsyRequests.ListingsRequest;
+import com.etsy.etsyRequests.ShopsRequest;
 import com.krissytosi.KrissyTosiApplication;
 import com.krissytosi.R;
 import com.krissytosi.api.store.ParcelableListing;
@@ -54,9 +56,10 @@ public class StoreFragment extends BaseListFragment {
 
     private static final String LOG_TAG = "StoreFragment";
 
-    // orientation flag handlers
+    // orientation keys
 
     private static final String LISTINGS = "com.krissytosi.fragments.StoreFragment.LISTINGS";
+    private static final String VACATION_MESSAGE = "com.krissytosi.fragments.StoreFragment.VACATION_MESSAGE";
     private static final String CURRENT_LISTING_POSITION = "com.krissytosi.fragments.StoreFragment.CURRENT_LISTING_POSITION";
     private static final int CURRENT_LISTING_POSITION_DEFAULT_VALUE = -1;
     private int currentListingPosition = CURRENT_LISTING_POSITION_DEFAULT_VALUE;
@@ -67,6 +70,14 @@ public class StoreFragment extends BaseListFragment {
     private GetListingsTask getListingsTask;
 
     /**
+     * Async task used to get particulars on the current store. Mostly a
+     * fire-and-forget type of request as it's not *absolutely* necessary to let
+     * the user know that the store is currently on vacation in the application
+     * proper.
+     */
+    private GetShopTask getShopTask;
+
+    /**
      * ListView which is responsible for rendering the store.
      */
     private ListView listView;
@@ -75,6 +86,11 @@ public class StoreFragment extends BaseListFragment {
      * Adapter which backs this view.
      */
     private StoreAdapter adapter;
+
+    /**
+     * 
+     */
+    private String vacationMessage;
 
     /**
      * View for handling events related to the detail store view.
@@ -96,7 +112,6 @@ public class StoreFragment extends BaseListFragment {
         if (savedInstanceState != null) {
             currentListingPosition = savedInstanceState.getInt(CURRENT_LISTING_POSITION,
                     CURRENT_LISTING_POSITION_DEFAULT_VALUE);
-            Log.d(LOG_TAG, "The current listing position is " + currentListingPosition);
             // see if we had already retrieved the listings
             if (savedInstanceState.containsKey(LISTINGS)) {
                 // get them back from the bundle
@@ -108,6 +123,11 @@ public class StoreFragment extends BaseListFragment {
                         (ArrayList<Listing>) listings);
                 setListAdapter(adapter);
                 adapter.notifyDataSetChanged();
+            }
+            // check to see whether we've already requested the store vacation
+            // information
+            if (savedInstanceState.containsKey(VACATION_MESSAGE)) {
+                vacationMessage = savedInstanceState.getString(VACATION_MESSAGE);
             }
         }
         return v;
@@ -125,6 +145,9 @@ public class StoreFragment extends BaseListFragment {
         if (hasListings()) {
             outState.putParcelableArrayList(LISTINGS,
                     createParcelableListingsFromListings(adapter.getListings()));
+        }
+        if (vacationMessage != null) {
+            outState.putString(VACATION_MESSAGE, vacationMessage);
         }
         super.onSaveInstanceState(outState);
     }
@@ -180,6 +203,9 @@ public class StoreFragment extends BaseListFragment {
         super.onStop();
         if (getListingsTask != null) {
             getListingsTask.cancel(true);
+        }
+        if (getShopTask != null) {
+            getShopTask.cancel(true);
         }
     }
 
@@ -253,6 +279,31 @@ public class StoreFragment extends BaseListFragment {
         }
         adapter.notifyDataSetChanged();
         toggleLoading(false, getActivity().findViewById(R.id.store_flipper));
+        // once we've retrieved the listings and built the list view, check to
+        // see whether we need to get the store details.
+        if (vacationMessage == null && getShopTask == null) {
+            getShopTask = new GetShopTask();
+            getShopTask.execute(((KrissyTosiApplication)
+                    getActivity().getApplication()).getStoreApiClient());
+        }
+    }
+
+    /**
+     * Given the shop parameter, this method is responsible for checking to see
+     * whether the shop is currently on vacation and updating the view
+     * accordingly.
+     * 
+     * @param shop the shop returned from the API server.
+     */
+    protected void updateViewWithStoreDetails(Shop shop) {
+        vacationMessage = "";
+        if (shop.getIsVacation()) {
+            if (shop.getVacationMessage() != null) {
+                vacationMessage = shop.getVacationMessage();
+            }
+        } else {
+            Log.d(LOG_TAG, "Store is not on vacation");
+        }
     }
 
     /**
@@ -279,6 +330,30 @@ public class StoreFragment extends BaseListFragment {
     }
 
     /**
+     * Callback executed when we get the store details back from the server.
+     * 
+     * @param result the etsy response from the server.
+     */
+    protected void onGetShop(EtsyResult result) {
+        if (result != null) {
+            List<BaseModel> results = result.getResults();
+            if (HttpStatus.SC_OK == result.getCode()) {
+                if (results.size() > 0) {
+                    Shop shop = (Shop) results.get(0);
+                    updateViewWithStoreDetails(shop);
+                } else {
+                    // TODO - can this even happen?
+                    onGetShopFailure(result.getCode());
+                }
+            } else {
+                onGetShopFailure(result.getCode());
+            }
+        } else {
+            onGetShopFailure(HttpStatus.SC_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
      * Executed when something went awry with the API call to retrieve the
      * listings.
      * 
@@ -286,6 +361,16 @@ public class StoreFragment extends BaseListFragment {
      */
     protected void onGetListingsFailure(int errorCode) {
         Log.d(LOG_TAG, "Failed to get listings " + errorCode);
+    }
+
+    /**
+     * Callback executed should an error occur while retrieving the store
+     * details from the API server.
+     * 
+     * @param errorCode the HTTP error code returned from the API server.
+     */
+    protected void onGetShopFailure(int errorCode) {
+        Log.d(LOG_TAG, "Failed to get store details " + errorCode);
     }
 
     /**
@@ -387,6 +472,27 @@ public class StoreFragment extends BaseListFragment {
         @Override
         protected void onPostExecute(EtsyResult result) {
             onGetListings(result);
+        }
+    }
+
+    /**
+     * Async task for retrieving specifics on the store. Retrieves information
+     * on whether or not the shop is on vacation or if there's any specific shop
+     * announcement.
+     */
+    private class GetShopTask extends
+            AsyncTask<StoreApiClient, Void, EtsyResult> {
+
+        @Override
+        protected EtsyResult doInBackground(StoreApiClient... params) {
+            StoreApiClient storeApiClient = params[0];
+            ShopsRequest request = ShopsRequest.getShop(ApiConstants.ETSY_STORE_ID);
+            return storeApiClient.runRequest(request);
+        }
+
+        @Override
+        protected void onPostExecute(EtsyResult result) {
+            onGetShop(result);
         }
     }
 }
