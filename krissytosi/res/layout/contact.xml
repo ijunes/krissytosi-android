@@ -10,6 +10,11 @@
 
     <TextView
         style="@style/KTContactText"
+        android:autoLink="email"
+        android:text="@string/contact_email" />
+
+    <TextView
+        style="@style/KTContactText"
         android:autoLink="web"
         android:text="@string/contact_web" />
 

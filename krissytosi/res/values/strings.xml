@@ -17,6 +17,7 @@
     <string name="detail_view_quantity_n">%1$d available.</string>
     <string name="detail_view_made">Made: %1$s</string>
     <string name="share_this">Share This</string>
+    <string name="contact_email">Shoot me an email at mailto:krissy@krissytosi.com</string>
     <string name="contact_web">I\'m on the web at http://www.krissytosi.com</string>
     <string name="contact_store">My full Etsy store is available at http://cottagefarm.etsy.com</string>
     <string name="contact_twitter">I tweet from time to time at http://www.twitter.com/cottagefarm</string>
