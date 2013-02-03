@@ -1,0 +1,18 @@
+[submodule "Dependencies/ActionBarSherlock"]
+	path = Dependencies/ActionBarSherlock
+	url = https://github.com/JakeWharton/ActionBarSherlock.git
+[submodule "Dependencies/EtsyAndroidSDK"]
+	path = Dependencies/EtsyAndroidSDK
+	url = https://github.com/etsy/EtsyAndroidSDK.git
+[submodule "Dependencies/Android-ViewPagerIndicator"]
+	path = Dependencies/Android-ViewPagerIndicator
+	url = https://github.com/JakeWharton/Android-ViewPagerIndicator.git
+[submodule "Dependencies/PhotoView"]
+	path = Dependencies/PhotoView
+	url = https://github.com/seanoshea/PhotoView.git
+[submodule "Dependencies/ShowcaseView"]
+	path = Dependencies/ShowcaseView
+	url = https://github.com/Espiandev/ShowcaseView.git
+[submodule "Dependencies/Crouton"]
+	path = Dependencies/Crouton
+	url = https://github.com/keyboardsurfer/Crouton.git
