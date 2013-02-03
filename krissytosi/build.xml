@@ -142,9 +142,9 @@
         <copy file="${eclipse.dir}/Crouton/.classpath" todir="${build.dir}/Dependencies/Crouton/library" />
         <copy file="${eclipse.dir}/Crouton/.project" todir="${build.dir}/Dependencies/Crouton/library" />
         <echo>*** Ensuring that the android-support.jar files are up to date with the latest ***</echo>
-        <copy file="${sdk.dir}/extras/android/support/v4/android-support-v4.jar" todir="${build.dir}/Dependencies/ActionBarSherlock/library" />
-        <copy file="${sdk.dir}/extras/android/support/v4/android-support-v4.jar" todir="${build.dir}/Dependencies/Android-ViewPagerIndicator/library" />
-        <copy file="${sdk.dir}/extras/android/support/v4/android-support-v4.jar" todir="${build.dir}/Dependencies/Crouton/library" />
+        <copy file="${sdk.dir}/extras/android/support/v4/android-support-v4.jar" todir="${build.dir}/Dependencies/ActionBarSherlock/library/libs" />
+        <copy file="${sdk.dir}/extras/android/support/v4/android-support-v4.jar" todir="${build.dir}/Dependencies/Android-ViewPagerIndicator/library/libs" />
+        <copy file="${sdk.dir}/extras/android/support/v4/android-support-v4.jar" todir="${build.dir}/Dependencies/Crouton/library/libs" />
         
     </target>
 
