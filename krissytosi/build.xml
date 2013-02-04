@@ -145,7 +145,6 @@
         <copy file="${sdk.dir}/extras/android/support/v4/android-support-v4.jar" todir="${build.dir}/Dependencies/ActionBarSherlock/library/libs" />
         <copy file="${sdk.dir}/extras/android/support/v4/android-support-v4.jar" todir="${build.dir}/Dependencies/Android-ViewPagerIndicator/library/libs" />
         <copy file="${sdk.dir}/extras/android/support/v4/android-support-v4.jar" todir="${build.dir}/Dependencies/Crouton/library/libs" />
-        
     </target>
 
     <!-- ===========================================    -->

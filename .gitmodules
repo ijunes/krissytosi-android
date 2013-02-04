@@ -16,3 +16,6 @@
 [submodule "Dependencies/Crouton"]
 	path = Dependencies/Crouton
 	url = https://github.com/keyboardsurfer/Crouton.git
+[submodule "Dependencies/NineOldAndroids"]
+	path = Dependencies/NineOldAndroids
+	url = https://github.com/JakeWharton/NineOldAndroids.git
