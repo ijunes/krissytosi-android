@@ -17,10 +17,12 @@
 package com.krissytosi.fragments.views;
 
 import android.app.Activity;
+import android.content.res.Resources;
 import android.support.v4.view.ViewPager;
 import android.view.animation.AnimationUtils;
 import android.widget.RelativeLayout;
 
+import com.github.espiandev.showcaseview.ShowcaseView;
 import com.krissytosi.R;
 import com.krissytosi.api.domain.Photo;
 import com.krissytosi.api.domain.PhotoSet;
@@ -52,6 +54,7 @@ public class PhotoSetDetailView extends BaseDetailView {
     public void buildPage() {
         if (photoSet != null) {
             viewPager = (ViewPager) getBaseView().findViewById(R.id.pager);
+            configureShowcaseView();
             List<Photo> photos = photoSet.getPhotos();
             String[] images = new String[photos.size()];
             int counter = 0;
@@ -82,6 +85,18 @@ public class PhotoSetDetailView extends BaseDetailView {
             RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) viewPager
                     .getLayoutParams();
             params.height = (int) allowedHeight;
+        }
+    }
+
+    private void configureShowcaseView() {
+        if (getContext() != null) {
+            Resources resources = getContext().getResources();
+            ShowcaseView.ConfigOptions co = new ShowcaseView.ConfigOptions();
+            co.hideOnClickOutside = true;
+            ShowcaseView sv = ShowcaseView.insertShowcaseView(R.id.pager, (Activity) getContext(),
+                    resources.getString(R.string.showcase_portfolio_header),
+                    resources.getString(R.string.showcase_portfolio_runner), co);
+            ;
         }
     }
 

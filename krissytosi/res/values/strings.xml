@@ -28,5 +28,7 @@
     <string name="tracking_preference_summary">Allow tracking of interactions with the application to gain a better understanding of what sections of the application are most popular.</string>
     <!-- Application Update -->
     <string name="app_update_received">Thanks for updating!</string>
-
+    <!-- Showcase Views -->
+    <string name="showcase_portfolio_header">Swipeable Portfolios</string>
+    <string name="showcase_portfolio_runner">Portfolios contain multiple photos. Swipe from left to right to go through all the photos in a portfolio.</string>
 </resources>
