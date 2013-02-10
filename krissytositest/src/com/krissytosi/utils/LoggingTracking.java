@@ -41,12 +41,6 @@ public class LoggingTracking implements Tracking {
     }
 
     @Override
-    public void mediaShared(String photoSetIdentifier, long mode) {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
     public void disableTracking(Context context) {
         // TODO Auto-generated method stub
 
@@ -54,6 +48,12 @@ public class LoggingTracking implements Tracking {
 
     @Override
     public void enableTracking(Context context) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void mediaShared(String photoSetIdentifier) {
         // TODO Auto-generated method stub
 
     }
