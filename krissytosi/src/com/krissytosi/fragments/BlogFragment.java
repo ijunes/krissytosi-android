@@ -19,6 +19,7 @@ package com.krissytosi.fragments;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,6 +33,8 @@ import com.krissytosi.utils.KrissyTosiConstants;
  * Just contains a web view which points at cottage farm blogspot.
  */
 public class BlogFragment extends BaseFragment {
+
+    private final static String LOG_TAG = "BlogFragment";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -72,6 +75,8 @@ public class BlogFragment extends BaseFragment {
 
     public class MyWebViewClient extends WebViewClient {
 
+        private boolean hasNetwork = true;
+
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
             if (url.endsWith(".mp4")) {
@@ -87,7 +92,21 @@ public class BlogFragment extends BaseFragment {
         @Override
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
-            toggleLoading(false, getWebView());
+            if (hasNetwork) {
+                toggleLoading(false, getWebView());
+            }
+        }
+
+        @Override
+        public void onReceivedError(WebView view, int errorCode, String description,
+                String failingUrl) {
+            super.onReceivedError(view, errorCode, description, failingUrl);
+            Log.d(LOG_TAG, "Received error while loading blog view " + description + " "
+                    + errorCode);
+            if (errorCode == ERROR_HOST_LOOKUP) {
+                hasNetwork = false;
+                toggleNoNetwork(true, getWebView());
+            }
         }
     }
 
