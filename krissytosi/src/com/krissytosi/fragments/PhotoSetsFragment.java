@@ -267,9 +267,11 @@ public class PhotoSetsFragment extends BaseFragment implements OnItemClickListen
             getView().findViewById(R.id.photoset_detail_view).scrollTo(0, 0);
         } else {
             FragmentHelper.setTitle(getActivity(), getResources().getString(R.string.app_name));
-            gridView.setVisibility(View.VISIBLE);
-            gridView.setAdapter(adapter);
-            adapter.notifyDataSetChanged();
+            if (gridView != null) {
+                gridView.setVisibility(View.VISIBLE);
+                gridView.setAdapter(adapter);
+                adapter.notifyDataSetChanged();
+            }
         }
     }
 

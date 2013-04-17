@@ -365,6 +365,7 @@ public class StoreFragment extends BaseListFragment {
      */
     protected void onGetListingsFailure(int errorCode) {
         Log.d(LOG_TAG, "Failed to get listings " + errorCode);
+        checkForNetworkFailure(errorCode);
     }
 
     /**
@@ -375,6 +376,25 @@ public class StoreFragment extends BaseListFragment {
      */
     protected void onGetShopFailure(int errorCode) {
         Log.d(LOG_TAG, "Failed to get store details " + errorCode);
+        checkForNetworkFailure(errorCode);
+
+    }
+
+    /**
+     * Checks to see whether the error code returned from the async task
+     * warrants a 'You need to connect to the internet' message.
+     * 
+     * @param errorCode the error code returned from the async task.
+     */
+    private void checkForNetworkFailure(int errorCode) {
+        switch (errorCode) {
+            case HttpStatus.SC_INTERNAL_SERVER_ERROR:
+            case HttpStatus.SC_NOT_FOUND:
+                toggleNoNetwork(true, listView);
+                break;
+            default:
+                break;
+        }
     }
 
     /**
