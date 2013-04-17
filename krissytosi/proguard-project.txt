@@ -18,26 +18,3 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
--optimizationpasses 4
--dontusemixedcaseclassnames
--dontskipnonpubliclibraryclasses
--dontpreverify
--verbose
--dump class_files.txt
--printseeds seeds.txt
--printusage unused.txt
--printmapping mapping.txt
--dontskipnonpubliclibraryclass
--dontskipnonpubliclibraryclassmembers
-
--optimizations !code/simplification/arithmetic,!field/*,!class/merging/*
--libraryjars libs
- 
--keepattributes Signature,Exceptions,InnerClasses,Deprecated,
-                SourceFile,LineNumberTable,*Annotation,EnclosingMethod
--keepattributes *Annotation*
-
-
--keepclasseswithmembernames class * {
-    native <methods>;
-}
